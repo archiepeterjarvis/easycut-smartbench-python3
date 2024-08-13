@@ -1,8 +1,9 @@
 """
 Created on 10 June 2020
 @author: Letty
-widget to hold laser datum on_off 
+widget to hold laser datum on_off
 """
+
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
 
@@ -62,10 +63,10 @@ Builder.load_string(
 
 
 class LaserOnOffWidget(Widget):
-    def __init__(self, **kwargs):
-        super(LaserOnOffWidget, self).__init__(**kwargs)
-        self.m = kwargs["machine"]
-        self.sm = kwargs["screen_manager"]
+    def __init__(self, screen_manager, machine, **kwargs):
+        super().__init__(**kwargs)
+        self.m = machine
+        self.sm = screen_manager
 
     def toggle_laser(self):
         if self.laser_switch.active:

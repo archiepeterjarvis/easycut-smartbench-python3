@@ -1,10 +1,10 @@
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 from kivy.clock import Clock
-
 import datetime
 
-Builder.load_string("""
+Builder.load_string(
+    """
 <ZHeadQC6>:
     ok_button:ok_button
 
@@ -33,14 +33,15 @@ Builder.load_string("""
                 size_hint_y: 0.4
                 size_hint_x: 0.3
 
-""")
+"""
+)
+
 
 class ZHeadQC6(Screen):
-    def __init__(self, **kwargs):
-        super(ZHeadQC6, self).__init__(**kwargs)
-
-        self.sm = kwargs['sm']
-        self.m = kwargs['m']
+    def __init__(self, m, sm, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = sm
+        self.m = m
 
     def on_enter(self):
         Clock.schedule_once(self.enable_button, 2)
@@ -52,4 +53,4 @@ class ZHeadQC6(Screen):
         self.ok_button.disabled = True
 
     def enter_next_screen(self):
-        self.sm.current = 'qc7'
+        self.sm.current = "qc7"

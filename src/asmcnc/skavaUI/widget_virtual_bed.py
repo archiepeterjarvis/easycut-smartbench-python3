@@ -2,6 +2,7 @@
 Created on 1 Feb 2018
 @author: Ed
 """
+
 import kivy
 from asmcnc.comms.logging_system.logging_system import Logger
 from kivy.lang import Builder
@@ -98,29 +99,27 @@ class StencilBox2(StencilView, BoxLayout):
     def on_touch_down(self, touch):
         if not self.collide_point(*touch.pos):
             return
-        return super(StencilBox2, self).on_touch_down(touch)
+        return super().on_touch_down(touch)
 
     def on_touch_move(self, touch):
         if not self.collide_point(*touch.pos):
             return
-        return super(StencilBox2, self).on_touch_move(touch)
+        return super().on_touch_move(touch)
 
     def on_touch_up(self, touch):
         if not self.collide_point(*touch.pos):
             return
-        return super(StencilBox2, self).on_touch_up(touch)
+        return super().on_touch_up(touch)
 
 
 class VirtualBed(Widget):
-    # G54: workpiece co-ordinates
-    # G28: set reference point
     width_modifier = NumericProperty()
     x_pos_modifier = NumericProperty()
 
-    def __init__(self, **kwargs):
-        super(VirtualBed, self).__init__(**kwargs)
-        self.m = kwargs["machine"]
-        self.sm = kwargs["screen_manager"]
+    def __init__(self, screen_manager, machine, **kwargs):
+        super().__init__(**kwargs)
+        self.m = machine
+        self.sm = screen_manager
         self.set_up_virtual_bed()
 
     def set_up_virtual_bed(self, dt=0):
@@ -165,7 +164,9 @@ class VirtualBed(Widget):
             * self.m.grbl_y_max_travel
             - self.m.grbl_y_max_travel
         )
-        Logger.debug("Y: ", str(touch.y), str(self.touch_zone.y), str(self.touch_zone.pos[1]))
+        Logger.debug(
+            "Y: ", str(touch.y), str(self.touch_zone.y), str(self.touch_zone.pos[1])
+        )
         self.m.quit_jog()
         self.m.jog_absolute_xy(machineX, machineY, self.bedWidgetJogFeedrate)
 

@@ -1,15 +1,16 @@
 """
 Created on 12 December 2019
-Screen to inform user about how to conduct measurements during calibration. 
+Screen to inform user about how to conduct measurements during calibration.
 
-X-measurement: 
+X-measurement:
  Has 3 sub screens: just pictures and text
- 
-Y measurement: 
+
+Y measurement:
  Has 2 sub screens: just pictures and text
 
 @author: Letty
 """
+
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, SlideTransition
 from kivy.properties import ObjectProperty, StringProperty
@@ -189,10 +190,10 @@ class MeasurementScreenClass(Screen):
     sub_screen_count = 0
     axis = StringProperty()
 
-    def __init__(self, **kwargs):
-        super(MeasurementScreenClass, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
+    def __init__(self, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
 
     def on_pre_enter(self):
         if self.axis == "X":

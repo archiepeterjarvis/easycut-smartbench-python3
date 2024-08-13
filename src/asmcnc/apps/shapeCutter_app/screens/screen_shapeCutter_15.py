@@ -4,6 +4,7 @@ Screen 15 for the Shape Cutter App
 
 @author: Letty
 """
+
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.metrics import MetricsBase
@@ -313,11 +314,11 @@ class ShapeCutter15ScreenClass(Screen):
         "Clamp X beam down [b](1)[/b] and check the upper wheel units run on the surface of the material [b](2)[/b]."
     )
 
-    def __init__(self, **kwargs):
-        super(ShapeCutter15ScreenClass, self).__init__(**kwargs)
-        self.shapecutter_sm = kwargs["shapecutter"]
-        self.m = kwargs["machine"]
-        self.j = kwargs["job_parameters"]
+    def __init__(self, job_parameters, machine, shapecutter, **kwargs):
+        super().__init__(**kwargs)
+        self.shapecutter_sm = shapecutter
+        self.m = machine
+        self.j = job_parameters
         self.xy_move_widget = widget_sC15_xy_move.SC15XYMove(
             machine=self.m, screen_manager=self.shapecutter_sm.sm, job_parameters=self.j
         )
@@ -326,8 +327,7 @@ class ShapeCutter15ScreenClass(Screen):
     def on_pre_enter(self):
         self.info_button.opacity = 0
         self.xy_move_widget.set_jog_speeds()
-        
-# Action buttons       
+
     def get_info(self):
         pass
 
@@ -336,8 +336,6 @@ class ShapeCutter15ScreenClass(Screen):
 
     def next_screen(self):
         self.shapecutter_sm.next_screen()
-    
-# Tab functions
 
     def prepare(self):
         self.shapecutter_sm.prepare_tab()

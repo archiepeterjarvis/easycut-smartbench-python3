@@ -3,6 +3,7 @@ Created on 17 January 2020
 Warning to remind user to remove their tape measure before homing the machine
 @author: Letty
 """
+
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty, StringProperty
@@ -89,10 +90,10 @@ class TapeMeasureScreenClass(Screen):
     return_to_screen = StringProperty()
     alert_label = ObjectProperty()
 
-    def __init__(self, **kwargs):
-        super(TapeMeasureScreenClass, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
+    def __init__(self, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
         self.alert_label.text = """[color=455A64]
 TAPE MEASURE WARNING!
 Please remove your tape measure from the machine now.[/color]"""

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on 19 Aug 2017
 
@@ -6,23 +5,19 @@ Created on 19 Aug 2017
 
 Screen allows user to select their job for loading into easycut, either from JobCache or from a memory stick.
 """
+
 import os
 import sys
 from itertools import takewhile
 from shutil import copy
-
 import kivy
 from chardet import detect
 from asmcnc.comms.logging_system.logging_system import Logger
 from kivy.clock import Clock
 from kivy.graphics import Color, Rectangle
 from kivy.lang import Builder
-from kivy.properties import (
-    ObjectProperty,
-    StringProperty,
-)
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.screenmanager import Screen
-
 from asmcnc.comms import usb_storage
 from asmcnc.comms.model_manager import ModelManagerSingleton
 from asmcnc.skavaUI import popup_info
@@ -356,11 +351,11 @@ class LocalFileChooser(Screen):
     is_filechooser_scrolling = False
     model_manager = ModelManagerSingleton()
 
-    def __init__(self, **kwargs):
-        super(LocalFileChooser, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.jd = kwargs["job"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, job, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.jd = job
+        self.l = localization
         self.usb_stick = usb_storage.USB_storage(self.sm, self.l)
         self.check_for_job_cache_dir()
         self.usb_status_label.text = self.l.get_str(

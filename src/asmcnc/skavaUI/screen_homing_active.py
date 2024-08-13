@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created March 2019
 
@@ -6,9 +5,9 @@ Created March 2019
 
 Squaring decision: manual or auto?
 """
+
 import sys
 from datetime import datetime
-
 from asmcnc.comms.logging_system.logging_system import Logger
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -93,11 +92,11 @@ class HomingScreenActive(Screen):
     poll_for_completion_loop = None
     expected_next_screen = "squaring_active"
 
-    def __init__(self, **kwargs):
-        super(HomingScreenActive, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
+        self.l = localization
         self.update_strings()
 
     def on_pre_enter(self):

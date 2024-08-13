@@ -4,9 +4,10 @@ ApIs Screen for the Shape Cutter App
 
 @author: Letty
 """
+
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.properties import ObjectProperty 
+from kivy.properties import ObjectProperty
 
 Builder.load_string(
     """
@@ -236,11 +237,11 @@ class ShapeCutterApIsScreenClass(Screen):
     info_button = ObjectProperty()
     shape = "circle"
 
-    def __init__(self, **kwargs):
-        super(ShapeCutterApIsScreenClass, self).__init__(**kwargs)
-        self.shapecutter_sm = kwargs["shapecutter"]
-        self.m = kwargs["machine"]
-        self.j = kwargs["job_parameters"]
+    def __init__(self, job_parameters, machine, shapecutter, **kwargs):
+        super().__init__(**kwargs)
+        self.shapecutter_sm = shapecutter
+        self.m = machine
+        self.j = job_parameters
 
     def on_pre_enter(self):
         if self.j.shape_dict["shape"] == "circle":

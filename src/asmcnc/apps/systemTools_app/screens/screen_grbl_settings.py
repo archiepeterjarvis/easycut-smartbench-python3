@@ -4,6 +4,7 @@ GRBL settings screen for system tools app
 
 @author: Letty
 """
+
 from kivy.lang import Builder
 from kivy.factory import Factory
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -192,19 +193,17 @@ Builder.load_string(
 
 
 class GRBLSettingsScreen(Screen):
-    def __init__(self, **kwargs):
-        super(GRBLSettingsScreen, self).__init__(**kwargs)
-        self.systemtools_sm = kwargs["system_tools"]
-        self.m = kwargs["machine"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, machine, system_tools, **kwargs):
+        super().__init__(**kwargs)
+        self.systemtools_sm = system_tools
+        self.m = machine
+        self.l = localization
 
     def go_back(self):
         self.systemtools_sm.open_system_tools()
 
     def exit_app(self):
         self.systemtools_sm.exit_app()
-
-# ADD A BUNCH OF WARNING POPUPS 
 
     def download_grbl_settings(self):
         self.systemtools_sm.download_grbl_settings_to_usb()

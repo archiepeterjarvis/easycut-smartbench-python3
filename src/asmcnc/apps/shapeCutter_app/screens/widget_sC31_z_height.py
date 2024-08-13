@@ -2,6 +2,7 @@
 Created on 10 March 2020
 @author: Letty
 """
+
 import kivy
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
@@ -66,12 +67,12 @@ Builder.load_string(
 class VirtualZ31(Widget):
     WIDGET_REFRESH_INTERVAL = 0.1
 
-    def __init__(self, **kwargs):
-        super(VirtualZ31, self).__init__(**kwargs)
-        self.m = kwargs["machine"]
-        self.sm = kwargs["screen_manager"]
-        self.j = kwargs["job_parameters"]
-        Clock.schedule_interval(self.refresh_widget, self.WIDGET_REFRESH_INTERVAL)      # Poll for status
+    def __init__(self, job_parameters, screen_manager, machine, **kwargs):
+        super().__init__(**kwargs)
+        self.m = machine
+        self.sm = screen_manager
+        self.j = job_parameters
+        Clock.schedule_interval(self.refresh_widget, self.WIDGET_REFRESH_INTERVAL)
 
     def refresh_widget(self, dt):
         self.setZones()

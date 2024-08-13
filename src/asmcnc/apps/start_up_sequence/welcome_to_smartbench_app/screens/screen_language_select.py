@@ -1,22 +1,19 @@
-# -*- coding: utf-8 -*-
 """
 Created on nov 2020
 @author: Letty
 """
+
 from kivy.lang import Builder
 from kivy.factory import Factory
 from kivy.uix.screenmanager import ScreenManager, Screen
 import sys, os
 from kivy.clock import Clock
 from kivy.uix.label import Label
-
 from asmcnc.comms.localization import Localization
 
 """
 DEPRECATED, NOW USING: src/asmcnc/apps/start_up_sequence/screens/screen_language_selection.py
 """
-
-
 Builder.load_string(
     """
 
@@ -339,15 +336,15 @@ class LanguageSelectScreen(Screen):
         "Tervetuloa Smartbenchiin",
         "Witamy w SmartBench",
         "Velkommen til SmartBench",
-        "SmartBench\xec\x97\x90 \xec\x98\xa4\xec\x8b\xa0 \xea\xb2\x83\xec\x9d\x84 \xed\x99\x98\xec\x98\x81\xed\x95\xa9\xeb\x8b\x88\xeb\x8b\xa4",
+        "PLACEHOLDER",
     ]
     welcome_i = 0
     update_welcome_header = None
 
-    def __init__(self, **kwargs):
-        super(LanguageSelectScreen, self).__init__(**kwargs)
-        self.start_seq = kwargs["start_sequence"]
-        self.sm = kwargs["screen_manager"]
+    def __init__(self, screen_manager, start_sequence, **kwargs):
+        super().__init__(**kwargs)
+        self.start_seq = start_sequence
+        self.sm = screen_manager
         self.l = Localization()
         self.row_1_col_1.text = self.l.approved_languages[0]
         self.row_1_col_2.text = self.l.approved_languages[1]
@@ -357,7 +354,6 @@ class LanguageSelectScreen(Screen):
         self.row_2_col_3.text = self.l.approved_languages[5]
         self.row_3_col_1.text = self.l.approved_languages[6]
         self.row_3_col_2.text = self.l.approved_languages[7]
-        # self.row_3_col_3.text = self.l.approved_languages[8]
         self.row_1_col_1_image.source = self.get_image_filename(self.row_1_col_1)
         self.row_1_col_2_image.source = self.get_image_filename(self.row_1_col_2)
         self.row_1_col_3_image.source = self.get_image_filename(self.row_1_col_3)
@@ -366,8 +362,6 @@ class LanguageSelectScreen(Screen):
         self.row_2_col_3_image.source = self.get_image_filename(self.row_2_col_3)
         self.row_3_col_1_image.source = self.get_image_filename(self.row_3_col_1)
         self.row_3_col_2_image.source = self.get_image_filename(self.row_3_col_2)
-        # self.row_3_col_3_image.source = self.get_image_filename(self.row_3_col_3)
-		# Need specific font to show korean characters
         self.row_3_col_2.font_name = self.l.korean_font
 
     def get_image_filename(self, value):
@@ -398,9 +392,7 @@ class LanguageSelectScreen(Screen):
                 self.sm.get_screen(screen).update_strings()
                 for screen in self.start_seq.screen_sequence
             ]
-            # If korean is selected, the startup sequence needs font updated to display it correctly
             if current_font != self.l.font_regular:
-                # I know this is a nested for loop, but it executes very quickly
                 for screen in self.start_seq.screen_sequence[1:] + ["rebooting"]:
                     for widget in self.sm.get_screen(screen).walk():
                         if isinstance(widget, Label):

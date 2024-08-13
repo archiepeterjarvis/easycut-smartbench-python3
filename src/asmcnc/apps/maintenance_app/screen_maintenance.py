@@ -26,7 +26,8 @@ from asmcnc.apps.maintenance_app import (
     widget_maintenance_general_settings,
 )
 
-Builder.load_string("""
+Builder.load_string(
+    """
 #:import LabelBase asmcnc.core_UI.components.labels.base_label
 #:import color_provider asmcnc.core_UI.utils.color_provider
 
@@ -490,13 +491,13 @@ class MaintenanceScreenClass(Screen):
     laser_datum_reset_coordinate_y = 0
     landing_tab = StringProperty()
 
-    def __init__(self, **kwargs):
-        super(MaintenanceScreenClass, self).__init__(**kwargs)
-        self.m = kwargs["machine"]
-        self.sm = kwargs["screen_manager"]
-        self.jd = kwargs["job"]
-        self.l = kwargs["localization"]
-        self.kb = kwargs["keyboard"]
+    def __init__(self, keyboard, localization, job, screen_manager, machine, **kwargs):
+        super().__init__(**kwargs)
+        self.m = machine
+        self.sm = screen_manager
+        self.jd = job
+        self.l = localization
+        self.kb = keyboard
         self.xy_move_widget = widget_maintenance_xy_move.MaintenanceXYMove(
             machine=self.m, screen_manager=self.sm
         )
@@ -565,9 +566,7 @@ class MaintenanceScreenClass(Screen):
                 machine=self.m, screen_manager=self.sm, localization=self.l
             )
         )
-        self.general_settings_container.add_widget(
-            self.general_settings_widget
-        )
+        self.general_settings_container.add_widget(self.general_settings_widget)
         if self.m.theateam():
             self.add_plus_tab()
         self.update_strings()

@@ -249,21 +249,17 @@ class CurrentAdjustment(Screen):
     wait_popup_for_tmc_read_in = None
     update_protocol_status_label_event = None
 
-    def __init__(self, **kwargs):
-        super(CurrentAdjustment, self).__init__(**kwargs)
-        self.m = kwargs["m"]
-        self.systemtools_sm = kwargs["systemtools"]
-        self.l = kwargs["l"]
-        self.kb = kwargs["keyboard"]
-
-        # Movement widget
+    def __init__(self, keyboard, l, systemtools, m, **kwargs):
+        super().__init__(**kwargs)
+        self.m = m
+        self.systemtools_sm = systemtools
+        self.l = l
+        self.kb = keyboard
         self.xy_move_container.add_widget(
             widget_final_test_xy_move.FinalTestXYMove(
                 machine=self.m, screen_manager=self.systemtools_sm.sm
             )
         )
-
-        # Current adjustment widgets
         self.x1_current_adjustment_widget = CurrentAdjustmentWidget(
             m=self.m, motor=TMC_X1, localization=self.l, systemtools=self.systemtools_sm
         )

@@ -1,7 +1,8 @@
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 
-Builder.load_string("""
+Builder.load_string(
+    """
 
 <YeticutLobbyScreen>:
 #:import paths asmcnc.paths
@@ -150,17 +151,17 @@ Builder.load_string("""
                         size: self.parent.width, self.parent.height
                         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                         allow_stretch: False
-""")
+"""
+)
 
 
 class YeticutLobbyScreen(Screen):
-
-    def __init__(self, **kwargs):
-        super(YeticutLobbyScreen, self).__init__(**kwargs)
-        self.sm = kwargs['screen_manager']
-        self.m = kwargs['machine']
-        self.l = kwargs['localization']
-        self.am = kwargs['app_manager']
+    def __init__(self, app_manager, localization, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
+        self.l = localization
+        self.am = app_manager
 
     def shapes_app(self):
         self.am.start_drywall_cutter_app()
@@ -169,4 +170,4 @@ class YeticutLobbyScreen(Screen):
         pass
 
     def go_back(self):
-        self.sm.current = 'lobby'
+        self.sm.current = "lobby"

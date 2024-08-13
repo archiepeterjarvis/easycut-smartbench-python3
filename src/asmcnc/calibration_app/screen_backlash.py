@@ -3,7 +3,7 @@ Created on 12 December 2019
 Screen to help user measure backlash in calibration
 
 
-2*3 variants of this screen: X and Y versions of: 
+2*3 variants of this screen: X and Y versions of:
 
 Step 1: Test
 Setp 2: Repeat measurement
@@ -11,6 +11,7 @@ Step 3: Inform
 
 @author: Letty
 """
+
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty, StringProperty
@@ -261,10 +262,10 @@ class BacklashScreenClass(Screen):
     sub_screen_count = 0
     axis = StringProperty()
 
-    def __init__(self, **kwargs):
-        super(BacklashScreenClass, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
+    def __init__(self, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
 
     def on_pre_enter(self):
         self.title_label.text = "[color=000000] " + self.axis + " backlash:[/color]"

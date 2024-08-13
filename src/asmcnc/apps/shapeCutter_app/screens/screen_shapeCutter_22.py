@@ -4,6 +4,7 @@ Screen 22 for the Shape Cutter App
 
 @author: Letty
 """
+
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.metrics import MetricsBase
@@ -517,13 +518,12 @@ class ShapeCutter22ScreenClass(Screen):
     title_label = StringProperty("[b]Set tabs[/b]")
     user_instructions = StringProperty("Are you using tabs?")
 
-    def __init__(self, **kwargs):
-        super(ShapeCutter22ScreenClass, self).__init__(**kwargs)
-        self.shapecutter_sm = kwargs["shapecutter"]
-        self.m = kwargs["machine"]
-        self.j = kwargs["job_parameters"]
-        self.kb = kwargs["keyboard"]
-        # Add the IDs of ALL the TextInputs on this screen
+    def __init__(self, keyboard, job_parameters, machine, shapecutter, **kwargs):
+        super().__init__(**kwargs)
+        self.shapecutter_sm = shapecutter
+        self.m = machine
+        self.j = job_parameters
+        self.kb = keyboard
         self.text_inputs = [self.td_dimension, self.th_dimension, self.tw_dimension]
 
     def on_touch(self):
@@ -569,26 +569,27 @@ class ShapeCutter22ScreenClass(Screen):
 
     def on_enter(self):
         self.kb.setup_text_inputs(self.text_inputs)
-            
-# Action buttons       
+
     def get_info(self):
         info = """Tabs are used to hold your piece in place when cutting from a sheet.
 
 For more help please visit: https://www.yetitool.com/support/knowledge-
 base/hardware-smartbench-workholding"""
-        InfoPopup(sm=self.shapecutter_sm, m=self.m, l=self.m.l,
-                  main_string=info,
-                  popup_width=500,
-                  popup_height=400,
-                  main_label_size_delta=140).open()
+        InfoPopup(
+            sm=self.shapecutter_sm,
+            m=self.m,
+            l=self.m.l,
+            main_string=info,
+            popup_width=500,
+            popup_height=400,
+            main_label_size_delta=140,
+        ).open()
 
     def go_back(self):
         self.shapecutter_sm.previous_screen()
 
     def next_screen(self):
         self.check_dimensions()
-    
-# Tab functions
 
     def prepare(self):
         self.shapecutter_sm.prepare_tab()
@@ -607,8 +608,7 @@ base/hardware-smartbench-workholding"""
 
     def exit(self):
         self.shapecutter_sm.exit_shapecutter()
-        
-# Screen specific
+
     def toggle_units(self):
         if self.unit_toggle.active == True:
             self.j.parameter_dict["tabs"]["units"] = "inches"
@@ -667,7 +667,6 @@ base/hardware-smartbench-workholding"""
                 elif self.unit_toggle.active == False:
                     self.j.parameter_dict["tabs"]["units"] = "mm"
                 units = self.j.parameter_dict["tabs"]["units"]
-                # save the dimensions
                 input_dim_list = [
                     ("width", float(self.tw_dimension.text)),
                     ("height", float(self.th_dimension.text)),
@@ -687,7 +686,7 @@ base/hardware-smartbench-workholding"""
                                 + dim
                                 + " should be greater than 0 and less"
                                 + " than "
-                                + "{:.2f}".format(setting)
+                                + f"{setting:.2f}"
                                 + " "
                                 + units
                                 + ".\n\n"
@@ -701,21 +700,25 @@ base/hardware-smartbench-workholding"""
                                 + "The tab "
                                 + dim
                                 + " value should be greater than "
-                                + "{:.2f}".format(setting)
+                                + f"{setting:.2f}"
                                 + " "
                                 + units
                                 + ".\n\n"
                                 + "Please re-enter your dimensions."
                             )
-                        WarningPopup(sm=self.shapecutter_sm, m=self.m, l=self.m.l,
-                                    main_string=description,
-                                    popup_width=400,
-                                    popup_height=380,
-                                    main_label_size_delta=40,
-                                    button_layout_padding=[50,25,50,0],
-                                    main_label_h_align='left',
-                                    main_layout_padding=[50,20,50,20],
-                                    main_label_padding=[20,20]).open()
+                        WarningPopup(
+                            sm=self.shapecutter_sm,
+                            m=self.m,
+                            l=self.m.l,
+                            main_string=description,
+                            popup_width=400,
+                            popup_height=380,
+                            main_label_size_delta=40,
+                            button_layout_padding=[50, 25, 50, 0],
+                            main_label_h_align="left",
+                            main_layout_padding=[50, 20, 50, 20],
+                            main_label_padding=[20, 20],
+                        ).open()
                         return False
                 self.shapecutter_sm.next_screen()
             else:

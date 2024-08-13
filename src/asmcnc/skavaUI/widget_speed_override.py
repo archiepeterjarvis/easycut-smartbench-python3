@@ -2,6 +2,7 @@
 Created on 1 Feb 2018
 @author: Ed
 """
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty, NumericProperty
@@ -110,21 +111,17 @@ class SpeedOverride(Widget):
     speed_rate_label = ObjectProperty()
     enable_button_time = 0.36
 
-    def __init__(self, **kwargs):
-        super(SpeedOverride, self).__init__(**kwargs)
-        self.m = kwargs["machine"]
-        self.sm = kwargs["screen_manager"]
-        self.db = kwargs["database"]
-
+    def __init__(self, database, screen_manager, machine, **kwargs):
+        super().__init__(**kwargs)
+        self.m = machine
+        self.sm = screen_manager
+        self.db = database
         self.m.s.bind(spindle_speed=self.update_spindle_speed_label)
 
     def update_spindle_speed_label(self, instance, value):
         self.spindle_rpm.text = str(value)
-
         current_multiplier = float(self.m.s.speed_override_percentage) / 100
-        rpm_down_5 = (value / current_multiplier) * (current_multiplier - 0.05)
-
-        # If the speed down button produces speed below minimum, don't allow it to be pressed
+        rpm_down_5 = value / current_multiplier * (current_multiplier - 0.05)
         if rpm_down_5 < self.m.minimum_spindle_speed():
             self.down_5.disabled = True
         else:
@@ -133,7 +130,7 @@ class SpeedOverride(Widget):
     def update_speed_percentage_override_label(self):
         self.speed_override_percentage = self.m.s.speed_override_percentage
         self.speed_rate_label.text = str(self.m.s.speed_override_percentage) + "%"
-        
+
     def speed_up(self):
         if self.m.s.speed_override_percentage >= 200:
             return

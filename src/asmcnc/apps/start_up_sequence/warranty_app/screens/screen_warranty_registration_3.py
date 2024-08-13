@@ -206,14 +206,14 @@ class WarrantyScreen3(Screen):
     activation_code_filepath = "/home/pi/smartbench_activation_code.txt"
     activation_code_from_file = 0
     check_activation_event = None
-    default_font_size = str(utils.get_scaled_width(20)) + 'sp'
+    default_font_size = str(utils.get_scaled_width(20)) + "sp"
 
-    def __init__(self, **kwargs):
-        super(WarrantyScreen3, self).__init__(**kwargs)
-        self.start_seq = kwargs["start_sequence"]
-        self.m = kwargs["machine"]
-        self.l = kwargs["localization"]
-        self.kb = kwargs["keyboard"]
+    def __init__(self, keyboard, localization, machine, start_sequence, **kwargs):
+        super().__init__(**kwargs)
+        self.start_seq = start_sequence
+        self.m = machine
+        self.l = localization
+        self.kb = keyboard
         self.update_strings()
         self.text_inputs = [self.activation_code]
 
@@ -232,14 +232,12 @@ class WarrantyScreen3(Screen):
 
     def read_in_activation_code(self):
         try:
-            file = open(self.activation_code_filepath, "r")
+            file = open(self.activation_code_filepath)
             self.activation_code_from_file = int(str(file.read()))
             file.close()
             if self.activation_code_from_file == "":
                 self.backup_generate_activation_code()
         except:
-			# self.error_message_top.opacity = 1
-			# self.error_message_top.text = 'Checking activation code...'
             self.backup_generate_activation_code()
 
     def backup_generate_activation_code(self):

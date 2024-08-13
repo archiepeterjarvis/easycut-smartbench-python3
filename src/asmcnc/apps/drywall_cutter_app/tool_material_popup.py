@@ -1,13 +1,12 @@
 from kivy.app import App
 from kivy.uix.popup import Popup
 from kivy.lang import Builder
-
 from asmcnc.comms.localization import Localization
 from asmcnc.comms.logging_system.logging_system import Logger
-
 from asmcnc.core_UI import scaling_utils
 
-Builder.load_string("""
+Builder.load_string(
+    """
 #:import paths asmcnc.paths
 
 <Options@SpinnerOption>
@@ -172,79 +171,90 @@ Builder.load_string("""
                         y: self.parent.y
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
-""")
+"""
+)
 
 
 class ToolMaterialPopup(Popup):
-
     l = Localization()
 
     def __init__(self, localization, config, drywall_cutter_screen, **kwargs):
-        super(ToolMaterialPopup, self).__init__(**kwargs)
-
+        super().__init__(**kwargs)
         self.dwt_config = config
         self.drywall_cutter_screen = drywall_cutter_screen
-
         self.tool_dropdown.bind(text=self.on_tool_change)
         self.material_dropdown.bind(text=self.on_material_change)
         self.dwt_config.bind(active_profile=self.load_config)
-
         self.profile_db = App.get_running_app().profile_db
 
     def on_tool_change(self, instance, value):
-        if value != '':
+        if value != "":
             self.confirm_button.disabled = False
             self.confirm_button.opacity = 1
             Logger.debug("Tool changed to " + value)
-
             tool = self.profile_db.get_tool_by_description(value)
-            if tool['generic_definition']['required_operations']['lead_in'] and False:  # Disabled for now
-                self.ids['lead_in_warning_label'].opacity = 1
+            if tool["generic_definition"]["required_operations"]["lead_in"] and False:
+                self.ids["lead_in_warning_label"].opacity = 1
                 return
-
-        # Always hide the warning if the tool is not a compression tool
-        self.ids['lead_in_warning_label'].opacity = 0
+        self.ids["lead_in_warning_label"].opacity = 0
 
     def on_material_change(self, instance, value):
         Logger.debug("Material changed to " + value)
-        self.tool_dropdown.values = self.profile_db.get_tool_names(self.profile_db.get_material_id(value))
-        self.tool_dropdown.text = ''
+        self.tool_dropdown.values = self.profile_db.get_tool_names(
+            self.profile_db.get_material_id(value)
+        )
+        self.tool_dropdown.text = ""
         self.confirm_button.disabled = True
         self.confirm_button.opacity = 0.5
 
     def on_open(self):
-        # Fix weird scaling bug with title label
-        self.title_label.pos_hint['x'] = 0
+        self.title_label.pos_hint["x"] = 0
         if scaling_utils.is_screen_big():
-            self.title_label.pos_hint['y'] = 1.1
+            self.title_label.pos_hint["y"] = 1.1
         else:
-            self.title_label.pos_hint['y'] = 1.075
+            self.title_label.pos_hint["y"] = 1.075
         self.float_layout.do_layout()
         self.update_strings()
         self.load_config()
-        if self.material_dropdown.text == '' or self.tool_dropdown.text == '':  # Only disable if one is empty
+        if self.material_dropdown.text == "" or self.tool_dropdown.text == "":
             self.confirm_button.disabled = True
             self.confirm_button.opacity = 0.5
 
     def update_strings(self):
-        self.title_label.text = self.l.get_str('Tool & Material selection')
-        self.description_label.text = self.l.get_str('Shapes only supports YetiPilot profiles.')
-        self.lead_in_warning_label.text = self.l.get_str('WARNING: Using a compression tool will add a lead in to your toolpath automatically')
-        self.cutter_link_label.text = self.l.get_str('Yeti Tool cutters available from') + ' www.yetitool.com/about/partners'
+        self.title_label.text = self.l.get_str("Tool & Material selection")
+        self.description_label.text = self.l.get_str(
+            "Shapes only supports YetiPilot profiles."
+        )
+        self.lead_in_warning_label.text = self.l.get_str(
+            "WARNING: Using a compression tool will add a lead in to your toolpath automatically"
+        )
+        self.cutter_link_label.text = (
+            self.l.get_str("Yeti Tool cutters available from")
+            + " www.yetitool.com/about/partners"
+        )
 
     def load_config(self, *args):
         if self.dwt_config.active_config.material:
-            material = self.profile_db.get_material_name(self.dwt_config.active_config.material)
+            material = self.profile_db.get_material_name(
+                self.dwt_config.active_config.material
+            )
             self.material_dropdown.text = material
         if self.dwt_config.active_config.cutter_type:
-            tool = self.profile_db.get_tool_name(self.dwt_config.active_config.cutter_type)
+            tool = self.profile_db.get_tool_name(
+                self.dwt_config.active_config.cutter_type
+            )
             self.tool_dropdown.text = tool
-        # Set the material dropdown values
-        self.material_dropdown.values = self.profile_db.get_material_names(self.dwt_config.app_type)
+        self.material_dropdown.values = self.profile_db.get_material_names(
+            self.dwt_config.app_type
+        )
 
     def confirm(self):
-        self.dwt_config.on_parameter_change('material', self.profile_db.get_material_id(self.material_dropdown.text))
-        self.dwt_config.on_parameter_change('cutter_type', self.profile_db.get_tool_id(self.tool_dropdown.text))
+        self.dwt_config.on_parameter_change(
+            "material", self.profile_db.get_material_id(self.material_dropdown.text)
+        )
+        self.dwt_config.on_parameter_change(
+            "cutter_type", self.profile_db.get_tool_id(self.tool_dropdown.text)
+        )
         self.drywall_cutter_screen.update_toolpaths()
         self.dismiss()
 

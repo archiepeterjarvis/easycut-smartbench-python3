@@ -4,8 +4,8 @@ Beta testers screen for system tools app
 
 @author: Letty
 """
-import re
 
+import re
 from kivy.lang import Builder
 from kivy.factory import Factory
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -304,12 +304,12 @@ Builder.load_string(
 class BetaTestingScreen(Screen):
     reset_language = False
 
-    def __init__(self, **kwargs):
-        super(BetaTestingScreen, self).__init__(**kwargs)
-        self.systemtools_sm = kwargs["system_tools"]
-        self.set = kwargs["settings"]
-        self.l = kwargs["localization"]
-        self.kb = kwargs["keyboard"]
+    def __init__(self, keyboard, localization, settings, system_tools, **kwargs):
+        super().__init__(**kwargs)
+        self.systemtools_sm = system_tools
+        self.set = settings
+        self.l = localization
+        self.kb = keyboard
         self.user_branch.text = self.set.sw_branch.strip("* ")
         self.beta_version.text = self.set.latest_sw_beta
         self.usb_stick = usb_storage.USB_storage(self.systemtools_sm.sm, self.l)
@@ -346,28 +346,34 @@ class BetaTestingScreen(Screen):
             def nested_branch_update(dt):
                 self.set.update_config()
                 branch_name_formatted = str(self.user_branch.text).translate(None, " ")
-                checkout_call = ("cd /home/pi/easycut-smartbench/ && git fetch origin && git checkout "
-                                 + branch_name_formatted)
-
+                checkout_call = (
+                    "cd /home/pi/easycut-smartbench/ && git fetch origin && git checkout "
+                    + branch_name_formatted
+                )
                 try:
-                    if re.match("v\d\.\d\.\d", branch_name_formatted):
-                        checkout_version_split = [int(i.split("-")[0]) for i in branch_name_formatted.split("v")[1].split(".")]
-
+                    if re.match("v\\d\\.\\d\\.\\d", branch_name_formatted):
+                        checkout_version_split = [
+                            int(i.split("-")[0])
+                            for i in branch_name_formatted.split("v")[1].split(".")
+                        ]
                         if [2, 9, 2] > checkout_version_split:
-                            os.system("rm /home/pi/easycut-smartbench/src/asmcnc/apps/drywall_cutter_app/config/configurations/*")
-                            os.system("rm /home/pi/easycut-smartbench/src/asmcnc/apps/drywall_cutter_app/config/temp/*")
+                            os.system(
+                                "rm /home/pi/easycut-smartbench/src/asmcnc/apps/drywall_cutter_app/config/configurations/*"
+                            )
+                            os.system(
+                                "rm /home/pi/easycut-smartbench/src/asmcnc/apps/drywall_cutter_app/config/temp/*"
+                            )
                             Logger.info("Purged shapes configurations before downgrade")
                 except:
                     Logger.warning("Failed to get version - not purging configs")
-
                 checkout_exit_code = os.system(checkout_call)
-                Logger.debug('Checkout call: {} | Returns: {}'.format(checkout_call,checkout_exit_code))
-                # check if branch name is a tag like v2.8.1:
+                Logger.debug(
+                    f"Checkout call: {checkout_call} | Returns: {checkout_exit_code}"
+                )
                 pull_exit_code = 0
-                if not re.match("v\d\.\d\.\d", branch_name_formatted):
+                if not re.match("v\\d\\.\\d\\.\\d", branch_name_formatted):
                     pull_exit_code = os.system("git pull")
-                    Logger.debug('"git pull" returned: {}'.format(pull_exit_code))
-
+                    Logger.debug(f'"git pull" returned: {pull_exit_code}')
                 if checkout_exit_code == 0 and pull_exit_code == 0:
                     self.set.ansible_service_run_without_reboot()
                     wait_popup.popup.dismiss()

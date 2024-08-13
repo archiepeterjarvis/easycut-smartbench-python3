@@ -2,6 +2,7 @@
 Created on 5 March 2020
 @author: Letty
 """
+
 import kivy
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
@@ -103,10 +104,10 @@ Builder.load_string(
 
 
 class SC31ZSetGo(Widget):
-    def __init__(self, **kwargs):
-        super(SC31ZSetGo, self).__init__(**kwargs)
-        self.m = kwargs["machine"]
-        self.sm = kwargs["screen_manager"]
+    def __init__(self, screen_manager, machine, **kwargs):
+        super().__init__(**kwargs)
+        self.m = machine
+        self.sm = screen_manager
         self.set_jog_speeds()
 
     fast_x_speed = 6000

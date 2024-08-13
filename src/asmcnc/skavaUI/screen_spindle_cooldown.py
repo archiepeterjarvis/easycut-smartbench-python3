@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created July 2020
 
@@ -6,6 +5,7 @@ Created July 2020
 
 Spindle cooldown screen
 """
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
@@ -129,11 +129,11 @@ class SpindleCooldownScreen(Screen):
     seconds = "10"
     update_timer_event = None
 
-    def __init__(self, **kwargs):
-        super(SpindleCooldownScreen, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
+        self.l = localization
         self.seconds = self.m.spindle_cooldown_time_seconds
         self.cool_down_label.text = self.l.get_str("Cooling down spindle") + "..."
 

@@ -195,12 +195,12 @@ class NudgeScreen(Screen):
     max_index = 0
     display_list = []
 
-    def __init__(self, **kwargs):
-        super(NudgeScreen, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
-        self.jd = kwargs["job"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, job, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
+        self.jd = job
+        self.l = localization
         self.status_container.add_widget(
             widget_status_bar.StatusBar(machine=self.m, screen_manager=self.sm)
         )
@@ -276,14 +276,12 @@ class NudgeScreen(Screen):
         self.sm.current = "job_recovery"
 
     def next_screen(self):
-        # wait_popup = popup_info.PopupWait(self.sm, self.l)
         self.sm.pm.show_wait_popup()
 
         def generate_gcode():
             success, message = self.jd.generate_recovery_gcode()
             self.sm.pm.close_wait_popup()
             if not success:
-                # popup_info.PopupError(self.sm, self.l, message)
                 self.sm.pm.show_error_popup(message)
                 self.jd.reset_recovery()
                 self.jd.job_recovery_from_beginning = True
@@ -297,7 +295,7 @@ class NudgeScreen(Screen):
         self.diff_x = self.m.mpos_x() - self.initial_x
         self.diff_y = self.m.mpos_y() - self.initial_y
         if abs(self.diff_x) > 3 or abs(self.diff_y) > 3:
-            nudge_distance = "{:.2f}".format(math.hypot(self.diff_x, self.diff_y))
+            nudge_distance = f"{math.hypot(self.diff_x, self.diff_y):.2f}"
             popup_nudge.PopupNudgeWarning(self.sm, self.m, self.l, nudge_distance)
         else:
             popup_nudge.PopupNudgeDatum(self.sm, self.m, self.l)

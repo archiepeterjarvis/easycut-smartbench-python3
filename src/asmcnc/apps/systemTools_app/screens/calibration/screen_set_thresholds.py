@@ -157,12 +157,12 @@ Builder.load_string(
 
 
 class SetThresholdsScreen(Screen):
-    def __init__(self, **kwargs):
-        super(SetThresholdsScreen, self).__init__(**kwargs)
-        self.systemtools_sm = kwargs["systemtools"]
-        self.m = kwargs["m"]
-        self.l = kwargs["l"]
-        self.kb = kwargs["keyboard"]
+    def __init__(self, keyboard, l, m, systemtools, **kwargs):
+        super().__init__(**kwargs)
+        self.systemtools_sm = systemtools
+        self.m = m
+        self.l = l
+        self.kb = keyboard
         self.text_inputs = [
             self.x_threshold_input,
             self.y_threshold_input,

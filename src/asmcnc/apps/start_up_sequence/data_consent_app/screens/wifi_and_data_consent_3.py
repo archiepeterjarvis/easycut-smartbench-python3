@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.scrollview import ScrollView
 from kivy.properties import StringProperty, DictProperty
-
 from asmcnc import paths
 from asmcnc.skavaUI import popup_info
 
@@ -218,11 +216,11 @@ class WiFiAndDataConsentScreen3(Screen):
         "./asmcnc/apps/start_up_sequence/data_consent_app/privacy_notice/"
     )
 
-    def __init__(self, **kwargs):
-        super(WiFiAndDataConsentScreen3, self).__init__(**kwargs)
-        self.start_seq = kwargs["start_sequence"]
-        self.c = kwargs["consent_manager"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, consent_manager, start_sequence, **kwargs):
+        super().__init__(**kwargs)
+        self.start_seq = start_sequence
+        self.c = consent_manager
+        self.l = localization
         self.update_strings()
         self.set_checkbox_default()
 
@@ -237,10 +235,8 @@ class WiFiAndDataConsentScreen3(Screen):
 
     def update_strings(self):
         self.header_label.text = self.l.get_str("Wi-Fi and Data Consent")
-
         file_name = self.l.lang.split(" ")[1][1:-1].upper() + ".rst"
         self.scroll_privacy_notice.privacy_notice.source = paths.get_resource(file_name)
-
         self.user_info.text = self.l.get_str(
             "I have read and understood the privacy notice"
         )

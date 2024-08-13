@@ -1,24 +1,20 @@
-# -*- coding: utf-8 -*-
 """
 Created on 19 Aug 2017
 
 @author: Ed
 """
+
 import os
 import sys
 from itertools import takewhile
 from os import path
 from shutil import copy
-
 import kivy
 from chardet import detect
 from asmcnc.comms.logging_system.logging_system import Logger
 from kivy.graphics import Color, Rectangle
 from kivy.lang import Builder
-from kivy.properties import (
-    ObjectProperty,
-    StringProperty,
-)
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.screenmanager import Screen
 from asmcnc.comms.model_manager import ModelManagerSingleton
 
@@ -269,11 +265,11 @@ class USBFileChooser(Screen):
     is_filechooser_scrolling = False
     model_manager = ModelManagerSingleton()
 
-    def __init__(self, **kwargs):
-        super(USBFileChooser, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.jd = kwargs["job"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, job, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.jd = job
+        self.l = localization
         self.list_layout_fc.ids.scrollview.bind(on_scroll_stop=self.scrolling_stop)
         self.list_layout_fc.ids.scrollview.bind(on_scroll_start=self.scrolling_start)
         self.icon_layout_fc.ids.scrollview.bind(on_scroll_stop=self.scrolling_stop)

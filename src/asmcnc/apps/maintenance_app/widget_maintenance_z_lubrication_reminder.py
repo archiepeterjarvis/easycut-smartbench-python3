@@ -9,7 +9,8 @@ from kivy.lang import Builder
 from kivy.uix.widget import Widget
 from asmcnc.core_UI.scaling_utils import get_scaled_width
 
-Builder.load_string("""
+Builder.load_string(
+    """
 #:import LabelBase asmcnc.core_UI.components.labels.base_label
 
 <ZLubricationReminderWidget>
@@ -108,11 +109,11 @@ class ZLubricationReminderWidget(Widget):
     hours_label = "hours"
     default_time_label_font_size = 100
 
-    def __init__(self, **kwargs):
-        super(ZLubricationReminderWidget, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
+        self.l = localization
         self.update_strings()
 
     def update_time_left(self):

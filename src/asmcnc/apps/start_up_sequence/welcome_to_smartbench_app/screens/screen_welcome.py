@@ -2,6 +2,7 @@
 Created on nov 2020
 @author: Letty
 """
+
 from kivy.lang import Builder
 from kivy.factory import Factory
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -164,11 +165,11 @@ Builder.load_string(
 
 
 class WelcomeTextScreen(Screen):
-    def __init__(self, **kwargs):
-        super(WelcomeTextScreen, self).__init__(**kwargs)
-        self.start_seq = kwargs["start_sequence"]
-        self.sm = kwargs["screen_manager"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, screen_manager, start_sequence, **kwargs):
+        super().__init__(**kwargs)
+        self.start_seq = start_sequence
+        self.sm = screen_manager
+        self.l = localization
         self.update_strings()
 
     def next_screen(self):

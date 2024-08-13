@@ -2,11 +2,13 @@
 Created on 19 August 2020
 @author: Letty
 """
+
 from kivy.lang import Builder
 from kivy.properties import NumericProperty
 from kivy.uix.widget import Widget
 
-Builder.load_string("""
+Builder.load_string(
+    """
 #:import LabelBase asmcnc.core_UI.components.labels.base_label
 
 
@@ -55,11 +57,11 @@ class BrushMonitorWidget(Widget):
     x_pos_modifier = NumericProperty()
     percentage_text = ""
 
-    def __init__(self, **kwargs):
-        super(BrushMonitorWidget, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
-        self.monitor_percentage = kwargs["input_percentage"]
+    def __init__(self, input_percentage, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
+        self.monitor_percentage = input_percentage
         self.x_pos_modifier = 1 - self.monitor_percentage
         self.percentage_text = str(int(self.monitor_percentage * 100)) + "%"
         self.update_monitor()

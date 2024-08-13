@@ -4,6 +4,7 @@ Screen to inform user of essential preparation before they continue calibrating
 
 @author: Letty
 """
+
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
@@ -179,10 +180,10 @@ class PrepCalibrationScreenClass(Screen):
 - Prepare a calibrated tape measure (e.g. check the tape against a meter rule).
 - When your machine is prepared, press "Home" to start the homing sequence."""
 
-    def __init__(self, **kwargs):
-        super(PrepCalibrationScreenClass, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
+    def __init__(self, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
 
     def quit_calibration(self):
         self.sm.get_screen("calibration_complete").calibration_cancelled = True

@@ -3,11 +3,11 @@ Created Mayh 2019
 
 @author: Letty
 
-Basic screen 
+Basic screen
 """
+
 import os
 import sys
-
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
@@ -51,10 +51,10 @@ Builder.load_string(
 
 
 class RebootingScreen(Screen):
-    def __init__(self, **kwargs):
-        super(RebootingScreen, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.l = localization
         self.reboot_label.text = self.l.get_str("Rebooting") + "..."
 
     def on_pre_enter(self):

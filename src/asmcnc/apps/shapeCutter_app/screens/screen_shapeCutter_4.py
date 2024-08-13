@@ -4,6 +4,7 @@ Screen 4 for the Shape Cutter App
 
 @author: Letty
 """
+
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.metrics import MetricsBase
@@ -362,15 +363,14 @@ class ShapeCutter4ScreenClass(Screen):
         "Vacuum the Y bench [b](1)[/b], wheel tracks [b](2)[/b] and racks [b](3)[/b]."
     )
 
-    def __init__(self, **kwargs):
-        super(ShapeCutter4ScreenClass, self).__init__(**kwargs)
-        self.shapecutter_sm = kwargs["shapecutter"]
-        self.m = kwargs["machine"]
+    def __init__(self, machine, shapecutter, **kwargs):
+        super().__init__(**kwargs)
+        self.shapecutter_sm = shapecutter
+        self.m = machine
 
     def on_pre_enter(self):
         self.info_button.opacity = 0
 
-# Action buttons       
     def get_info(self):
         pass
 
@@ -379,8 +379,6 @@ class ShapeCutter4ScreenClass(Screen):
 
     def next_screen(self):
         self.shapecutter_sm.next_screen()
-    
-# Tab functions
 
     def prepare(self):
         self.shapecutter_sm.prepare_tab()

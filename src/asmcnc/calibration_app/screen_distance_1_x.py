@@ -1,10 +1,10 @@
 """
 Created on 12 December 2019
-Screen to help user calibrate distances 
+Screen to help user calibrate distances
 
 This class covers 2x2 instances of the same screen type:
 
-X and Y 
+X and Y
 
 Distance: step 1
 
@@ -12,6 +12,7 @@ Distance: step 1
 
 @author: Letty
 """
+
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, SlideTransition
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
@@ -305,10 +306,10 @@ class DistanceScreen1xClass(Screen):
     initial_x_cal_move = 1000
     x_cal_measure_1 = NumericProperty()
 
-    def __init__(self, **kwargs):
-        super(DistanceScreen1xClass, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
+    def __init__(self, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
 
     def on_pre_enter(self):
         self.title_label.text = "[color=000000]X Distance:[/color]"
@@ -327,7 +328,7 @@ Please wait while the machine moves to the next measurement point..."""
         self.poll_for_jog_finish = Clock.schedule_interval(self.update_instruction, 0.5)
 
     def initial_move_x(self):
-        self.m.jog_absolute_single_axis("X", -1184, 9999)    # machine moves on screen enter
+        self.m.jog_absolute_single_axis("X", -1184, 9999)
         self.m.jog_relative("X", -10, 9999)
         self.m.jog_relative("X", 10, 9999)
 
@@ -383,9 +384,8 @@ Nudging will move the Z head away from X-home."""
             self.warning_label.text = "[color=ff0000]VALUE IS TOO HIGH![/color]"
             self.warning_label.opacity = 1
             return
-        self.save_measured_value()  # get text input
-        self.nudge_counter = 0      # clear nudge counter
-        # Do the actual button command, this will also take us to relevant next screens
+        self.save_measured_value()
+        self.nudge_counter = 0
         self.set_and_move()
 
     def quit_calibration(self):
@@ -405,7 +405,7 @@ Nudging will move the Z head away from X-home."""
         self.sm.current = "measurement"
 
     def next_screen(self):
-        if not self.sm.has_screen("distance2x"): # only create the new screen if it doesn't exist already
+        if not self.sm.has_screen("distance2x"):
             distance2x_screen = screen_distance_2_x.DistanceScreen2xClass(
                 name="distance2x", screen_manager=self.sm, machine=self.m
             )

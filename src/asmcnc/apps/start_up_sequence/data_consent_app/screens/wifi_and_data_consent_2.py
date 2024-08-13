@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock
@@ -133,11 +132,11 @@ Builder.load_string(
 
 
 class WiFiAndDataConsentScreen2(Screen):
-    def __init__(self, **kwargs):
-        super(WiFiAndDataConsentScreen2, self).__init__(**kwargs)
-        self.start_seq = kwargs["start_sequence"]
-        self.c = kwargs["consent_manager"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, consent_manager, start_sequence, **kwargs):
+        super().__init__(**kwargs)
+        self.start_seq = start_sequence
+        self.c = consent_manager
+        self.l = localization
         self.update_strings()
 
     def next_screen(self):
@@ -165,13 +164,13 @@ class WiFiAndDataConsentScreen2(Screen):
             + "\n\n"
             + self.l.get_str("You will need Wi-Fi to:")
             + "\n\n"
-            + "[b]\xe2\x80\xa2[/b] "
+            + "[b]PLACEHOLDER[/b] "
             + self.l.get_str("Automatically receive software updates")
             + "\n"
-            + "[b]\xe2\x80\xa2[/b] "
+            + "[b]PLACEHOLDER[/b] "
             + self.l.get_str("Remotely transfer files (e.g. with SmartTransfer)")
             + "\n"
-            + "[b]\xe2\x80\xa2[/b] "
+            + "[b]PLACEHOLDER[/b] "
             + self.l.get_str(
                 "Remotely manage and monitor SmartBench (e.g. with SmartManager)"
             )

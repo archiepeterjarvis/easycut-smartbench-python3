@@ -2,9 +2,7 @@ from asmcnc.comms.logging_system.logging_system import Logger
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.properties import (
-    ObjectProperty,
-)
+from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
 from kivy.app import App
 
@@ -205,7 +203,7 @@ class DustShoeAlarmScreen(Screen):
     spindle_raise_label = ObjectProperty()
 
     def __init__(self, screen_manager, machine, job, database, localization, **kwargs):
-        super(DustShoeAlarmScreen, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.sm = screen_manager
         self.m = machine
         self.jd = job
@@ -213,23 +211,22 @@ class DustShoeAlarmScreen(Screen):
         self.l = localization
         self.usm = App.get_running_app().user_settings_manager
         self.header_label.text = self.l.get_bold("Warning!")
-        self.spindle_raise_label.text = (
-            self.l.get_str("Please close the dust shoe by fitting the dust shoe plug!")
+        self.spindle_raise_label.text = self.l.get_str(
+            "Please close the dust shoe by fitting the dust shoe plug!"
         )
-
-        self.m.s.bind(dustshoe_is_closed=lambda _, value: self.dust_shoe_state_change(value))
+        self.m.s.bind(
+            dustshoe_is_closed=lambda _, value: self.dust_shoe_state_change(value)
+        )
 
     def dust_shoe_state_change(self, dustshoe_is_closed):
         if not dustshoe_is_closed:
-            # Check dust shoe detection enabled in maintenance
-            if self.usm.get_value('dust_shoe_detection'):
-                # Only check during job or when spindle is enabled
+            if self.usm.get_value("dust_shoe_detection"):
                 if self.m.s.m_state == "Run" or self.m.s.spindle_on:
                     self.m.set_pause(True)
-                    if self.sm.current != 'dust_shoe_alarm':
+                    if self.sm.current != "dust_shoe_alarm":
                         Logger.info("Dust shoe unplugged")
                         self.return_to_screen = self.sm.current
-                        self.sm.current = 'dust_shoe_alarm'
+                        self.sm.current = "dust_shoe_alarm"
 
     def on_pre_enter(self):
         self.m.soft_stop()
@@ -252,8 +249,8 @@ class DustShoeAlarmScreen(Screen):
             Clock.unschedule(self.poll_for_resume)
 
     def on_leave(self):
-        self.spindle_raise_label.text = (
-            self.l.get_str("Please close the dust shoe by fitting the dust shoe plug!")
+        self.spindle_raise_label.text = self.l.get_str(
+            "Please close the dust shoe by fitting the dust shoe plug!"
         )
 
     def check_dust_shoe_plug_replaced(self):

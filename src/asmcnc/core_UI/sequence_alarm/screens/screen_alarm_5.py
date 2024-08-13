@@ -186,9 +186,9 @@ class AlarmScreen5(Screen):
     return_to_screen = "alarm_1"
     default_font_size = get_scaled_width(30)
 
-    def __init__(self, **kwargs):
-        super(AlarmScreen5, self).__init__(**kwargs)
-        self.a = kwargs["alarm_manager"]
+    def __init__(self, alarm_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.a = alarm_manager
         self.alarm_title.text = self.a.l.get_bold("Alarm: Job cancelled.")
         self.icon.source = "./asmcnc/core_UI/sequence_alarm/img/alarm_icon.png"
         self.description_label.text = self.a.l.get_str(

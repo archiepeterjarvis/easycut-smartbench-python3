@@ -1,21 +1,17 @@
-# -*- coding: utf-8 -*-
 """
 Created on 25 Feb 2019
 
 @author: Letty
 
-This screen checks the users job, and allows them to review any errors 
+This screen checks the users job, and allows them to review any errors
 """
-from functools import partial
 
+from functools import partial
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.properties import (
-    StringProperty,
-)
+from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
-
 from asmcnc.comms.logging_system.logging_system import Logger
 from asmcnc.geometry import job_envelope
 from asmcnc.skavaUI import widget_gcode_view
@@ -220,14 +216,18 @@ class CheckingScreen(Screen):
     flag_spindle_off = True
     serial_function_called = False
 
-    def __init__(self, **kwargs):
-        super(CheckingScreen, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
-        self.l = kwargs["localization"]
-        self.jd = kwargs["job"]
+    def __init__(self, job, localization, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
+        self.l = localization
+        self.jd = job
         self.gcode_preview_widget = widget_gcode_view.GCodeView(job=self.jd)
-        self.m.s.bind(on_check_job_finished=lambda instance, error_log: self.update_error_log(error_log))
+        self.m.s.bind(
+            on_check_job_finished=lambda instance, error_log: self.update_error_log(
+                error_log
+            )
+        )
 
     def on_pre_enter(self):
         self.toggle_boundary_buttons(True)
@@ -289,7 +289,9 @@ class CheckingScreen(Screen):
                 + "[b]:[/b]\n"
                 + self.l.get_bold("SmartBench has found issues with your job.")
                 + "\n\n"
-                + self.l.get_str("See help notes on the right and adjust your job accordingly.")
+                + self.l.get_str(
+                    "See help notes on the right and adjust your job accordingly."
+                )
             )
             self.jd.check_warning = self.l.get_str(
                 "The job would exceed the working volume of the machine in one or more axes."
@@ -300,89 +302,116 @@ class CheckingScreen(Screen):
     def do_pre_run_checks(self):
         job_bounds_output = self.is_job_within_bounds()
         spindle_speeds_output = self.are_spindle_speeds_within_bounds()
-
         return spindle_speeds_output, job_bounds_output
 
     def are_spindle_speeds_within_bounds(self):
         minimum_spindle_speed = 4000 if self.m.spindle_voltage == 230 else 10000
         speed_too_low_string = (
-            self.l.get_bold("SPINDLE SPEED ERROR") + '\n\n' +
-
-            self.l.get_str("It looks like one of the spindle speeds in your job is too low.") + '\n\n' +
-
-            self.l.get_str("The minimum spindle speed is N rpm.").replace("N", str(minimum_spindle_speed)) + '\n\n' +
-
-            self.l.get_bold("Please adjust the spindle speed in your job and try again.")
+            self.l.get_bold("SPINDLE SPEED ERROR")
+            + "\n\n"
+            + self.l.get_str(
+                "It looks like one of the spindle speeds in your job is too low."
+            )
+            + "\n\n"
+            + self.l.get_str("The minimum spindle speed is N rpm.").replace(
+                "N", str(minimum_spindle_speed)
+            )
+            + "\n\n"
+            + self.l.get_bold(
+                "Please adjust the spindle speed in your job and try again."
+            )
         )
-
-        Logger.debug("Spindle speeds: Job: {}, Min: {}".format(self.jd.spindle_speed_min, minimum_spindle_speed))
+        Logger.debug(
+            f"Spindle speeds: Job: {self.jd.spindle_speed_min}, Min: {minimum_spindle_speed}"
+        )
         if 0 < self.jd.spindle_speed_min < minimum_spindle_speed:
             return [speed_too_low_string]
         return []
 
     def is_job_within_bounds(self):
-        job_box = self.sm.get_screen('home').job_box
-
+        job_box = self.sm.get_screen("home").job_box
         to_be_appended = []
-
-        # Mins
-        if -(self.m.x_wco() + job_box.range_x[0]) >= (self.m.grbl_x_max_travel - self.m.limit_switch_safety_distance):
+        if (
+            -(self.m.x_wco() + job_box.range_x[0])
+            >= self.m.grbl_x_max_travel - self.m.limit_switch_safety_distance
+        ):
             to_be_appended.append(
-                "\t" +
-                self.l.get_str("The job extent over-reaches the N axis at the home end.").replace('N', 'X') + \
-                '\n\n\t' + \
-                self.l.get_bold("Try positioning the machine's N datum further away from home.").replace('N', 'X') + \
-                '\n\n'
+                "\t"
+                + self.l.get_str(
+                    "The job extent over-reaches the N axis at the home end."
+                ).replace("N", "X")
+                + "\n\n\t"
+                + self.l.get_bold(
+                    "Try positioning the machine's N datum further away from home."
+                ).replace("N", "X")
+                + "\n\n"
             )
-
-        if -(self.m.y_wco() + job_box.range_y[0]) >= (self.m.grbl_y_max_travel - self.m.limit_switch_safety_distance):
+        if (
+            -(self.m.y_wco() + job_box.range_y[0])
+            >= self.m.grbl_y_max_travel - self.m.limit_switch_safety_distance
+        ):
             to_be_appended.append(
-                "\t" +
-                self.l.get_str("The job extent over-reaches the N axis at the home end.").replace('N', 'Y') + \
-                '\n\n\t' + \
-                self.l.get_bold("Try positioning the machine's N datum further away from home.").replace('N', 'Y') + \
-                '\n\n'
+                "\t"
+                + self.l.get_str(
+                    "The job extent over-reaches the N axis at the home end."
+                ).replace("N", "Y")
+                + "\n\n\t"
+                + self.l.get_bold(
+                    "Try positioning the machine's N datum further away from home."
+                ).replace("N", "Y")
+                + "\n\n"
             )
-
-        if -(self.m.z_wco() + job_box.range_z[0]) >= (self.m.grbl_z_max_travel - self.m.limit_switch_safety_distance):
+        if (
+            -(self.m.z_wco() + job_box.range_z[0])
+            >= self.m.grbl_z_max_travel - self.m.limit_switch_safety_distance
+        ):
             to_be_appended.append(
-                "\t" +
-                self.l.get_str("The job extent over-reaches the Z axis at the lower end.") + \
-                '\n\n\t' + \
-                self.l.get_bold("Try positioning the machine's Z datum higher up.") + \
-                '\n\n'
+                "\t"
+                + self.l.get_str(
+                    "The job extent over-reaches the Z axis at the lower end."
+                )
+                + "\n\n\t"
+                + self.l.get_bold("Try positioning the machine's Z datum higher up.")
+                + "\n\n"
             )
-        # Maxs
-
         if self.m.x_wco() + job_box.range_x[1] >= -self.m.limit_switch_safety_distance:
             to_be_appended.append(
-                "\t" +
-                self.l.get_str("The job extent over-reaches the N axis at the far end.").replace('N', 'X') + \
-                '\n\n\t' + \
-                self.l.get_bold("Try positioning the machine's N datum closer to home.").replace('N', 'X') + \
-                '\n\n'
+                "\t"
+                + self.l.get_str(
+                    "The job extent over-reaches the N axis at the far end."
+                ).replace("N", "X")
+                + "\n\n\t"
+                + self.l.get_bold(
+                    "Try positioning the machine's N datum closer to home."
+                ).replace("N", "X")
+                + "\n\n"
             )
-
         if self.m.y_wco() + job_box.range_y[1] >= -self.m.limit_switch_safety_distance:
             to_be_appended.append(
-                "\t" +
-                self.l.get_str("The job extent over-reaches the N axis at the far end.").replace('N', 'Y') + \
-                '\n\n\t' + \
-                self.l.get_bold("Try positioning the machine's N datum closer to home.").replace('N', 'Y') + \
-                '\n\n'
+                "\t"
+                + self.l.get_str(
+                    "The job extent over-reaches the N axis at the far end."
+                ).replace("N", "Y")
+                + "\n\n\t"
+                + self.l.get_bold(
+                    "Try positioning the machine's N datum closer to home."
+                ).replace("N", "Y")
+                + "\n\n"
             )
-
         if self.m.z_wco() + job_box.range_z[1] >= -self.m.limit_switch_safety_distance:
             to_be_appended.append(
-                "\t" +
-                self.l.get_str("The job extent over-reaches the Z axis at the upper end.") + \
-                '\n\n\t' + \
-                self.l.get_bold("Try positioning the machine's Z datum lower down.") + \
-                '\n\n'
+                "\t"
+                + self.l.get_str(
+                    "The job extent over-reaches the Z axis at the upper end."
+                )
+                + "\n\n\t"
+                + self.l.get_bold("Try positioning the machine's Z datum lower down.")
+                + "\n\n"
             )
-
         if to_be_appended:
-            to_be_appended.insert(0, self.l.get_bold("DETAILS OF BOUNDARY CONFLICT") + '\n\n')
+            to_be_appended.insert(
+                0, self.l.get_bold("DETAILS OF BOUNDARY CONFLICT") + "\n\n"
+            )
             return to_be_appended
         return []
 
@@ -390,55 +419,61 @@ class CheckingScreen(Screen):
         message = ""
         if spindle_speeds_output:
             message += "\n".join(spindle_speeds_output) + "\n\n"
-
         if job_bounds_output:
             message += (
-            self.l.get_bold("BOUNDARY CONFLICT HELP")
-            + "\n\n"
-            + self.l.get_str("It looks like your job exceeds the bounds of the machine")
-            + ":\n\n"
-            + "\n".join(job_bounds_output)
-            + "\n\n"
-            + self.l.get_str("The job datum is set in the wrong place.")
-            + " "
-            + self.l.get_str(
-                "Press Adjust datums and then reposition the X, Y or Z datums as suggested above so that the job box is within the machine's boundaries."
-            ).replace(self.l.get_str("Adjust datums"), self.l.get_bold("Adjust datums"))
-            + " "
-            + self.l.get_str(
-                "Use the manual move controls and set datum buttons to achieve this."
-            ).replace(self.l.get_str("set datum"), self.l.get_bold("set datum"))
-            + " "
-            + self.l.get_str("You should then reload the job and re-run this check.")
-            + "\n\n"
-            + self.l.get_str(
-                "If you have already tried to reposition the datum, but cannot get the job to fit within the machine bounds, your job may simply be set up incorrectly in your CAD/CAM software."
+                self.l.get_bold("BOUNDARY CONFLICT HELP")
+                + "\n\n"
+                + self.l.get_str(
+                    "It looks like your job exceeds the bounds of the machine"
+                )
+                + ":\n\n"
+                + "\n".join(job_bounds_output)
+                + "\n\n"
+                + self.l.get_str("The job datum is set in the wrong place.")
+                + " "
+                + self.l.get_str(
+                    "Press Adjust datums and then reposition the X, Y or Z datums as suggested above so that the job box is within the machine's boundaries."
+                ).replace(
+                    self.l.get_str("Adjust datums"), self.l.get_bold("Adjust datums")
+                )
+                + " "
+                + self.l.get_str(
+                    "Use the manual move controls and set datum buttons to achieve this."
+                ).replace(self.l.get_str("set datum"), self.l.get_bold("set datum"))
+                + " "
+                + self.l.get_str(
+                    "You should then reload the job and re-run this check."
+                )
+                + "\n\n"
+                + self.l.get_str(
+                    "If you have already tried to reposition the datum, but cannot get the job to fit within the machine bounds, your job may simply be set up incorrectly in your CAD/CAM software."
+                )
+                + " "
+                + self.l.get_str(
+                    "Common causes include setting the CAD/CAM job datum far away from the actual design, or exporting the job from the CAM software in the wrong units."
+                )
+                + " "
+                + self.l.get_str("Check your design and export settings.")
+                + " "
+                + self.l.get_str("You should then reload the job and re-run the check.")
+                + "\n\n"
+                + self.l.get_str(
+                    "Finally, if you have already tried to reposition the datum, or if the graphics on the job previews do not look normal, your G-code may be corrupt."
+                )
+                + " "
+                + self.l.get_str(
+                    "If this is the case, you may want to press Check G-code."
+                ).replace(
+                    self.l.get_str("Check G-code"), self.l.get_bold("Check G-code")
+                )
+                + "\n\n"
+                + self.l.get_bold("WARNING")
+                + "[b]:[/b] "
+                + self.l.get_bold(
+                    "Checking the job's G-code when it is outside of the machine bounds may trigger an alarm screen."
+                )
+                + "\n\n"
             )
-            + " "
-            + self.l.get_str(
-                "Common causes include setting the CAD/CAM job datum far away from the actual design, or exporting the job from the CAM software in the wrong units."
-            )
-            + " "
-            + self.l.get_str("Check your design and export settings.")
-            + " "
-            + self.l.get_str("You should then reload the job and re-run the check.")
-            + "\n\n"
-            + self.l.get_str(
-                "Finally, if you have already tried to reposition the datum, or if the graphics on the job previews do not look normal, your G-code may be corrupt."
-            )
-            + " "
-            + self.l.get_str(
-                "If this is the case, you may want to press Check G-code."
-            ).replace(self.l.get_str("Check G-code"), self.l.get_bold("Check G-code"))
-            + "\n\n"
-            + self.l.get_bold("WARNING")
-            + "[b]:[/b] "
-            + self.l.get_bold(
-                "Checking the job's G-code when it is outside of the machine bounds may trigger an alarm screen."
-            )
-            + "\n\n"
-        )
-
         self.display_output = message
 
     def toggle_boundary_buttons(self, hide_boundary_buttons):
@@ -467,11 +502,17 @@ class CheckingScreen(Screen):
             self.check_gcode_button.width = "0dp"
             self.load_file_now_button.text = self.l.get_str("Adjust datums")
             if len(self.load_file_now_button.text) > 30:
-                self.load_file_now_button.font_size = str(11.0/800.0*Window.width) + "sp"
+                self.load_file_now_button.font_size = (
+                    str(11.0 / 800.0 * Window.width) + "sp"
+                )
             elif len(self.load_file_now_button.text) > 25:
-                self.load_file_now_button.font_size = str(14.0/800.0*Window.width) + "sp"
+                self.load_file_now_button.font_size = (
+                    str(14.0 / 800.0 * Window.width) + "sp"
+                )
             else:
-                self.load_file_now_button.font_size = str(15.0/800.0*Window.width) + "sp"
+                self.load_file_now_button.font_size = (
+                    str(15.0 / 800.0 * Window.width) + "sp"
+                )
             self.load_file_now_button.disabled = False
             self.load_file_now_button.opacity = 1
             self.load_file_now_button.size_hint_y = 1

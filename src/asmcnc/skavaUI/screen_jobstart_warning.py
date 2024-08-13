@@ -208,11 +208,11 @@ class RoundedButton(Button):
 
 
 class JobstartWarningScreen(Screen):
-    def __init__(self, **kwargs):
-        super(JobstartWarningScreen, self).__init__(**kwargs)
-        self.m = kwargs["machine"]
-        self.sm = kwargs["screen_manager"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, screen_manager, machine, **kwargs):
+        super().__init__(**kwargs)
+        self.m = machine
+        self.sm = screen_manager
+        self.l = localization
         self.update_strings()
 
     def continue_to_go_screen(self):

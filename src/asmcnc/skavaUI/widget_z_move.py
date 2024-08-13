@@ -2,6 +2,7 @@
 Created on 1 Feb 2018
 @author: Ed
 """
+
 import kivy
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
@@ -150,12 +151,12 @@ Builder.load_string(
 
 
 class ZMove(Widget):
-    def __init__(self, **kwargs):
-        super(ZMove, self).__init__(**kwargs)
-        self.m = kwargs["machine"]
-        self.sm = kwargs["screen_manager"]
-        self.jd = kwargs["job"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, job, screen_manager, machine, **kwargs):
+        super().__init__(**kwargs)
+        self.m = machine
+        self.sm = screen_manager
+        self.jd = job
+        self.l = localization
         self.virtual_z_container.add_widget(
             widget_z_height.VirtualZ(
                 machine=self.m, screen_manager=self.sm, job=self.jd

@@ -2,6 +2,7 @@
 Created on 1 Feb 2018
 @author: Ed
 """
+
 import kivy
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
@@ -115,19 +116,16 @@ class WorkCoordinates(Widget):
     GRBL_REPORT_INTERVAL = 0.1
     cheeky_color = StringProperty("#2498f4ff")
 
-    def __init__(self, **kwargs):
-        super(WorkCoordinates, self).__init__(**kwargs)
-        self.m = kwargs["machine"]
-        self.sm = kwargs["screen_manager"]
-        # Poll for status
+    def __init__(self, screen_manager, machine, **kwargs):
+        super().__init__(**kwargs)
+        self.m = machine
+        self.sm = screen_manager
         Clock.schedule_interval(
             self.refresh_grbl_label_values, self.GRBL_REPORT_INTERVAL
         )
 
     def refresh_grbl_label_values(self, dt):
         if self.m.is_connected():
-#             self.serial_image.source = "./asmcnc/skavaUI/img/serial_on.png"
-#             self.grbl_status_label.text = self.m.state()
             self.grbl_xm_label.text = "mX:\n" + str(round(self.m.mpos_x(), 2))
             self.grbl_ym_label.text = "mY:\n" + str(round(self.m.mpos_y(), 2))
             self.grbl_zm_label.text = "mZ:\n" + str(round(self.m.mpos_z(), 2))

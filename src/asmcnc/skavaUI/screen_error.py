@@ -1,19 +1,16 @@
-# -*- coding: utf-8 -*-
 """
 Created on 19 Feb 2019
 
 Screen to show user GRBL errors. Called in serial_connection.
 
-Pauses streaming until user returns (and if they are in Go stream until they resume Job). 
+Pauses streaming until user returns (and if they are in Go stream until they resume Job).
 
 @author: Letty
 """
+
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.properties import (
-    ObjectProperty,
-    StringProperty,
-)
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.screenmanager import Screen
 
 ERROR_CODES = {
@@ -157,13 +154,13 @@ class ErrorScreenClass(Screen):
     getout_button = ObjectProperty()
     return_to_screen = "home"
 
-    def __init__(self, **kwargs):
-        super(ErrorScreenClass, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
-        self.jd = kwargs["job"]
-        self.db = kwargs["database"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, database, job, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
+        self.jd = job
+        self.db = database
+        self.l = localization
         self.update_strings()
 
     def on_enter(self):

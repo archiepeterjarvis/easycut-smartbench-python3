@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created March 2019
 
@@ -6,6 +5,7 @@ Created March 2019
 
 Squaring decision: manual or auto?
 """
+
 import kivy
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -101,11 +101,11 @@ class SquaringScreenActive(Screen):
     poll_for_completion_loop = None
     expected_next_screen = "homing_active"
 
-    def __init__(self, **kwargs):
-        super(SquaringScreenActive, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
+        self.l = localization
         self.update_strings()
 
     def on_pre_enter(self):

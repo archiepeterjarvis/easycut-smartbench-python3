@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 
-'''
+"""
 Unicode test screen
 
-'''
+"""
 
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -43,12 +43,9 @@ Builder.load_string("""
 
 
 class ScreenClass(Screen):
-    
-    string_test = "" #"유니코드에 대해"
+    string_test = ""  # "유니코드에 대해"
 
     def __init__(self, **kwargs):
-        
         super(ScreenClass, self).__init__(**kwargs)
-        self.sm=kwargs['screen_manager']
-        self.m=kwargs['machine']
-
+        self.sm = kwargs["screen_manager"]
+        self.m = kwargs["machine"]

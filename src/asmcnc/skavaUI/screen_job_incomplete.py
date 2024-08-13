@@ -3,6 +3,7 @@ Created on 13th September 2021
 End of job screen with feedback and metadata sending
 @author: Letty
 """
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -287,14 +288,16 @@ class JobIncompleteScreen(Screen):
     event_type = ""
     specific_event = ""
 
-    def __init__(self, **kwargs):
-        super(JobIncompleteScreen, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
-        self.l = kwargs["localization"]
-        self.jd = kwargs["job"]
-        self.db = kwargs["database"]
-        self.kb = kwargs["keyboard"]
+    def __init__(
+        self, keyboard, database, job, localization, machine, screen_manager, **kwargs
+    ):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
+        self.l = localization
+        self.jd = job
+        self.db = database
+        self.kb = keyboard
         self.text_inputs = [
             self.parts_completed_input,
             self.batch_number_input,

@@ -2,12 +2,11 @@
 Created on 1 Feb 2018
 @author: Ed
 """
+
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
-
 from asmcnc.skavaUI import popup_info
 from asmcnc.skavaUI import widget_z_height
-
 from asmcnc.core_UI.popups import InfoPopup
 
 Builder.load_string(
@@ -103,12 +102,12 @@ Builder.load_string(
 
 
 class MaintenanceZMove(Widget):
-    def __init__(self, **kwargs):
-        super(MaintenanceZMove, self).__init__(**kwargs)
-        self.m = kwargs["machine"]
-        self.sm = kwargs["screen_manager"]
-        self.l = kwargs["localization"]
-        self.jd = kwargs["job"]
+    def __init__(self, job, localization, screen_manager, machine, **kwargs):
+        super().__init__(**kwargs)
+        self.m = machine
+        self.sm = screen_manager
+        self.l = localization
+        self.jd = job
         self.virtual_z_container.add_widget(
             widget_z_height.VirtualZ(
                 machine=self.m, screen_manager=self.sm, job=self.jd
@@ -169,17 +168,18 @@ class MaintenanceZMove(Widget):
             + "\n\n"
             + self.l.get_str("1. Secure a scrap piece of material to your machine.")
             + "\n"
-            + self.l.get_str(
-                "2. Enable laser crosshair (switch to on)."
-            ).replace(self.l.get_str("on"), self.l.get_bold("on"))
+            + self.l.get_str("2. Enable laser crosshair (switch to on).").replace(
+                self.l.get_str("on"), self.l.get_bold("on")
+            )
             + "\n"
             + self.l.get_str(
                 "3. Move the Z axis down so that it is around 5mm away from the material."
             ).replace(self.l.get_str("5mm"), self.l.get_bold("5mm"))
             + "\n"
-            + self.l.get_str(
-                "4. Ensure the dust shoe plug is fitted."
-            ).replace(self.l.get_str("dust shoe plug is fitted"), self.l.get_bold("dust shoe plug is fitted"))
+            + self.l.get_str("4. Ensure the dust shoe plug is fitted.").replace(
+                self.l.get_str("dust shoe plug is fitted"),
+                self.l.get_bold("dust shoe plug is fitted"),
+            )
             + "\n"
             + self.l.get_str(
                 "5. Turn on the spindle, and move the Z axis down in 1mm increments."
@@ -199,7 +199,12 @@ class MaintenanceZMove(Widget):
                 self.l.get_str("save"), self.l.get_bold("save")
             )
         )
-
-        popup = InfoPopup(sm=self.sm, m=self.m, l=self.l, main_string=info, popup_width=700, popup_height=440)
+        popup = InfoPopup(
+            sm=self.sm,
+            m=self.m,
+            l=self.l,
+            main_string=info,
+            popup_width=700,
+            popup_height=440,
+        )
         popup.open()
-

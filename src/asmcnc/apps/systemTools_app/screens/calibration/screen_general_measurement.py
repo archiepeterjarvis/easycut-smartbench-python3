@@ -157,10 +157,10 @@ class GeneralMeasurementScreen(Screen):
         (13): "F",
     }
 
-    def __init__(self, **kwargs):
-        super(GeneralMeasurementScreen, self).__init__(**kwargs)
-        self.systemtools_sm = kwargs["systemtools"]
-        self.m = kwargs["machine"]
+    def __init__(self, machine, systemtools, **kwargs):
+        super().__init__(**kwargs)
+        self.systemtools_sm = systemtools
+        self.m = machine
 
     def back_to_fac_settings(self):
         self.systemtools_sm.open_factory_settings_screen()

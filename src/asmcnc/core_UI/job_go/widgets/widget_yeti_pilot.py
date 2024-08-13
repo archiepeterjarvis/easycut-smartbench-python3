@@ -1,7 +1,6 @@
 from kivy.uix.widget import Widget
 from kivy.lang import Builder
 from asmcnc.core_UI.job_go.popups.popup_yetipilot_settings import PopupYetiPilotSettings
-
 from asmcnc.comms.model_manager import ModelManagerSingleton
 
 Builder.load_string(
@@ -130,17 +129,18 @@ Builder.load_string(
 class YetiPilotWidget(Widget):
     yp_settings_popup = None
 
-    def __init__(self, **kwargs):
-        super(YetiPilotWidget, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.l = kwargs["localization"]
-        self.m = kwargs["machine"]
-        self.db = kwargs["database"]
-        self.yp = kwargs["yetipilot"]
+    def __init__(
+        self, yetipilot, database, machine, localization, screen_manager, **kwargs
+    ):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.l = localization
+        self.m = machine
+        self.db = database
+        self.yp = yetipilot
         self.disable_yeti_pilot()
         self.yetipilot_two_tone.text = "[b][color=1976d2ff]YetiPilot[/b][/color]"
         self.profile_label.text = self.l.get_str("Profile")
-
         self.model_manager = ModelManagerSingleton()
 
     def toggle_button_img(self, state):

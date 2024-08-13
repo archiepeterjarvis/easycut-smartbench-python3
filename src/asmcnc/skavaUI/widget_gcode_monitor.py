@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 """
 Created on 1 Feb 2018
 @author: Ed
 """
+
 import kivy
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
@@ -238,33 +238,32 @@ class GCodeMonitor(Widget):
     monitor_text_buffer = []
     status_report_buffer = []
 
-    def __init__(self, **kwargs):
-        super(GCodeMonitor, self).__init__(**kwargs)
-        self.m = kwargs["machine"]
-        self.sm = kwargs["screen_manager"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, screen_manager, machine, **kwargs):
+        super().__init__(**kwargs)
+        self.m = machine
+        self.sm = screen_manager
+        self.l = localization
         Clock.schedule_interval(self.update_display_text, WIDGET_UPDATE_DELAY)
         Clock.schedule_interval(self.update_status_text, STATUS_UPDATE_DELAY)
         self.popup_flag = True
         self.update_strings()
-        self.m.s.bind(on_serial_monitor_update=
-                      lambda instance, io, content: self.update_monitor_text_buffer(io, content))
-
+        self.m.s.bind(
+            on_serial_monitor_update=lambda instance,
+            io,
+            content: self.update_monitor_text_buffer(io, content)
+        )
 
     def update_monitor_text_buffer(self, input_or_output, content):
         """
         This function updates both the serial monitor and the status report buffer.
         It is called as a callback when on_serial_monitor_update is fired.
         """
-        # Try to chuck out any problem strings
         if isinstance(content, basestring):
-            # Don't update if content is to be hidden
             if content.startswith("<") and self.hide_received_status == "down":
                 self.status_report_buffer.append(content)
                 return
             if content == "ok" and self.hide_received_ok == "down":
                 return
-            # Update buffer with content
             if input_or_output == "snd":
                 self.monitor_text_buffer.append("> " + content)
             if input_or_output == "rec":
@@ -278,7 +277,6 @@ class GCodeMonitor(Widget):
             del self.monitor_text_buffer[0 : len(self.monitor_text_buffer) - 60]
 
     def update_status_text(self, dt):
-        # this needs fixing
         if self.m.state() == "Alarm" and not any(
             "Alarm" in s for s in self.status_report_buffer
         ):
@@ -298,7 +296,9 @@ class GCodeMonitor(Widget):
                 + "\n\n"
                 + self.l.get_str("Please exercise caution when using this feature.")
                 + " "
-                + self.l.get_str("Please ensure your dust shoe plug is inserted before sending commands to the machine!")
+                + self.l.get_str(
+                    "Please ensure your dust shoe plug is inserted before sending commands to the machine!"
+                )
                 + "\n\n"
             )
             popup_info.PopupWarning(self.sm, self.l, description)
@@ -346,8 +346,6 @@ class GCodeMonitor(Widget):
             self.l.get_str("Welcome to the GCode console") + "..."
         ]
 
-######### START/STOP DEBUG
-
     def send_grbl_reset(self):
         self.m._grbl_soft_reset()
 
@@ -366,7 +364,6 @@ class GCodeMonitor(Widget):
     def send_led_restore(self):
         self.m.led_restore()
 
-## Localization
     def update_strings(self):
         self.enter_button.text = self.l.get_str("Enter")
         self.hide_ok_button.text = self.l.get_str("Hide oks")

@@ -337,17 +337,16 @@ class JobRecoveryScreen(Screen):
     selected_line_index = 0
     display_list = []
     gcode_without_comments = []
-
     scroll_up_event = None
     scroll_down_event = None
 
-    def __init__(self, **kwargs):
-        super(JobRecoveryScreen, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
-        self.jd = kwargs["job"]
-        self.l = kwargs["localization"]
-        self.kb = kwargs["keyboard"]
+    def __init__(self, keyboard, localization, job, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
+        self.jd = job
+        self.l = localization
+        self.kb = keyboard
         self.line_input.bind(text=self.jump_to_line)
         self.status_container.add_widget(
             widget_status_bar.StatusBar(machine=self.m, screen_manager=self.sm)
@@ -366,11 +365,9 @@ class JobRecoveryScreen(Screen):
         self.m.set_led_colour("WHITE")
 
         def remove_comments(line):
-            # Comments are anything contained in parentheses, or anything after a semicolon
-            return re.sub('\(.*?\)|;.*', '', line)
+            return re.sub("\\(.*?\\)|;.*", "", line)
 
         self.gcode_without_comments = map(remove_comments, self.jd.job_gcode)
-
         self.gcode_label.font_name = "Roboto"
         if self.jd.job_recovery_selected_line == -1:
             self.line_input.text = ""
@@ -461,7 +458,9 @@ class JobRecoveryScreen(Screen):
         spindle_speed_line = next(
             (
                 s
-                for s in reversed(self.gcode_without_comments[: self.selected_line_index + 1])
+                for s in reversed(
+                    self.gcode_without_comments[: self.selected_line_index + 1]
+                )
                 if "S" in s
             ),
             None,
@@ -478,7 +477,9 @@ class JobRecoveryScreen(Screen):
         feedrate_line = next(
             (
                 s
-                for s in reversed(self.gcode_without_comments[: self.selected_line_index + 1])
+                for s in reversed(
+                    self.gcode_without_comments[: self.selected_line_index + 1]
+                )
                 if "F" in s
             ),
             None,
@@ -495,7 +496,9 @@ class JobRecoveryScreen(Screen):
         x_line = next(
             (
                 s
-                for s in reversed(self.gcode_without_comments[: self.selected_line_index + 1])
+                for s in reversed(
+                    self.gcode_without_comments[: self.selected_line_index + 1]
+                )
                 if "X" in s
             ),
             None,
@@ -511,7 +514,9 @@ class JobRecoveryScreen(Screen):
         y_line = next(
             (
                 s
-                for s in reversed(self.gcode_without_comments[: self.selected_line_index + 1])
+                for s in reversed(
+                    self.gcode_without_comments[: self.selected_line_index + 1]
+                )
                 if "Y" in s
             ),
             None,
@@ -527,7 +532,9 @@ class JobRecoveryScreen(Screen):
         z_line = next(
             (
                 s
-                for s in reversed(self.gcode_without_comments[: self.selected_line_index + 1])
+                for s in reversed(
+                    self.gcode_without_comments[: self.selected_line_index + 1]
+                )
                 if "Z" in s
             ),
             None,
@@ -540,16 +547,11 @@ class JobRecoveryScreen(Screen):
             )
         else:
             self.pos_z = 0.0
-        self.pos_label.text = "wX: %s | wY: %s | wZ: %s" % (
-            str(self.pos_x),
-            str(self.pos_y),
-            str(self.pos_z),
+        self.pos_label.text = "wX: {} | wY: {} | wZ: {}".format(
+            str(self.pos_x), str(self.pos_y), str(self.pos_z)
         )
-        self.speed_label.text = "%s: %s | %s: %s" % (
-            self.l.get_str("F"),
-            str(self.feed),
-            self.l.get_str("S"),
-            str(self.speed),
+        self.speed_label.text = "{}: {} | {}: {}".format(
+            self.l.get_str("F"), str(self.feed), self.l.get_str("S"), str(self.speed)
         )
 
     def get_info(self):
@@ -599,7 +601,7 @@ class JobRecoveryScreen(Screen):
         )
         if self.m.mpos_z() < z_safe_height:
             self.m.s.write_command("G53 G0 Z%s F750" % z_safe_height)
-        self.m.s.write_command("G90 G0 X%s Y%s" % (self.pos_x, self.pos_y))
+        self.m.s.write_command("G90 G0 X{} Y{}".format(self.pos_x, self.pos_y))
 
     def back_to_home(self):
         self.jd.reset_recovery()

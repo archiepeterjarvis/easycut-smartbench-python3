@@ -1,4 +1,5 @@
 """This module contains the classes used to store the configuration data for the drywall cutter app."""
+
 import enum
 import json
 import os
@@ -6,12 +7,11 @@ from asmcnc.job.database.profile_database import ProfileDatabase
 
 CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
 SETTINGS_DIR = os.path.join(CURRENT_DIR, "settings")
-
 DEFAULT_CONFIG_PATH = os.path.join(SETTINGS_DIR, "default_config.json")
 DEFAULT_CUTTER_UID = "-0001"
 
 
-class Cutter(object):
+class Cutter:
     """Class to store the cutter data."""
 
     def __init__(
@@ -25,17 +25,17 @@ class Cutter(object):
         dimensions,
         flutes,
         available_isas,
-        **kwargs
+        **kwargs,
     ):
-        self.uid = uid  # type: str
-        self.description = description.encode("utf-8")  # type: str
-        self.manufacturer = str(manufacturer)  # type: str
-        self.manufacturer_part_number = str(manufacturer_part_number)  # type: str
-        self.tool_type = str(tool_type)  # type: str
-        self.generic_definition = ToolGenericDefinition(**generic_definition)  # type: ToolGenericDefinition
-        self.dimensions = Dimensions(**dimensions)  # type: Dimensions
-        self.flutes = Flutes(**flutes)  # type: Flutes
-        self.available_isas = available_isas  # type: list[str]
+        self.uid = uid
+        self.description = description.encode("utf-8")
+        self.manufacturer = str(manufacturer)
+        self.manufacturer_part_number = str(manufacturer_part_number)
+        self.tool_type = str(tool_type)
+        self.generic_definition = ToolGenericDefinition(**generic_definition)
+        self.dimensions = Dimensions(**dimensions)
+        self.flutes = Flutes(**flutes)
+        self.available_isas = available_isas
 
     @classmethod
     def from_json(cls, json_data):
@@ -50,114 +50,111 @@ class Cutter(object):
         return Cutter.from_json(default_cutter)
 
 
-class ToolGenericDefinition(object):
+class ToolGenericDefinition:
     """Class to store the cutter generic definition."""
 
-    def __init__(self,
-                 uid,
-                 string,
-                 dimension,
-                 unit,
-                 type,
-                 toolpath_offsets,
-                 required_operations,
-                 **kwargs):
-        self.uid = uid  # type: str
-        self.string = str(string)  # type: str
-        self.dimension = int(dimension)  # type: int
-        self.unit = str(unit)  # type: str
-        self.type = str(type)  # type: str
+    def __init__(
+        self,
+        uid,
+        string,
+        dimension,
+        unit,
+        type,
+        toolpath_offsets,
+        required_operations,
+        **kwargs,
+    ):
+        self.uid = uid
+        self.string = str(string)
+        self.dimension = int(dimension)
+        self.unit = str(unit)
+        self.type = str(type)
         self.toolpath_offsets = AllowableToolpathOffsets(**toolpath_offsets)
         self.required_operations = RequiredOperations(**required_operations)
 
 
-class RequiredOperations(object):
+class RequiredOperations:
     """Class to store the required operations."""
 
     def __init__(self, lead_in, **kwargs):
-        self.lead_in = bool(lead_in)  # type: bool
+        self.lead_in = bool(lead_in)
 
 
-class Dimensions(object):
+class Dimensions:
     """Class to store the cutter dimensions."""
 
     def __init__(self, shank_diameter, tool_diameter, unit, angle, **kwargs):
-        self.shank_diameter = float(shank_diameter)  # type: float
-        self.tool_diameter = float(tool_diameter) if tool_diameter else None  # type: float
-        self.unit = str(unit)  # type: str
-        self.angle = int(angle) if angle else None  # type: int
+        self.shank_diameter = float(shank_diameter)
+        self.tool_diameter = float(tool_diameter) if tool_diameter else None
+        self.unit = str(unit)
+        self.angle = int(angle) if angle else None
 
 
-class AllowableToolpathOffsets(object):
+class AllowableToolpathOffsets:
     """Class to store the allowable toolpath offsets."""
 
     def __init__(self, inside, outside, on, pocket, **kwargs):
-        self.inside = inside  # type: bool
-        self.outside = outside  # type: bool
-        self.on = on  # type: bool
-        self.pocket = pocket  # type: bool
+        self.inside = inside
+        self.outside = outside
+        self.on = on
+        self.pocket = pocket
 
 
-class Flutes(object):
+class Flutes:
     """Class to store the cutter flutes."""
 
-    def __init__(self,
-                 type,
-                 lengths,
-                 quantity,
-                 material,
-                 coated,
-                 coating,
-                 **kwargs):
-        self.type = str(type)  # type: str
-        self.lengths = FluteLengths(**lengths)  # type: FluteLengths
-        self.quantity = int(quantity)  # type: int
-        self.material = str(material)  # type: str
-        self.coated = bool(coated)  # type: bool
-        self.coating = str(coating) if coating else None  # type: str
+    def __init__(self, type, lengths, quantity, material, coated, coating, **kwargs):
+        self.type = str(type)
+        self.lengths = FluteLengths(**lengths)
+        self.quantity = int(quantity)
+        self.material = str(material)
+        self.coated = bool(coated)
+        self.coating = str(coating) if coating else None
 
 
-class FluteLengths(object):
+class FluteLengths:
     """Class to store the cutter flute lengths."""
 
     def __init__(self, upcut_straight, downcut, total, unit, **kwargs):
-        self.upcut_straight = int(upcut_straight)  # type: int
-        self.downcut = int(downcut)  # type: int
-        self.total = int(total)  # type: int
-        self.unit = str(unit)  # type: str
+        self.upcut_straight = int(upcut_straight)
+        self.downcut = int(downcut)
+        self.total = int(total)
+        self.unit = str(unit)
 
 
-class CanvasShapeDims(object):
+class CanvasShapeDims:
     """Class to store the canvas shape dimensions."""
 
     def __init__(self, x, y, r, d, l, **kwargs):
-        self.x = x  # type: float
-        self.y = y  # type: float
-        self.r = r  # type: float
-        self.d = d  # type: float
-        self.l = l  # type: float
+        self.x = x
+        self.y = y
+        self.r = r
+        self.d = d
+        self.l = l
 
 
-class CuttingDepths(object):
+class CuttingDepths:
     """Class to store the cutting depths."""
 
-    def __init__(self, material_thickness, bottom_offset, auto_pass, depth_per_pass, tabs=False):
-        self.material_thickness = material_thickness  # type: float
-        self.bottom_offset = bottom_offset  # type: float
-        self.auto_pass = auto_pass  # type: bool
-        self.depth_per_pass = depth_per_pass  # type: float
-        self.tabs = tabs  # type: bool
+    def __init__(
+        self, material_thickness, bottom_offset, auto_pass, depth_per_pass, tabs=False
+    ):
+        self.material_thickness = material_thickness
+        self.bottom_offset = bottom_offset
+        self.auto_pass = auto_pass
+        self.depth_per_pass = depth_per_pass
+        self.tabs = tabs
 
 
-class DatumPosition(object):
+class DatumPosition:
     """Class to store the datum position."""
 
     def __init__(self, x, y, **kwargs):
-        self.x = x  # type: float
-        self.y = y  # type: float
+        self.x = x
+        self.y = y
 
 
-class Profile(object):
+class Profile:
     """Class to store the profile data"""
 
     def __init__(
@@ -167,13 +164,13 @@ class Profile(object):
         material,
         cutting_parameters,
         applicable_tools,
-        **kwargs
+        **kwargs,
     ):
-        self.uid = str(uid)  # type: str
-        self.generic_tool = ProfileGenericTool(**generic_tool)  # type: ProfileGenericTool
-        self.material = ProfileMaterial(**material)  # type: ProfileMaterial
-        self.cutting_parameters = ProfileCuttingParameters(**cutting_parameters)  # type: ProfileCuttingParameters
-        self.applicable_tools = applicable_tools  # type: list
+        self.uid = str(uid)
+        self.generic_tool = ProfileGenericTool(**generic_tool)
+        self.material = ProfileMaterial(**material)
+        self.cutting_parameters = ProfileCuttingParameters(**cutting_parameters)
+        self.applicable_tools = applicable_tools
 
     @classmethod
     def from_json(cls, json_data):
@@ -188,33 +185,23 @@ class Profile(object):
         return Profile.from_json(default_profile)
 
 
-class ProfileGenericTool(object):
+class ProfileGenericTool:
     """Class to store the profile generic tool data"""
 
-    def __init__(
-        self,
-        uid,
-        description,
-        **kwargs
-    ):
-        self.uid = str(uid)  # type: str
-        self.description = str(description)  # type: str
+    def __init__(self, uid, description, **kwargs):
+        self.uid = str(uid)
+        self.description = str(description)
 
 
-class ProfileMaterial(object):
+class ProfileMaterial:
     """Class to store the profile material data"""
 
-    def __init__(
-        self,
-        uid,
-        description,
-        **kwargs
-    ):
-        self.uid = str(uid)  # type: str
-        self.description = str(description)  # type: str
+    def __init__(self, uid, description, **kwargs):
+        self.uid = str(uid)
+        self.description = str(description)
 
 
-class ProfileCuttingParameters(object):
+class ProfileCuttingParameters:
     """Class to store the profile cutting parameters data"""
 
     def __init__(
@@ -224,33 +211,26 @@ class ProfileCuttingParameters(object):
         max_feedrate,
         plungerate,
         target_tool_load,
-        **kwargs
+        **kwargs,
     ):
-        self.recommendations = ProfileRecommendations(**recommendations)  # type: ProfileRecommendations
-        self.spindle_speed = int(spindle_speed)  # type: int
-        self.max_feedrate = int(max_feedrate)  # type: int
-        self.plungerate = int(plungerate)  # type: int
-        self.target_tool_load = int(target_tool_load)  # type: int
+        self.recommendations = ProfileRecommendations(**recommendations)
+        self.spindle_speed = int(spindle_speed)
+        self.max_feedrate = int(max_feedrate)
+        self.plungerate = int(plungerate)
+        self.target_tool_load = int(target_tool_load)
 
 
-class ProfileRecommendations(object):
+class ProfileRecommendations:
     """Class to store the profile recommendations data"""
 
-    def __init__(
-        self,
-        stepdown,
-        stepover,
-        unit,
-        cutting_direction,
-        **kwargs
-    ):
-        self.stepdown = float(stepdown)  # type: float
-        self.stepover = float(stepover) if stepover else None  # type: float
-        self.unit = str(unit)  # type: str
-        self.cutting_direction = str(cutting_direction)  # type: str
+    def __init__(self, stepdown, stepover, unit, cutting_direction, **kwargs):
+        self.stepdown = float(stepdown)
+        self.stepover = float(stepover) if stepover else None
+        self.unit = str(unit)
+        self.cutting_direction = str(cutting_direction)
 
 
-class Configuration(object):
+class Configuration:
     """Class to store the configuration data."""
 
     def __init__(
@@ -264,23 +244,21 @@ class Configuration(object):
         toolpath_offset,
         cutting_depths,
         datum_position,
-        **kwargs
+        **kwargs,
     ):
         try:
-            self.version = str(kwargs['version'])  # type: str
+            self.version = str(kwargs["version"])
         except KeyError:
-            self.version = "1.0"  # Default version for DWT configs
-        self.shape_type = str(shape_type)  # type: str
-        self.units = str(units)  # type: str
+            self.version = "1.0"
+        self.shape_type = str(shape_type)
+        self.units = str(units)
         self.rotation = str(rotation)
-        self.canvas_shape_dims = CanvasShapeDims(
-            **canvas_shape_dims
-        )  # type: CanvasShapeDims
-        self.material = str(material)  # type: str
-        self.cutter_type = str(cutter_type)  # type: str
-        self.toolpath_offset = str(toolpath_offset)  # type: str
-        self.cutting_depths = CuttingDepths(**cutting_depths)  # type: CuttingDepths
-        self.datum_position = DatumPosition(**datum_position)  # type: DatumPosition
+        self.canvas_shape_dims = CanvasShapeDims(**canvas_shape_dims)
+        self.material = str(material)
+        self.cutter_type = str(cutter_type)
+        self.toolpath_offset = str(toolpath_offset)
+        self.cutting_depths = CuttingDepths(**cutting_depths)
+        self.datum_position = DatumPosition(**datum_position)
 
     @classmethod
     def from_json(cls, json_data):
@@ -290,7 +268,7 @@ class Configuration(object):
     @classmethod
     def default(cls):
         """Get the default configuration."""
-        with open(DEFAULT_CONFIG_PATH, "r") as f:
+        with open(DEFAULT_CONFIG_PATH) as f:
             return Configuration.from_json(json.load(f))
 
 

@@ -2,6 +2,7 @@
 Created on nov 2020
 @author: Ollie
 """
+
 from asmcnc.comms.logging_system.logging_system import Logger
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -156,11 +157,11 @@ Builder.load_string(
 
 
 class WarrantyScreen2(Screen):
-    def __init__(self, **kwargs):
-        super(WarrantyScreen2, self).__init__(**kwargs)
-        self.start_seq = kwargs["start_sequence"]
-        self.m = kwargs["machine"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, machine, start_sequence, **kwargs):
+        super().__init__(**kwargs)
+        self.start_seq = start_sequence
+        self.m = machine
+        self.l = localization
         self.serial_number_label.text = self.get_serial_number()
         self.update_strings()
 
@@ -168,7 +169,7 @@ class WarrantyScreen2(Screen):
         serial_number_filepath = "/home/pi/smartbench_serial_number.txt"
         serial_number_from_file = ""
         try:
-            file = open(serial_number_filepath, "r")
+            file = open(serial_number_filepath)
             serial_number_from_file = str(file.read())
             file.close()
         except:

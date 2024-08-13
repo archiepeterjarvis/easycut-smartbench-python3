@@ -4,6 +4,7 @@ Landing Screen for the Calibration App
 
 @author: Letty
 """
+
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty, StringProperty
@@ -46,10 +47,10 @@ Builder.load_string(
 class WaitScreenClass(Screen):
     return_to_screen = StringProperty()
 
-    def __init__(self, **kwargs):
-        super(WaitScreenClass, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
+    def __init__(self, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
 
     def on_enter(self):
         self.poll_for_success = Clock.schedule_interval(

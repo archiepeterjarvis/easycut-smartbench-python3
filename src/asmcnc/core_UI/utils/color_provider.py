@@ -37,25 +37,24 @@ https://docs.google.com/document/d/1bxCR3nOPByPlx_WBANi2rIB2xXZaYjnaPVMcbkC5j_0
 Information on Kivy's Color class:
 https://kivy.org/doc/stable/api-kivy.graphics.html
 """
-
 Colors = {
     "white": [1.0, 1.0, 1.0, 1.0],
-    "shapes_white": [249 / 255., 249 / 255., 249 / 255., 1.0],
+    "shapes_white": [249 / 255.0, 249 / 255.0, 249 / 255.0, 1.0],
     "black": [0.0, 0.0, 0.0, 1.0],
-    "green": [76 / 255., 175 / 255., 80 / 255., 1.0],
-    "red": [230 / 255., 74 / 255., 25 / 255., 1.0],
-    "primary": [13 / 255., 71 / 255., 161 / 255., 1.0],
-    "primary_light": [84 / 255., 114 / 255., 211 / 255., 1.0],
-    "primary_dark": [0 / 255., 33 / 255., 113 / 255., 1.0],
-    "secondary": [255 / 255., 109 / 255., 0.0, 1.0],
-    "secondary_light": [255 / 255., 158 / 255., 64 / 255., 1.0],
-    "secondary_dark": [196 / 255., 60 / 255., 0.0, 1.0],
-    "yellow": [240. / 255, 1, 0, 1],
-    "grey": [229 / 255., 229 / 255., 229 / 255., 1.0],
-    "blue": [25 / 255., 118 / 255., 210 / 255., 1.0],
-    "dark_grey": [51 / 255., 51 / 255., 51 / 255., 1.0],
+    "green": [76 / 255.0, 175 / 255.0, 80 / 255.0, 1.0],
+    "red": [230 / 255.0, 74 / 255.0, 25 / 255.0, 1.0],
+    "primary": [13 / 255.0, 71 / 255.0, 161 / 255.0, 1.0],
+    "primary_light": [84 / 255.0, 114 / 255.0, 211 / 255.0, 1.0],
+    "primary_dark": [0 / 255.0, 33 / 255.0, 113 / 255.0, 1.0],
+    "secondary": [255 / 255.0, 109 / 255.0, 0.0, 1.0],
+    "secondary_light": [255 / 255.0, 158 / 255.0, 64 / 255.0, 1.0],
+    "secondary_dark": [196 / 255.0, 60 / 255.0, 0.0, 1.0],
+    "yellow": [240.0 / 255, 1, 0, 1],
+    "grey": [229 / 255.0, 229 / 255.0, 229 / 255.0, 1.0],
+    "blue": [25 / 255.0, 118 / 255.0, 210 / 255.0, 1.0],
+    "dark_grey": [51 / 255.0, 51 / 255.0, 51 / 255.0, 1.0],
     "transparent": [0.0, 0.0, 0.0, 0.0],
-}  # type: dict[str, list[float]]
+}
 
 
 def get_rgba(color_name):
@@ -71,7 +70,6 @@ def get_rgba(color_name):
         rgba = Colors[color_name.lower()]
     except KeyError:
         raise KeyError("Color name not found in the color provider.")
-
     return rgba
 
 
@@ -85,8 +83,9 @@ def get_hex(color_name):
     :raises KeyError: If the color name is not found in the color provider.
     """
     color = get_rgba(color_name)
-
-    return "#{:02x}{:02x}{:02x}".format(int(color[0] * 255), int(color[1] * 255), int(color[2] * 255))
+    return (
+        f"#{int(color[0] * 255):02x}{int(color[1] * 255):02x}{int(color[2] * 255):02x}"
+    )
 
 
 def get_markup_string(text, color_name):
@@ -99,5 +98,4 @@ def get_markup_string(text, color_name):
     :raises KeyError: If the color name is not found in the color provider.
     """
     color_hex = get_hex(color_name)
-
-    return "[color={}]{}[/color]".format(color_hex, text)
+    return f"[color={color_hex}]{text}[/color]"

@@ -2,12 +2,13 @@
 Created on 12 December 2019
 Screen 2 to help user calibrate distances
 
-Screen needs to do the following: 
+Screen needs to do the following:
 
-Step 2: Inform user of measurement after machine has moved, and ask user if they want to adjust steps per mm 
+Step 2: Inform user of measurement after machine has moved, and ask user if they want to adjust steps per mm
 
 @author: Letty
 """
+
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, SlideTransition
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
@@ -212,10 +213,10 @@ class DistanceScreen2xClass(Screen):
     initial_x_cal_move = NumericProperty()
     x_cal_measure_1 = NumericProperty()
 
-    def __init__(self, **kwargs):
-        super(DistanceScreen2xClass, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
+    def __init__(self, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
 
     def on_pre_enter(self):
         measure_string = str(self.initial_x_cal_move + self.x_cal_measure_1)
@@ -237,7 +238,7 @@ class DistanceScreen2xClass(Screen):
         self.skip_section()
 
     def repeat_section(self):
-        from asmcnc.calibration_app import screen_distance_1_x # this has to be here
+        from asmcnc.calibration_app import screen_distance_1_x
 
         distance_screen1x = screen_distance_1_x.DistanceScreen1xClass(
             name="distance1x", screen_manager=self.sm, machine=self.m
@@ -246,7 +247,6 @@ class DistanceScreen2xClass(Screen):
         self.sm.current = "distance1x"
 
     def skip_section(self):
-        # Y STUFF
         self.sm.get_screen("measurement").axis = "Y"
         self.sm.current = "measurement"
 
@@ -258,7 +258,7 @@ class DistanceScreen2xClass(Screen):
         self.sm.current = "tape_measure_alert"
 
     def next_screen(self):
-        if not self.sm.has_screen("distance3x"): # only create the new screen if it doesn't exist already
+        if not self.sm.has_screen("distance3x"):
             distance3x_screen = screen_distance_3_x.DistanceScreen3xClass(
                 name="distance3x", screen_manager=self.sm, machine=self.m
             )

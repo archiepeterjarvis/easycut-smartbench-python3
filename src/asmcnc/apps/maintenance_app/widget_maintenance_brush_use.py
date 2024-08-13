@@ -1,5 +1,4 @@
 from kivy.core.window import Window
-
 from asmcnc.core_UI import scaling_utils
 
 """
@@ -10,7 +9,8 @@ widget to hold brush use input and buttons
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
 
-Builder.load_string("""
+Builder.load_string(
+    """
 #:import LabelBase asmcnc.core_UI.components.labels.base_label
 
 <BrushUseWidget>
@@ -140,11 +140,11 @@ Builder.load_string("""
 class BrushUseWidget(Widget):
     default_font_size = scaling_utils.get_scaled_width(24)
 
-    def __init__(self, **kwargs):
-        super(BrushUseWidget, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
+        self.l = localization
         self.update_strings()
 
     def restore(self):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created July 2022
 
@@ -6,6 +5,7 @@ Created July 2022
 
 Ask if user wants to rehome, for job recovery
 """
+
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 from asmcnc.core_UI import scaling_utils as utils
@@ -157,11 +157,11 @@ class HomingDecisionScreen(Screen):
     return_to_screen = "lobby"
     default_font_size = utils.get_scaled_width(30)
 
-    def __init__(self, **kwargs):
-        super(HomingDecisionScreen, self).__init__(**kwargs)
-        self.sm = kwargs["screen_manager"]
-        self.m = kwargs["machine"]
-        self.l = kwargs["localization"]
+    def __init__(self, localization, machine, screen_manager, **kwargs):
+        super().__init__(**kwargs)
+        self.sm = screen_manager
+        self.m = machine
+        self.l = localization
         self.update_strings()
 
     def already_homed(self):
@@ -202,14 +202,15 @@ class HomingDecisionScreen(Screen):
                 "This accounts for inconsistencies in the homing process and will move your datum accordingly."
             )
         )
-
         info_popup = InfoPopup(
-            sm=self.sm, m=self.m, l=self.l,
-            title='Information',
+            sm=self.sm,
+            m=self.m,
+            l=self.l,
+            title="Information",
             main_string=info,
             popup_width=760,
             popup_height=440,
-            )
+        )
         info_popup.open()
 
     def update_strings(self):
