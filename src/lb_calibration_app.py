@@ -21,20 +21,19 @@ touch /home/pi/YETI_LBCAL_PROD_JIG.txt
 #######################################################
 """
 
-from asmcnc.comms.logging_system.logging_system import Logger
+from core.logging.logging_system import Logger
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, NoTransition
 from kivy.clock import Clock
-from asmcnc.comms.router_machine import RouterMachine
-from settings.settings_manager import Settings
-from asmcnc.job.job_data import JobData
-from asmcnc.comms.localization import Localization
-from asmcnc.keyboard.custom_keyboard import Keyboard
-from asmcnc.comms import smartbench_flurry_database_connection
+from core.serial.router_machine import RouterMachine
+from core.managers.settings_manager import Settings
+from core.job import JobData
+from core.localization import Localization
+from interface.keyboard import Keyboard
 from asmcnc.production.lowerbeam_calibration_jig.lowerbeam_calibration_1 import (
     LBCalibration1,
 )
-from asmcnc.production.lowerbeam_calibration_jig.lowerbeam_calibration_2 import (
+from internal.production.lowerbeam_calibration_jig.lowerbeam_calibration_2 import (
     LBCalibration2,
 )
 from asmcnc.production.lowerbeam_calibration_jig.lowerbeam_calibration_3 import (
@@ -43,16 +42,16 @@ from asmcnc.production.lowerbeam_calibration_jig.lowerbeam_calibration_3 import 
 from asmcnc.production.lowerbeam_calibration_jig.lowerbeam_calibration_4 import (
     LBCalibration4,
 )
-from asmcnc.production.lowerbeam_calibration_jig.lowerbeam_calibration_success import (
+from internal.production.lowerbeam_calibration_jig.lowerbeam_calibration_success import (
     LBCalibrationSuccess,
 )
-from asmcnc.production.lowerbeam_calibration_jig.lowerbeam_calibration_fail import (
+from internal.production.lowerbeam_calibration_jig.lowerbeam_calibration_fail import (
     LBCalibrationFail,
 )
-from asmcnc.skavaUI import screen_door
-from asmcnc.skavaUI import screen_error
-from asmcnc.skavaUI.screen_home import HomeScreen
-from asmcnc.production.database.calibration_database import CalibrationDatabase
+from ui.screens import screen_door
+from ui.screens import screen_error
+from interface.skavaUI.screen_home import HomeScreen
+from internal.production.database import CalibrationDatabase
 
 Cmport = "COM3"
 

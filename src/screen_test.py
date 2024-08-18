@@ -8,16 +8,15 @@ Config.set("kivy", "KIVY_CLOCK", "interrupt")
 Config.write()
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, NoTransition
-from asmcnc.comms import localization
+from core import localization
 
 try:
     from unittest.mock import Mock
 except:
     pass
-from asmcnc.apps.systemTools_app.screens.calibration.screen_overnight_test import (
+from apps.system_tools_app.screens.calibration.screen_overnight_test import (
     OvernightTesting,
 )
-from asmcnc.comms.yeti_grbl_protocol.c_defines import *
 
 Cmport = "COM3"
 

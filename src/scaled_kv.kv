@@ -36,7 +36,7 @@
 
     Image:
         size: dp(app.get_scaled_width(48)), dp(app.get_scaled_height(48))
-        source: './asmcnc/skavaUI/img/filechooser_%s' % ('folder' if ctx.isdir else 'file') + '.png'
+        source: 'filechooser_%s' % ('folder' if ctx.isdir else 'file') + '.png'
         pos: root.x + dp(app.get_scaled_width(24)), root.y + dp(app.get_scaled_height(40))
     Label:
         text: ctx.name

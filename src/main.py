@@ -5,13 +5,15 @@ YetiTool's UI for SmartBench
 www.yetitool.com
 """
 
-from asmcnc import paths
+from core import paths
 import os
 import os.path
 import sys
 from kivy.config import Config
 
-paths.create_paths()
+from core.services import st_socket_connection, flurry_connection
+
+# paths.create_paths()
 Config.set("kivy", "keyboard_mode", "systemanddock")
 if sys.platform.startswith("linux"):
     resolution = os.popen(" fbset | grep -oP 'mode \"\\K[^\"]+' ").read().strip()
@@ -25,61 +27,59 @@ Config.set("graphics", "maxfps", "60")
 Config.set("kivy", "KIVY_CLOCK", "interrupt")
 Config.write()
 import logging
-from asmcnc.comms.user_settings_manager import UserSettingsManager
-from asmcnc.job.database.profile_database import ProfileDatabase
+from core.managers.user_settings_manager import UserSettingsManager
+from core.job.database.profile_database import ProfileDatabase
 from kivy import Logger
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
-from asmcnc.comms.grbl_settings_manager import GRBLSettingsManagerSingleton
-from asmcnc.core_UI import scaling_utils, console_utils
-from asmcnc.comms.model_manager import ProductCodes
-from asmcnc.core_UI.popup_manager import PopupManager
-from asmcnc.comms.model_manager import ModelManagerSingleton
+from core.managers.grbl_settings_manager import GRBLSettingsManagerSingleton
+from ui.utils import scaling_utils, console_utils
+from core.managers.model_manager import ProductCodes
+from ui.popups.popup_manager import PopupManager
+from core.managers.model_manager import ModelManagerSingleton
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, NoTransition
 from kivy.core.window import Window
-from asmcnc.comms import router_machine
-from asmcnc.comms.smart_transfer import server_connection
-from asmcnc.comms import smartbench_flurry_database_connection
-from asmcnc.apps import app_manager
-from settings import settings_manager
-from asmcnc.comms.localization import Localization
-from asmcnc.keyboard import custom_keyboard
-from asmcnc.job import job_data
-from asmcnc.job.yetipilot.yetipilot import YetiPilot
-from asmcnc.skavaUI import screen_home
-from asmcnc.skavaUI import screen_local_filechooser
-from asmcnc.skavaUI import screen_usb_filechooser
-from asmcnc.skavaUI import screen_go
-from asmcnc.skavaUI import screen_jobstart_warning
-from asmcnc.skavaUI import screen_lobby
-from asmcnc.skavaUI import screen_file_loading
-from asmcnc.skavaUI import screen_check_job
-from asmcnc.skavaUI import screen_error
-from asmcnc.skavaUI import screen_serial_failure
-from asmcnc.skavaUI import screen_mstate_warning
-from asmcnc.skavaUI import screen_boundary_warning
-from asmcnc.skavaUI import screen_rebooting
-from asmcnc.skavaUI import screen_job_feedback
-from asmcnc.skavaUI import screen_job_incomplete
-from asmcnc.skavaUI import screen_door
-from asmcnc.skavaUI import screen_squaring_manual_vs_square
-from asmcnc.skavaUI import screen_homing_prepare
-from asmcnc.skavaUI import screen_homing_active
-from asmcnc.skavaUI import screen_squaring_active
-from asmcnc.skavaUI import screen_spindle_shutdown
-from asmcnc.skavaUI import screen_spindle_cooldown
-from asmcnc.skavaUI import screen_stop_or_resume_decision
-from asmcnc.skavaUI import screen_lift_z_on_pause_decision
-from asmcnc.skavaUI import screen_tool_selection
-from asmcnc.skavaUI import screen_job_recovery
-from asmcnc.skavaUI import screen_nudge
-from asmcnc.skavaUI import screen_recovery_decision
-from asmcnc.skavaUI import screen_homing_decision
-from asmcnc.skavaUI import screen_yeticut_lobby
-from asmcnc.skavaUI import screen_dust_shoe_alarm
+from core.serial import router_machine
+from apps import app_manager
+from core.managers import settings_manager
+from core.localization import Localization
+from ui.keyboard import custom_keyboard
+from core.job import job_data
+from core.job.yetipilot.yetipilot import YetiPilot
+from ui.screens import screen_home
+from ui.screens import screen_local_filechooser
+from ui.screens import screen_usb_filechooser
+from ui.screens import screen_go
+from ui.screens import screen_jobstart_warning
+from ui.screens import screen_lobby
+from ui.screens import screen_file_loading
+from ui.screens import screen_check_job
+from ui.screens import screen_error
+from ui.screens import screen_serial_failure
+from ui.screens import screen_mstate_warning
+from ui.screens import screen_boundary_warning
+from ui.screens import screen_rebooting
+from ui.screens import screen_job_feedback
+from ui.screens import screen_job_incomplete
+from ui.screens import screen_door
+from ui.screens import screen_squaring_manual_vs_square
+from ui.screens import screen_homing_prepare
+from ui.screens import screen_homing_active
+from ui.screens import screen_squaring_active
+from ui.screens import screen_spindle_shutdown
+from ui.screens import screen_spindle_cooldown
+from ui.screens import screen_stop_or_resume_decision
+from ui.screens import screen_lift_z_on_pause_decision
+from ui.screens import screen_tool_selection
+from ui.screens import screen_job_recovery
+from ui.screens import screen_nudge
+from ui.screens import screen_recovery_decision
+from ui.screens import screen_homing_decision
+from ui.screens import screen_yeticut_lobby
+from ui.screens import screen_dust_shoe_alarm
 
-Cmport = "COM3"
+Cmport = "COM5"
 initial_version = "v2.9.2"
 config_flag = False
 
@@ -170,7 +170,7 @@ class SkavaUI(App):
         ModelManagerSingleton(m)
         GRBLSettingsManagerSingleton(m)
         yp = YetiPilot(screen_manager=sm, machine=m, job_data=jd, localization=self.l)
-        db = smartbench_flurry_database_connection.DatabaseEventManager(sm, m, sett)
+        db = flurry_connection.DatabaseEventManager(sm, m, sett)
         pm = PopupManager(sm, m, self.l)
         sm.pm = pm
         am = app_manager.AppManagerClass(
@@ -179,7 +179,7 @@ class SkavaUI(App):
         m.s.alarm.db = db
         m.s.yp = yp
         if ModelManagerSingleton().get_product_code() != ProductCodes.DRYWALLTEC:
-            sc = server_connection.ServerConnection(sett)
+            sc = st_socket_connection.ServerConnection(sett)
         lobby_screen = screen_lobby.LobbyScreen(
             name="lobby",
             screen_manager=sm,

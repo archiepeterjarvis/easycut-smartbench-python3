@@ -1,30 +1,29 @@
-from asmcnc.comms.logging_system.logging_system import Logger
+from core.logging.logging_system import Logger
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, NoTransition
 from kivy.clock import Clock
-from settings.settings_manager import Settings
-from asmcnc.job.job_data import JobData
-from asmcnc.comms.router_machine import RouterMachine
-from asmcnc.comms.localization import Localization
-from asmcnc.keyboard.custom_keyboard import Keyboard
-from asmcnc.comms import smartbench_flurry_database_connection
-from asmcnc.skavaUI.screen_home import HomeScreen
-from asmcnc.skavaUI.screen_squaring_manual_vs_square import (
+from core.managers.settings_manager import Settings
+from core.job import JobData
+from core.serial.router_machine import RouterMachine
+from core.localization import Localization
+from interface.keyboard import Keyboard
+from interface.skavaUI.screen_home import HomeScreen
+from interface.skavaUI.screen_squaring_manual_vs_square import (
     SquaringScreenDecisionManualVsSquare,
 )
-from asmcnc.skavaUI.screen_homing_prepare import HomingScreenPrepare
-from asmcnc.skavaUI.screen_homing_active import HomingScreenActive
-from asmcnc.skavaUI.screen_squaring_active import SquaringScreenActive
-from asmcnc.skavaUI import screen_door
-from asmcnc.skavaUI import screen_error
-from asmcnc.production.z_head_mechanics_jig.z_head_mechanics import ZHeadMechanics
-from asmcnc.production.z_head_mechanics_jig.z_head_mechanics_monitor import (
+from interface.skavaUI.screen_homing_prepare import HomingScreenPrepare
+from interface.skavaUI.screen_homing_active import HomingScreenActive
+from interface.skavaUI.screen_squaring_active import SquaringScreenActive
+from ui.screens import screen_door
+from ui.screens import screen_error
+from internal.production.z_head_mechanics_jig import ZHeadMechanics
+from internal.production.z_head_mechanics_jig import (
     ZHeadMechanicsMonitor,
 )
-from asmcnc.production.z_head_mechanics_jig.z_head_mechanics_booting import (
+from internal.production.z_head_mechanics_jig import (
     ZHeadMechanicsBooting,
 )
-from asmcnc.production.z_head_mechanics_jig.z_head_mechanics_manual_move import (
+from internal.production.z_head_mechanics_jig import (
     ZHeadMechanicsManualMove,
 )
 
