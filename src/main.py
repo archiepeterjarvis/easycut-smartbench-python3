@@ -137,7 +137,7 @@ def check_ansible_status():
 check_and_update_config()
 Builder.load_file("scaled_kv.kv")
 Logger.setLevel(logging.INFO)
-os.system("git remote set-url origin http://easycut-smartbench.co.uk")
+os.system("git remote set-url origin https://github.com/archiepeterjarvis/easycut-smartbench-python3")
 
 
 class SkavaUI(App):
