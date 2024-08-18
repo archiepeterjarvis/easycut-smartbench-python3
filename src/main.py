@@ -397,4 +397,9 @@ class SkavaUI(App):
 
 
 if __name__ == "__main__":
-    SkavaUI().run()
+    try:
+        import cProfile
+        cProfile.run("SkavaUI().run()")
+    except:
+        Logger.exception("Could not run cProfile")
+        SkavaUI().run()

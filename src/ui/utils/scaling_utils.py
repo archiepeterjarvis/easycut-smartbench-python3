@@ -39,7 +39,7 @@ def get_scaled_height(height):
     """
     if height is None:
         return None
-    if height is 0:
+    if height == 0:
         return 0
     return float(height) / 480.0 * Height
 

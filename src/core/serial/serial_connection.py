@@ -7,6 +7,8 @@ Module to manage all serial comms between pi (EasyCut s/w) and realtime arduino 
 import re
 from datetime import datetime, timedelta
 from os import listdir
+
+import line_profiler
 import serial
 import serial.tools.list_ports
 import string
@@ -354,6 +356,7 @@ class SerialConnection(EventDispatcher):
     VERBOSE_ALL_RESPONSE = False
     VERBOSE_STATUS = False
 
+    @line_profiler.profile
     def grbl_scanner(self, run_grbl_scanner_once=False):
         Logger.info("Running grbl_scanner thread")
         while self.grbl_scanner_running or run_grbl_scanner_once:
@@ -820,6 +823,7 @@ class SerialConnection(EventDispatcher):
     spindle_health_check = False
     spindle_health_check_data = []
 
+    @line_profiler.profile
     def process_grbl_push(self, message):
         message = str(message)
         if self.VERBOSE_ALL_PUSH_MESSAGES:
