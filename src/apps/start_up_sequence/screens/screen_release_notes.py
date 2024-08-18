@@ -152,9 +152,10 @@ class ReleaseNotesScreen(Screen):
         self.l = localization
         self.model_manager = ModelManagerSingleton()
         machine_type = self.model_manager.get_machine_type()
-        self.scroll_release_notes.release_notes.source = self.get_release_notes_source(
-            machine_type
+        self.scroll_release_notes.release_notes.source = paths.get_resource(
+            self.get_release_notes_source(machine_type)
         )
+
         self.update_strings()
         if machine_type is not MachineType.SMARTBENCH:
             self.release_notes_and_links.remove_widget(self.release_links)

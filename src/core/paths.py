@@ -106,6 +106,7 @@ RESOURCES_PATH = os.path.join(EASYCUT_SMARTBENCH_PATH, "resources")
 IMAGE_RESOURCES_PATH = os.path.join(RESOURCES_PATH, "images")
 FONTS_PATH = os.path.join(RESOURCES_PATH, "fonts")
 YETI_PILOT_CONFIG_PATH = os.path.join(CORE_PATH, "job", "yetipilot", "config")
+DOCS_PATH = os.path.join(EASYCUT_SMARTBENCH_PATH, "docs")
 
 def create_paths():
     if not os.path.exists(SB_VALUES_PATH):
@@ -136,6 +137,7 @@ resource_add_path(RESOURCES_PATH)
 resource_add_path(FONTS_PATH)
 resource_add_path(YETI_PILOT_CONFIG_PATH)
 resource_add_path(IMAGE_RESOURCES_PATH)
+resource_add_path(DOCS_PATH)
 
 
 def get_resource(file_name):
