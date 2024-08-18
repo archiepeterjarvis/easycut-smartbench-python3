@@ -49,12 +49,13 @@ class ServerConnection:
                     self.sock.listen(5)
                     self.sock.settimeout(20)
                     self.is_socket_available = True
-                    try:
-                        Logger.debug("Thread is alive? " + str(t.is_alive()))
-                    except:
-                        t = threading.Thread(target=self.do_connection_loop)
-                        t.daemon = True
-                        t.start()
+                    # ?? t is not defined -- ends up in lots of threads being created
+                    # try:
+                    #     Logger.debug("Thread is alive? " + str(t.is_alive()))
+                    # except:
+                    #     t = threading.Thread(target=self.do_connection_loop)
+                    #     t.daemon = True
+                    #     t.start()
                 except:
                     Logger.exception("Unable to set up socket")
             else:
