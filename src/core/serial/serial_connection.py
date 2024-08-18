@@ -1681,8 +1681,7 @@ class SerialConnection(EventDispatcher):
         realtime=False,
         protocol=False,
     ):
-        if not serialCommand and not isinstance(serialCommand, str):
-            serialCommand = str(serialCommand)
+        serialCommand = serialCommand.decode("utf-8")
         try:
             if not serialCommand.startswith("?") and not protocol:
                 Logger.info("> " + serialCommand)
