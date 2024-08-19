@@ -121,6 +121,7 @@ class SerialConnection(EventDispatcher):
     def update_current_screen(self, screen_name):
         def inner(dt):
             self.sm.current = screen_name
+
         Clock.schedule_once(inner, 0)
 
     def on_reset_runtime(self, *args):
@@ -829,7 +830,7 @@ class SerialConnection(EventDispatcher):
         if self.VERBOSE_ALL_PUSH_MESSAGES:
             Logger.info(message)
         if message.startswith("<"):
-            status_parts = message[1:-1].split('|')
+            status_parts = message[1:-1].split("|")
             if (
                 status_parts[0] != "Idle"
                 and status_parts[0] != "Run"
@@ -1525,7 +1526,7 @@ class SerialConnection(EventDispatcher):
                 self.m.grbl_z_max_travel = value
                 self.m.set_jog_limits()
         elif message.startswith("["):
-            stripped_message = message.replace('[', '').replace(']', '')
+            stripped_message = message.replace("[", "").replace("]", "")
             if stripped_message.startswith("G28:"):
                 pos = stripped_message[4:].split(",")
                 self.g28_x = pos[0]
@@ -1676,6 +1677,10 @@ class SerialConnection(EventDispatcher):
             return True
         return False
 
+    # def write_direct(self, serial_command, alt_text=None,
+    #                  show_in_sys=True, show_in_console=True,
+    #                  realtime=True, protocol=True):
+
     def write_direct(
         self,
         serialCommand,
@@ -1685,9 +1690,8 @@ class SerialConnection(EventDispatcher):
         realtime=False,
         protocol=False,
     ):
-        if not isinstance(serialCommand, str):
-            Logger.info("Command not a string: " + str(serialCommand))
-            serialCommand = serialCommand.decode()
+        if not protocol and not isinstance(serialCommand, str):
+            serialCommand = str(serialCommand)
         try:
             if not serialCommand.startswith("?") and not protocol:
                 Logger.info("> " + serialCommand)

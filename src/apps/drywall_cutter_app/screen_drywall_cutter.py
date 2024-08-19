@@ -194,35 +194,17 @@ class DrywallCutterScreen(Screen):
     rotation = "horizontal"
     current_pulse_opacity = 1
     shape_options_dict = {
-        "circle": {
-            "image_path": "circle_shape_button.png"
-        },
-        "square": {
-            "image_path": "square_shape_button.png"
-        },
-        "line": {
-            "image_path": "line_shape_button.png"
-        },
-        "geberit": {
-            "image_path": "geberit_shape_button.png"
-        },
-        "rectangle": {
-            "image_path": "rectangle_shape_button.png"
-        },
+        "circle": {"image_path": "circle_shape_button.png"},
+        "square": {"image_path": "square_shape_button.png"},
+        "line": {"image_path": "line_shape_button.png"},
+        "geberit": {"image_path": "geberit_shape_button.png"},
+        "rectangle": {"image_path": "rectangle_shape_button.png"},
     }
     toolpath_offset_options_dict = {
-        "inside": {
-            "image_path": "toolpath_offset_inside_button.png"
-        },
-        "outside": {
-            "image_path": "toolpath_offset_outside_button.png"
-        },
-        "on": {
-            "image_path": "toolpath_offset_on_button.png"
-        },
-        "pocket": {
-            "image_path": "toolpath_offset_pocket_button.png"
-        },
+        "inside": {"image_path": "toolpath_offset_inside_button.png"},
+        "outside": {"image_path": "toolpath_offset_outside_button.png"},
+        "on": {"image_path": "toolpath_offset_on_button.png"},
+        "pocket": {"image_path": "toolpath_offset_pocket_button.png"},
     }
     pulse_poll = None
 

@@ -197,9 +197,7 @@ class StopOrResumeDecisionScreen(Screen):
 
     def update_strings(self):
         try:
-            self.sm.get_screen(
-                "go"
-            ).start_or_pause_button_image.source = "resume.png"
+            self.sm.get_screen("go").start_or_pause_button_image.source = "resume.png"
         except:
             pass
         if self.reason_for_pause == "job_pause":

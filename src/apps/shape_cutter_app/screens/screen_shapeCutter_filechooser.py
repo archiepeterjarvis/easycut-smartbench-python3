@@ -213,22 +213,14 @@ class SCFileChooser(Screen):
                 self.image_delete.source = "file_select_delete.png"
             else:
                 self.load_button.disabled = True
-                self.image_select.source = (
-                    "file_select_select_disabled.png"
-                )
+                self.image_select.source = "file_select_select_disabled.png"
                 self.delete_selected_button.disabled = True
-                self.image_delete.source = (
-                    "file_select_delete_disabled.png"
-                )
+                self.image_delete.source = "file_select_delete_disabled.png"
         except:
             self.load_button.disabled = True
-            self.image_select.source = (
-                "file_select_select_disabled.png"
-            )
+            self.image_select.source = "file_select_select_disabled.png"
             self.delete_selected_button.disabled = True
-            self.image_delete.source = (
-                "file_select_delete_disabled.png"
-            )
+            self.image_delete.source = "file_select_delete_disabled.png"
         self.filechooser_sc_params._update_files()
 
     def return_to_SC17(self, file_selection):

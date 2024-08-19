@@ -47,5 +47,5 @@ class TestUnitTestBase(UnitTestBase):
         self.assertIsNotNone(self._localization_module)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

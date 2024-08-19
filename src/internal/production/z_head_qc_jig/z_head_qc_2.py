@@ -329,9 +329,7 @@ class ZHeadQC2(Screen):
             fail_report.append("Voltage was " + str(voltage) + ". Should be 100-255")
         if not fail_report:
             Logger.info("Test passed")
-            self.digital_spindle_check.source = (
-                "file_select_select.png"
-            )
+            self.digital_spindle_check.source = "file_select_select.png"
         elif self.brush_reset_test_count < 5 and (
             self.initial_run_time == 0 or self.m.s.spindle_brush_run_time_seconds != 0
         ):
@@ -340,9 +338,7 @@ class ZHeadQC2(Screen):
             Logger.warning("Test failed")
             fail_report_string = "\n".join(fail_report)
             popup_z_head_qc.PopupTempPowerDiagnosticsInfo(self.sm, fail_report_string)
-            self.digital_spindle_check.source = (
-                "template_cancel.png"
-            )
+            self.digital_spindle_check.source = "template_cancel.png"
 
     def run_analogue_spindle_check(self):
         self.analogue_spindle_check("M3 S5000", 2000, 2000)
@@ -364,17 +360,13 @@ class ZHeadQC2(Screen):
             try:
                 self.spindle_test_counter = 0
                 if self.spindle_pass_fail == 0:
-                    self.spindle_speed_check.source = (
-                        "template_cancel.png"
-                    )
+                    self.spindle_speed_check.source = "template_cancel.png"
                     test = self.string_overload_summary.split("**")
                     popup_z_head_qc.PopupSpindleDiagnosticsInfo(
                         self.sm, test[1], test[2], test[3], test[4], test[5]
                     )
                 else:
-                    self.spindle_speed_check.source = (
-                        "file_select_select.png"
-                    )
+                    self.spindle_speed_check.source = "file_select_select.png"
                 self.spindle_pass_fail = True
             except:
                 Logger.exception("Could not show outcome")

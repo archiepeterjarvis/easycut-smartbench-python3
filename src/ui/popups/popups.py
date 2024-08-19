@@ -61,9 +61,7 @@ class BasicPopup(Popup):
     main_label = None
     separator_color = ListProperty([249 / 255.0, 206 / 255.0, 29 / 255.0, 1.0])
     separator_height = dp(utils.get_scaled_height(4))
-    background = StringProperty(
-        "popup_background.png"
-    )
+    background = StringProperty("popup_background.png")
     auto_dismiss = ObjectProperty(False)
     title_color = ObjectProperty([0, 0, 0, 1])
     title_size = ObjectProperty(str(utils.get_scaled_width(20)) + "sp")

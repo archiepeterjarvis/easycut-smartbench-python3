@@ -309,9 +309,7 @@ class LowerBeamQC(Screen):
             PopupMotorChipsTest(self.sm, fail_report_string)
             self.motor_chips_check.source = "template_cancel.png"
         else:
-            self.motor_chips_check.source = (
-                "file_select_select.png"
-            )
+            self.motor_chips_check.source = "file_select_select.png"
         self.m.send_command_to_motor(
             "REPORT RAW SG UNSET", command=REPORT_RAW_SG, value=0
         )

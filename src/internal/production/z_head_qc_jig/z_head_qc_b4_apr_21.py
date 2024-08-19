@@ -468,9 +468,7 @@ class ZHeadQCWarrantyBeforeApr21(Screen):
 
     def cycle_limit_switch(self):
         if self.m.s.limit_z:
-            self.cycle_limit_check.source = (
-                "file_select_select.png"
-            )
+            self.cycle_limit_check.source = "file_select_select.png"
             self.z_limit_set = True
         else:
             self.cycle_limit_check.source = "checkbox_inactive.png"

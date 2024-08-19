@@ -515,9 +515,7 @@ class LobbyScreen(Screen):
     def decide_app_order(self):
         self.remove_everything_but(self.drywall_app_container)
         if self.model_manager.is_machine_drywall():
-            self.yeticut_apps_image.source = (
-                "lobby_logo.png"
-            )
+            self.yeticut_apps_image.source = "lobby_logo.png"
             self.yeticut_apps_label.text = "Drywall Cutter"
             self.put_drywall_app_first()
 

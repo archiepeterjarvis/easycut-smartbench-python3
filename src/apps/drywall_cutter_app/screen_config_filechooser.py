@@ -382,17 +382,13 @@ class ConfigFileChooser(Screen):
             self.image_sort.source = "file_select_sort_up_name.png"
         elif self.filechooser.sort_func == self.sort_by_date:
             self.filechooser.sort_func = self.sort_by_name
-            self.image_sort.source = (
-                "file_select_sort_down_name.png"
-            )
+            self.image_sort.source = "file_select_sort_down_name.png"
         elif self.filechooser.sort_func == self.sort_by_name:
             self.filechooser.sort_func = self.sort_by_name_reverse
             self.image_sort.source = "file_select_sort_up_date.png"
         elif self.filechooser.sort_func == self.sort_by_name_reverse:
             self.filechooser.sort_func = self.sort_by_date_reverse
-            self.image_sort.source = (
-                "file_select_sort_down_date.png"
-            )
+            self.image_sort.source = "file_select_sort_down_date.png"
         self.filechooser._update_files()
 
     def refresh_filechooser(self):
@@ -404,13 +400,9 @@ class ConfigFileChooser(Screen):
                 self.display_selected_file()
             else:
                 self.load_button.disabled = True
-                self.image_select.source = (
-                    "file_select_select_disabled.png"
-                )
+                self.image_select.source = "file_select_select_disabled.png"
                 self.delete_selected_button.disabled = True
-                self.image_delete.source = (
-                    "file_select_delete_disabled.png"
-                )
+                self.image_delete.source = "file_select_delete_disabled.png"
                 self.file_selected_label.text = self.l.get_str(
                     "Press the icon to display the full filename here."
                 )
@@ -419,9 +411,7 @@ class ConfigFileChooser(Screen):
                 )
         except:
             self.load_button.disabled = True
-            self.image_select.source = (
-                "file_select_select_disabled.png"
-            )
+            self.image_select.source = "file_select_select_disabled.png"
             self.file_selected_label.text = self.l.get_str(
                 "Press the icon to display the full filename here."
             )
@@ -429,9 +419,7 @@ class ConfigFileChooser(Screen):
                 "Select a file to see metadata or gcode preview."
             )
             self.delete_selected_button.disabled = True
-            self.image_delete.source = (
-                "file_select_delete_disabled.png"
-            )
+            self.image_delete.source = "file_select_delete_disabled.png"
             self.file_selected_label.text = self.l.get_str(
                 "Press the icon to display the full filename here."
             )

@@ -21,7 +21,7 @@ from ui.components.widgets import (
     widget_gcode_monitor,
     widget_gcode_summary,
     widget_gcode_view,
-    widget_status_bar
+    widget_status_bar,
 )
 
 Builder.load_string(
@@ -279,7 +279,7 @@ class HomeScreen(Screen):
     has_datum_been_reset = False
 
     def __init__(
-            self, keyboard, localization, settings, job, screen_manager, machine, **kwargs
+        self, keyboard, localization, settings, job, screen_manager, machine, **kwargs
     ):
         super().__init__(**kwargs)
         Clock.schedule_once(lambda *args: self.tab_panel.switch_to(self.home_tab))
@@ -335,8 +335,8 @@ class HomeScreen(Screen):
         self.kb.setup_text_inputs(self.text_inputs)
         self.m.stylus_router_choice = "router"
         if (
-                self.tab_panel.current_tab == self.move_tab
-                or self.tab_panel.current_tab == self.pos_tab
+            self.tab_panel.current_tab == self.move_tab
+            or self.tab_panel.current_tab == self.pos_tab
         ):
             Clock.schedule_once(lambda dt: self.m.laser_on(), 0.2)
         else:
@@ -351,7 +351,7 @@ class HomeScreen(Screen):
     def on_pre_enter(self):
         if self.jd.job_gcode == []:
             self.file_data_label.text = (
-                    "[color=333333]" + self.l.get_str("Load a file") + "..." + "[/color]"
+                "[color=333333]" + self.l.get_str("Load a file") + "..." + "[/color]"
             )
             self.job_filename = ""
             self.job_box.range_x[0] = 0
@@ -371,32 +371,26 @@ class HomeScreen(Screen):
         if not self.model_manager.is_machine_drywall():
             if self.jd.job_recovery_cancel_line != None:
                 if self.jd.job_recovery_cancel_line == -1:
-                    self.job_recovery_button_image.source = (
-                        "recover_job_disabled.png"
-                    )
+                    self.job_recovery_button_image.source = "recover_job_disabled.png"
                 else:
-                    self.job_recovery_button_image.source = (
-                        "recover_job.png"
-                    )
+                    self.job_recovery_button_image.source = "recover_job.png"
                 if self.jd.job_recovery_selected_line == -1:
                     if self.jd.job_recovery_from_beginning:
                         self.file_data_label.text += (
-                                "\n[color=FF0000]"
-                                + self.l.get_str("Restart from beginning")
-                                + "[/color]"
+                            "\n[color=FF0000]"
+                            + self.l.get_str("Restart from beginning")
+                            + "[/color]"
                         )
                 else:
                     self.file_data_label.text += (
-                            "\n[color=FF0000]"
-                            + self.l.get_str("From line N").replace(
-                        "N", str(self.jd.job_recovery_selected_line)
-                    )
-                            + "[/color]"
+                        "\n[color=FF0000]"
+                        + self.l.get_str("From line N").replace(
+                            "N", str(self.jd.job_recovery_selected_line)
+                        )
+                        + "[/color]"
                     )
             else:
-                self.job_recovery_button_image.source = (
-                    "recover_job_disabled.png"
-                )
+                self.job_recovery_button_image.source = "recover_job_disabled.png"
         else:
             self.job_recovery_button.disabled = True
             self.job_recovery_button.opacity = 0

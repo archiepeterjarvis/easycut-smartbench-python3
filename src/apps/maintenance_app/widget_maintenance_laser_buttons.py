@@ -165,9 +165,7 @@ class LaserDatumButtons(Widget):
         self.sm.get_screen(
             "maintenance"
         ).laser_datum_reset_coordinate_y = self.m.mpos_y()
-        self.save_button_image.source = (
-            "save_button_132.png"
-        )
+        self.save_button_image.source = "save_button_132.png"
         self.save_button.disabled = False
 
     def save_laser_offset(self):
@@ -184,9 +182,7 @@ class LaserDatumButtons(Widget):
         ):
             saved_success = self.l.get_str("Settings saved!")
             self.sm.pm.show_mini_info_popup(saved_success)
-            self.save_button_image.source = (
-                "save_button_132_greyscale.png"
-            )
+            self.save_button_image.source = "save_button_132_greyscale.png"
             self.save_button.disabled = True
         else:
             main_string = (

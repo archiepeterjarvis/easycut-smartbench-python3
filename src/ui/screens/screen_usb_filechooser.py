@@ -402,9 +402,7 @@ class USBFileChooser(Screen):
             self.filechooser_usb.sort_func = self.sm.get_screen(
                 "local_filechooser"
             ).sort_by_name
-            self.image_sort.source = (
-                "file_select_sort_down_name.png"
-            )
+            self.image_sort.source = "file_select_sort_down_name.png"
         elif (
             self.filechooser_usb.sort_func
             == self.sm.get_screen("local_filechooser").sort_by_name
@@ -420,9 +418,7 @@ class USBFileChooser(Screen):
             self.filechooser_usb.sort_func = self.sm.get_screen(
                 "local_filechooser"
             ).sort_by_date_reverse
-            self.image_sort.source = (
-                "file_select_sort_down_date.png"
-            )
+            self.image_sort.source = "file_select_sort_down_date.png"
         self.filechooser_usb._update_files()
 
     def refresh_filechooser(self):
@@ -433,9 +429,7 @@ class USBFileChooser(Screen):
                 self.display_selected_file()
             else:
                 self.loadButton.disabled = True
-                self.image_select.source = (
-                    "file_select_select_disabled.png"
-                )
+                self.image_select.source = "file_select_select_disabled.png"
                 self.file_selected_label.text = self.l.get_str(
                     "Press the icon to display the full filename here."
                 )
@@ -444,9 +438,7 @@ class USBFileChooser(Screen):
                 )
         except:
             self.load_button.disabled = True
-            self.image_select.source = (
-                "file_select_select_disabled.png"
-            )
+            self.image_select.source = "file_select_select_disabled.png"
             self.file_selected_label.text = self.l.get_str(
                 "Press the icon to display the full filename here."
             )

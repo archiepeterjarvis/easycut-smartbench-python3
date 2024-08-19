@@ -260,9 +260,7 @@ class SC31XYMove(Widget):
         self.jog_mode_button_press_counter += 1
         if self.jog_mode_button_press_counter % 6 == 0:
             self.jogMode = "free"
-            self.jogModeButtonImage.source = (
-                "jog_mode_infinity.png"
-            )
+            self.jogModeButtonImage.source = "jog_mode_infinity.png"
         if self.jog_mode_button_press_counter % 6 == 1:
             self.jogMode = "job"
             self.jogModeButtonImage.source = "jog_mode_box.png"

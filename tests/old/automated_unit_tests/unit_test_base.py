@@ -10,7 +10,7 @@ Need to use sys.path.append to add the src folder to the path so that the import
 I think this is a hacky way of doing it, but it works for now. 
 """
 
-sys.path.append('./src')
+sys.path.append("./src")
 
 from core.localization import Localization
 from core.serial.router_machine import RouterMachine

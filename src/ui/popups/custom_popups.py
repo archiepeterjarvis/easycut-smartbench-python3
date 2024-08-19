@@ -19,16 +19,8 @@ from ui.utils.scaling_utils import (
     is_screen_big,
 )
 
-info_img_source = (
-    "info_icon_scaled_up.png"
-    if is_screen_big()
-    else "info_icon.png"
-)
-error_img_source = (
-    "error_icon_scaled_up.png"
-    if is_screen_big()
-    else "error_icon.png"
-)
+info_img_source = "info_icon_scaled_up.png" if is_screen_big() else "info_icon.png"
+error_img_source = "error_icon_scaled_up.png" if is_screen_big() else "error_icon.png"
 
 
 class PopupBrushInfo(Widget):

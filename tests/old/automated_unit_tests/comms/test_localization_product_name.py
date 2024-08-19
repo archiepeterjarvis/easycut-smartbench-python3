@@ -7,8 +7,8 @@ class TestLocalizationProductName(UnitTestBase):
     def setUp(self):
         super(TestLocalizationProductName, self).setUp()
 
-    @patch('src.asmcnc.comms.model_manager.ModelManagerSingleton.is_machine_drywall')
-    def test_get_str(self,mock_is_machine_drywall):
+    @patch("src.asmcnc.comms.model_manager.ModelManagerSingleton.is_machine_drywall")
+    def test_get_str(self, mock_is_machine_drywall):
         # Patch model_manager.is_machine_drywall to return False
         mock_is_machine_drywall.return_value = False
 

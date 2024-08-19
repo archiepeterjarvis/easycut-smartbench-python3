@@ -108,6 +108,7 @@ FONTS_PATH = os.path.join(RESOURCES_PATH, "fonts")
 YETI_PILOT_CONFIG_PATH = os.path.join(CORE_PATH, "job", "yetipilot", "config")
 DOCS_PATH = os.path.join(EASYCUT_SMARTBENCH_PATH, "docs")
 
+
 def create_paths():
     if not os.path.exists(SB_VALUES_PATH):
         Logger.warning("SB values directory not found, creating...")

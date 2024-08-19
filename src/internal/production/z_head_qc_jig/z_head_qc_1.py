@@ -502,9 +502,7 @@ class ZHeadQC1(Screen):
             popup_z_head_qc.PopupTempPowerDiagnosticsInfo(self.sm, fail_report_string)
             self.motor_chips_check.source = "template_cancel.png"
         else:
-            self.motor_chips_check.source = (
-                "file_select_select.png"
-            )
+            self.motor_chips_check.source = "file_select_select.png"
         self.m.send_command_to_motor(
             "REPORT RAW SG UNSET", command=REPORT_RAW_SG, value=0
         )
@@ -628,13 +626,9 @@ class ZHeadQC1(Screen):
             Clock.unschedule(self.poll_for_temps_power)
             fail_report_string = "\n".join(fail_report)
             popup_z_head_qc.PopupTempPowerDiagnosticsInfo(self.sm, fail_report_string)
-            self.temp_voltage_power_check.source = (
-                "template_cancel.png"
-            )
+            self.temp_voltage_power_check.source = "template_cancel.png"
         else:
-            self.temp_voltage_power_check.source = (
-                "file_select_select.png"
-            )
+            self.temp_voltage_power_check.source = "file_select_select.png"
 
     def stop(self):
         popup_info.PopupStop(self.m, self.sm, self.l)
@@ -664,9 +658,7 @@ class ZHeadQC1(Screen):
 
     def reset_checkboxes(self):
         self.motor_chips_check.source = "checkbox_inactive.png"
-        self.temp_voltage_power_check.source = (
-            "checkbox_inactive.png"
-        )
+        self.temp_voltage_power_check.source = "checkbox_inactive.png"
         self.x_home_check.source = "checkbox_inactive.png"
         self.bake_grbl_check.source = "checkbox_inactive.png"
         self.x_max_check.source = "checkbox_inactive.png"

@@ -137,7 +137,9 @@ def check_ansible_status():
 check_and_update_config()
 Builder.load_file("scaled_kv.kv")
 Logger.setLevel(logging.INFO)
-os.system("git remote set-url origin https://github.com/archiepeterjarvis/easycut-smartbench-python3")
+os.system(
+    "git remote set-url origin https://github.com/archiepeterjarvis/easycut-smartbench-python3"
+)
 
 
 class SkavaUI(App):
@@ -397,9 +399,4 @@ class SkavaUI(App):
 
 
 if __name__ == "__main__":
-    try:
-        import cProfile
-        cProfile.run("SkavaUI().run()")
-    except:
-        Logger.exception("Could not run cProfile")
-        SkavaUI().run()
+    SkavaUI().run()

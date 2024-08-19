@@ -213,7 +213,10 @@ class ModelManagerSingleton(EventDispatcher):
             for k, v in tmp.items():
                 self._data[k] = v
             for pc in ProductCodes:
-                if md5(str(pc.value).encode("utf-8")).hexdigest() == self._data["product_code"]:
+                if (
+                    md5(str(pc.value).encode("utf-8")).hexdigest()
+                    == self._data["product_code"]
+                ):
                     self._data["product_code"] = pc
                     Logger.info("Read product code from file: {}".format(pc.name))
                     break

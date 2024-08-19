@@ -51,6 +51,7 @@ class AlarmSequenceManager:
     def update_current_screen(self, screen_name):
         def inner(dt):
             self.sm.current = screen_name
+
         Clock.schedule_once(inner, 0)
 
     def set_up_alarm_screens(self):

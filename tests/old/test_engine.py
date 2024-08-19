@@ -3,39 +3,41 @@ import sys
 import os
 
 easycut_dir = os.path.dirname(os.getcwd())
-sys.path.append(os.path.join(easycut_dir, 'src')) # Alternative to sys.path.append("./src") which didn't work me
+sys.path.append(
+    os.path.join(easycut_dir, "src")
+)  # Alternative to sys.path.append("./src") which didn't work me
 
 from apps.drywall_cutter_app.engine import GCodeEngine
 from core.serial.router_machine import RouterMachine
 
-'''
+"""
 To run this test,
 from /easyCut-smartbench/tests directory, run:
 python test_engine.py
-'''
+"""
+
 
 class EngineTests(unittest.TestCase):
     def setUp(self):
-
         class Cutter:
             def __init__(self):
                 self.diameter = 0
-                
+
         class Config:
             def __init__(self, *args, **kwargs):
                 self.active_config = self
                 self.shape_type = None
-                self.active_cutter = kwargs.get('active_cutter')
+                self.active_cutter = kwargs.get("active_cutter")
                 self.active_cutter.dimensions.tool_diameter = 10
 
         dummy_cutter = Cutter()
-        dummy_config = Config(active_cutter = dummy_cutter)
+        dummy_config = Config(active_cutter=dummy_cutter)
         self.engine = GCodeEngine(RouterMachine, dummy_config)
 
     def test_rectangle_coordinates(self):
         # Case 1, valid input
         x, y = 100, 100
-        expected_output = [(0, 0), (0, y), (x, y), (x, 0)] # BL -> TL -> TR -> BR 
+        expected_output = [(0, 0), (0, y), (x, y), (x, 0)]  # BL -> TL -> TR -> BR
         output = self.engine.rectangle_coordinates(x, y)
         self.assertEqual(output, expected_output)
 
@@ -46,7 +48,13 @@ class EngineTests(unittest.TestCase):
         self.assertEqual(output, expected_output)
 
     def test_find_centre(self):
-        coordinates = [(0, 0), (100.0, 0), (100.0, 100.0), (0, 100.0), (0, 0)] # Snuck in a duplicate at the end
+        coordinates = [
+            (0, 0),
+            (100.0, 0),
+            (100.0, 100.0),
+            (0, 100.0),
+            (0, 0),
+        ]  # Snuck in a duplicate at the end
         expected_output = (50, 50)
         output = self.engine.find_centre(coordinates)
         self.assertEqual(output, expected_output)
@@ -62,31 +70,84 @@ class EngineTests(unittest.TestCase):
 
     def test_is_clockwise(self):
         # Case 1
-        coordinates = [(0, 0), (100.0, 0), (100.0, 100.0), (0, 100.0), (0, 0)] # BL -> BR -> TR -> TL -> BL, anti-clockwise
+        coordinates = [
+            (0, 0),
+            (100.0, 0),
+            (100.0, 100.0),
+            (0, 100.0),
+            (0, 0),
+        ]  # BL -> BR -> TR -> TL -> BL, anti-clockwise
         self.assertFalse(self.engine.is_clockwise(coordinates))
 
         # Case 2
-        coordinates = [(0, 0), (0, 100.0), (100.0, 100.0), (100.0, 0), (0, 0)] # BL, TL, TR, BR, BL, clockwise
+        coordinates = [
+            (0, 0),
+            (0, 100.0),
+            (100.0, 100.0),
+            (100.0, 0),
+            (0, 0),
+        ]  # BL, TL, TR, BR, BL, clockwise
         self.assertTrue(self.engine.is_clockwise(coordinates))
 
     def test_correct_orientation(self):
         # Case 1: No change needed
-        coordinates = [(0, 0), (0, 100.0), (100.0, 100.0), (100.0, 0), (0, 0)] # BL, TL, TR, BR, BL, clockwise
-        expected_output = [(0, 0), (0, 100.0), (100.0, 100.0), (100.0, 0), (0, 0)] # BL, TL, TR, BR, BL, clockwise
-        output = self.engine.correct_orientation(coordinates, self.engine.is_clockwise(coordinates))
+        coordinates = [
+            (0, 0),
+            (0, 100.0),
+            (100.0, 100.0),
+            (100.0, 0),
+            (0, 0),
+        ]  # BL, TL, TR, BR, BL, clockwise
+        expected_output = [
+            (0, 0),
+            (0, 100.0),
+            (100.0, 100.0),
+            (100.0, 0),
+            (0, 0),
+        ]  # BL, TL, TR, BR, BL, clockwise
+        output = self.engine.correct_orientation(
+            coordinates, self.engine.is_clockwise(coordinates)
+        )
         self.assertEqual(output, expected_output)
 
         # Case 2: Change needed
-        coordinates = [(0, 0), (0, 100.0), (100.0, 100.0), (100.0, 0), (0, 0)] # BL, BR, TR, TL, BL, anti-clockwise
-        expected_output = [(0, 0), (0, 100.0), (100.0, 100.0), (100.0, 0), (0, 0)] # BL, TL, TR, BR, BL, clockwise
-        output = self.engine.correct_orientation(coordinates, self.engine.is_clockwise(coordinates))
+        coordinates = [
+            (0, 0),
+            (0, 100.0),
+            (100.0, 100.0),
+            (100.0, 0),
+            (0, 0),
+        ]  # BL, BR, TR, TL, BL, anti-clockwise
+        expected_output = [
+            (0, 0),
+            (0, 100.0),
+            (100.0, 100.0),
+            (100.0, 0),
+            (0, 0),
+        ]  # BL, TL, TR, BR, BL, clockwise
+        output = self.engine.correct_orientation(
+            coordinates, self.engine.is_clockwise(coordinates)
+        )
         self.assertEqual(output, expected_output)
 
     def test_add_corner_coordinates(self):
         coordinates = [(0, 0), (100.0, 0), (100.0, 100.0), (0, 100.0), (0, 0)]
         corner_radius = 10
-        expected_output = [(0, 10), (10, 0), (90, 0), (100, 10), (100, 90), (90, 100), (10, 100), (0, 90), (0, 10), (10, 0)]
-        output = self.engine.add_corner_coordinates(coordinates, self.engine.find_centre(coordinates), corner_radius)
+        expected_output = [
+            (0, 10),
+            (10, 0),
+            (90, 0),
+            (100, 10),
+            (100, 90),
+            (90, 100),
+            (10, 100),
+            (0, 90),
+            (0, 10),
+            (10, 0),
+        ]
+        output = self.engine.add_corner_coordinates(
+            coordinates, self.engine.find_centre(coordinates), corner_radius
+        )
         self.assertEqual(output, expected_output)
 
     def test_calculate_corner_radius_offset(self):
@@ -96,7 +157,7 @@ class EngineTests(unittest.TestCase):
         expected_output = -5
         output = self.engine.calculate_corner_radius_offset(offset_type, tool_diameter)
         self.assertEqual(output, expected_output)
-    
+
         offset_type = "outside"
         expected_output = 5
         output = self.engine.calculate_corner_radius_offset(offset_type, tool_diameter)
@@ -111,26 +172,32 @@ class EngineTests(unittest.TestCase):
         coordinates = [(0, 0), (100.0, 0), (100.0, 100.0), (0, 100.0), (0, 0)]
         shape_centre = (50, 50)
         tool_diameter = 10
-        
+
         offset_type = "inside"
         expected_output = [(5, 5), (95, 5), (95, 95), (5, 95), (5, 5)]
         # Convert to floats
         expected_output = [(float(x), float(y)) for x, y in expected_output]
-        output = self.engine.apply_offset(coordinates, offset_type, tool_diameter, shape_centre)
+        output = self.engine.apply_offset(
+            coordinates, offset_type, tool_diameter, shape_centre
+        )
         self.assertEqual(output, expected_output)
 
         offset_type = "outside"
         expected_output = [(-5, -5), (105, -5), (105, 105), (-5, 105), (-5, -5)]
         # Convert to floats
         expected_output = [(float(x), float(y)) for x, y in expected_output]
-        output = self.engine.apply_offset(coordinates, offset_type, tool_diameter, shape_centre)
+        output = self.engine.apply_offset(
+            coordinates, offset_type, tool_diameter, shape_centre
+        )
         self.assertEqual(output, expected_output)
 
         offset_type = None
         expected_output = coordinates
         # Convert to floats
         expected_output = [(float(x), float(y)) for x, y in expected_output]
-        output = self.engine.apply_offset(coordinates, offset_type, tool_diameter, shape_centre)
+        output = self.engine.apply_offset(
+            coordinates, offset_type, tool_diameter, shape_centre
+        )
         self.assertEqual(output, expected_output)
 
     def test_calculate_pass_depths(self):
@@ -209,7 +276,6 @@ class EngineTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.engine.determine_cut_direction_clockwise(offset_type, climb)
 
-
     def test_swap_lines_after_keyword(self):
         # Case 1: Keyword exists and there are at least two lines after the keyword
         input_list = ["Line 1", "Keyword", "Line 2", "Line 3"]
@@ -245,70 +311,62 @@ class EngineTests(unittest.TestCase):
         replacement = "G0"
         input_list = ["Line 1", keyword, "G1 X5", "Line 3"]
         expected_output = ["Line 1", keyword, "G0 X5", "Line 3"]
-        output = self.engine.replace_mode_after_keyword(input_list, keyword, replacement)
+        output = self.engine.replace_mode_after_keyword(
+            input_list, keyword, replacement
+        )
         self.assertEqual(output, expected_output)
 
         # Case 2: Keyword exists but there is only one line after the keyword
         input_list = ["Line 1", keyword, "G1 X5"]
         expected_output = ["Line 1", keyword, "G0 X5"]
-        output = self.engine.replace_mode_after_keyword(input_list, keyword, replacement)
+        output = self.engine.replace_mode_after_keyword(
+            input_list, keyword, replacement
+        )
         self.assertEqual(output, expected_output)
 
         # Case 3: Keyword does not exist
         input_list = ["Line 1", "Line 2", "Line 3"]
         expected_output = ["Line 1", "Line 2", "Line 3"]
-        output = self.engine.replace_mode_after_keyword(input_list, keyword, replacement)
+        output = self.engine.replace_mode_after_keyword(
+            input_list, keyword, replacement
+        )
         self.assertEqual(output, expected_output)
 
         # Case 4: Empty input list
         input_list = []
         expected_output = []
-        output = self.engine.replace_mode_after_keyword(input_list, keyword, replacement)
+        output = self.engine.replace_mode_after_keyword(
+            input_list, keyword, replacement
+        )
         self.assertEqual(output, expected_output)
 
     def test_adjust_feeds_and_speeds(self):
         # Case 1: Upper case, float spindle speed
-        gcode_lines = [
-            "G1 X10 Y10 F100",
-            "G1 Z-5 F200",
-            "G1 X30 Y30 Z-2",
-            "S1000.0"
-        ]
+        gcode_lines = ["G1 X10 Y10 F100", "G1 Z-5 F200", "G1 X30 Y30 Z-2", "S1000.0"]
 
         feedrate = 150
         plungerate = 250
         spindle_speed = 5000
 
-        expected_output = [
-            "G1 X10 Y10 F150",
-            "G1 Z-5 F250",
-            "G1 X30 Y30 Z-2",
-            "S5000"
-        ]
+        expected_output = ["G1 X10 Y10 F150", "G1 Z-5 F250", "G1 X30 Y30 Z-2", "S5000"]
 
-        output = self.engine.adjust_feeds_and_speeds(gcode_lines, feedrate, plungerate, spindle_speed)
+        output = self.engine.adjust_feeds_and_speeds(
+            gcode_lines, feedrate, plungerate, spindle_speed
+        )
         self.assertEqual(output, expected_output)
 
         # Case 2: Lower case, integer spindle speed
-        gcode_lines = [
-            "g1 x10 y10 f100",
-            "g1 z-5 f200",
-            "g1 x30 y30 z-2",
-            "s1000"
-        ]
+        gcode_lines = ["g1 x10 y10 f100", "g1 z-5 f200", "g1 x30 y30 z-2", "s1000"]
 
         feedrate = 150
         plungerate = 250
         spindle_speed = 5000
 
-        expected_output = [
-            "G1 X10 Y10 F150",
-            "G1 Z-5 F250",
-            "G1 X30 Y30 Z-2",
-            "S5000"
-        ]
+        expected_output = ["G1 X10 Y10 F150", "G1 Z-5 F250", "G1 X30 Y30 Z-2", "S5000"]
 
-        output = self.engine.adjust_feeds_and_speeds(gcode_lines, feedrate, plungerate, spindle_speed)
+        output = self.engine.adjust_feeds_and_speeds(
+            gcode_lines, feedrate, plungerate, spindle_speed
+        )
         self.assertEqual(output, expected_output)
 
     def test_extract_cut_depth_and_z_safe_distance(self):
@@ -332,7 +390,7 @@ class EngineTests(unittest.TestCase):
             "G1Z-12.000F750.0",
             "G1X348.249Y189.981F3000.0",
             "G1X348.209Y190.071",
-            "G1X348.173Y190.163"
+            "G1X348.173Y190.163",
         ]
 
         expected_output = ("-12.000", "5.080")
@@ -341,15 +399,17 @@ class EngineTests(unittest.TestCase):
 
     def test_replace_cut_depth_and_z_safe_distance(self):
         gcode_lines = ["G1 X10 Y10 Z10", "G1 X20 Y20 Z-5", "G1 X30 Y30 Z-2"]
-        processing_args= {
+        processing_args = {
             "gcode_cut_depth": -5,
             "gcode_z_safe_distance": 10,
             "new_cut_depth": -8,
-            "new_z_safe_distance": 5
+            "new_z_safe_distance": 5,
         }
 
         expected_output = ["G1 X10 Y10 Z5", "G1 X20 Y20 Z-8", "G1 X30 Y30 Z-2"]
-        output = self.engine.replace_cut_depth_and_z_safe_distance(gcode_lines, **processing_args)
+        output = self.engine.replace_cut_depth_and_z_safe_distance(
+            gcode_lines, **processing_args
+        )
         self.assertEqual(output, expected_output)
 
     def test_apply_datum_offset(self):
@@ -437,13 +497,15 @@ class EngineTests(unittest.TestCase):
         start_line_key = 0
         end_line_key = 5
         expected_output = [
-                "G1 X0 Y0 Z-5",
-                "G1 X10 Y10 Z-5",
-                "G1 X20 Y20 Z-5",
-                "G1 X30 Y30 Z-5",
-                "G1 X40 Y40 Z-5",
+            "G1 X0 Y0 Z-5",
+            "G1 X10 Y10 Z-5",
+            "G1 X20 Y20 Z-5",
+            "G1 X30 Y30 Z-5",
+            "G1 X40 Y40 Z-5",
         ]
-        output = self.engine.repeat_for_depths(gcode_lines, pass_depths, start_line_key, end_line_key)
+        output = self.engine.repeat_for_depths(
+            gcode_lines, pass_depths, start_line_key, end_line_key
+        )
         self.assertEqual(output, expected_output)
 
         # Case 2: Multiple pass depths
@@ -458,23 +520,25 @@ class EngineTests(unittest.TestCase):
         start_line_key = 0
         end_line_key = 5
         expected_output = [
-                "G1 X0 Y0 Z-5",
-                "G1 X10 Y10 Z-5",
-                "G1 X20 Y20 Z-5",
-                "G1 X30 Y30 Z-5",
-                "G1 X40 Y40 Z-5",
-                "G1 X0 Y0 Z-10",
-                "G1 X10 Y10 Z-10",
-                "G1 X20 Y20 Z-10",
-                "G1 X30 Y30 Z-10",
-                "G1 X40 Y40 Z-10",
-                "G1 X0 Y0 Z-15",
-                "G1 X10 Y10 Z-15",
-                "G1 X20 Y20 Z-15",
-                "G1 X30 Y30 Z-15",
-                "G1 X40 Y40 Z-15",
+            "G1 X0 Y0 Z-5",
+            "G1 X10 Y10 Z-5",
+            "G1 X20 Y20 Z-5",
+            "G1 X30 Y30 Z-5",
+            "G1 X40 Y40 Z-5",
+            "G1 X0 Y0 Z-10",
+            "G1 X10 Y10 Z-10",
+            "G1 X20 Y20 Z-10",
+            "G1 X30 Y30 Z-10",
+            "G1 X40 Y40 Z-10",
+            "G1 X0 Y0 Z-15",
+            "G1 X10 Y10 Z-15",
+            "G1 X20 Y20 Z-15",
+            "G1 X30 Y30 Z-15",
+            "G1 X40 Y40 Z-15",
         ]
-        output = self.engine.repeat_for_depths(gcode_lines, pass_depths, start_line_key, end_line_key)
+        output = self.engine.repeat_for_depths(
+            gcode_lines, pass_depths, start_line_key, end_line_key
+        )
         self.assertEqual(output, expected_output)
 
     def test_add_partoff(self):
@@ -487,7 +551,7 @@ class EngineTests(unittest.TestCase):
             "pass_depths": [5, 10],
             "feedrate": 100,
             "plungerate": 50,
-            "z_safe_distance": 2
+            "z_safe_distance": 2,
         }
         expected_output = [
             "(Partoff)",
@@ -499,7 +563,7 @@ class EngineTests(unittest.TestCase):
             "G1 X0 Y0F100",
             "G1 Z2",
             "G1 X10 Y20",
-            "G1 X30 Y40"
+            "G1 X30 Y40",
         ]
         output = self.engine.add_partoff(gcode_lines, **processing_args)
         self.assertEqual(output, expected_output)
@@ -513,7 +577,7 @@ class EngineTests(unittest.TestCase):
             "pass_depths": [5, 10, 15],
             "feedrate": 200,
             "plungerate": 100,
-            "z_safe_distance": 3
+            "z_safe_distance": 3,
         }
         expected_output = [
             "G1 X10 Y20",
@@ -528,7 +592,7 @@ class EngineTests(unittest.TestCase):
             "G1 X40 Y40F200",
             "G1 Z3",
             "G1 X30 Y40",
-            "G1 X50 Y60"
+            "G1 X50 Y60",
         ]
         output = self.engine.add_partoff(gcode_lines, **processing_args)
         self.assertEqual(output, expected_output)
@@ -542,7 +606,7 @@ class EngineTests(unittest.TestCase):
             "pass_depths": [5, 10, 15, 20],
             "feedrate": 300,
             "plungerate": 150,
-            "z_safe_distance": 4
+            "z_safe_distance": 4,
         }
         expected_output = [
             "G1 X10 Y20",
@@ -559,7 +623,7 @@ class EngineTests(unittest.TestCase):
             "G1 Z-20 F150",
             "G1 X40 Y40F300",
             "G1 Z4",
-            "G1 X50 Y60"
+            "G1 X50 Y60",
         ]
         output = self.engine.add_partoff(gcode_lines, **processing_args)
         self.assertEqual(output, expected_output)
@@ -570,9 +634,9 @@ class EngineTests(unittest.TestCase):
             "Line 1",
             "(Final part x dim: 10.5)",
             "(Final part y dim: 20.3)",
-            "(x min: 0.0)", 
+            "(x min: 0.0)",
             "(y min: 0.0)",
-            "Line 4"
+            "Line 4",
         ]
         expected_output = ("10.5", "20.3", "0.0", "0.0")
         output = self.engine.read_in_custom_shape_dimensions(gcode_lines)
@@ -583,7 +647,7 @@ class EngineTests(unittest.TestCase):
             "Line 1",
             "(Final part x dim: 10.5, Final part y dim: 20.3, x min: 0.0, y min: 0.0)",
             "Line 3",
-            "Line 4"
+            "Line 4",
         ]
         expected_output = ("10.5", "20.3", "0.0", "0.0")
         output = self.engine.read_in_custom_shape_dimensions(gcode_lines)
@@ -597,8 +661,16 @@ class EngineTests(unittest.TestCase):
         self.engine.config.active_cutter.dimensions.tool_diameter = 10
 
         # Mocking the return values of helper methods
-        self.engine.find_and_read_gcode_file = lambda path, shape_type, diameter: ["G1 X10 Y20", "G1 X30 Y40"]
-        self.engine.read_in_custom_shape_dimensions = lambda lines: ("40", "60", "10", "20")
+        self.engine.find_and_read_gcode_file = lambda path, shape_type, diameter: [
+            "G1 X10 Y20",
+            "G1 X30 Y40",
+        ]
+        self.engine.read_in_custom_shape_dimensions = lambda lines: (
+            "40",
+            "60",
+            "10",
+            "20",
+        )
 
         expected_output = (40.0, 60.0, 10.0, 20.0)
         output = self.engine.get_custom_shape_extents()
@@ -611,5 +683,6 @@ class EngineTests(unittest.TestCase):
         with self.assertRaises(Exception):
             self.engine.get_custom_shape_extents()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

@@ -552,19 +552,13 @@ class ZHeadQCWarrantyAfterApr21(Screen):
             Clock.unschedule(self.poll_for_temps_power)
             fail_report_string = "\n".join(fail_report)
             popup_z_head_qc.PopupTempPowerDiagnosticsInfo(self.sm, fail_report_string)
-            self.temp_voltage_power_check.source = (
-                "template_cancel.png"
-            )
+            self.temp_voltage_power_check.source = "template_cancel.png"
         else:
-            self.temp_voltage_power_check.source = (
-                "file_select_select.png"
-            )
+            self.temp_voltage_power_check.source = "file_select_select.png"
 
     def cycle_limit_switch(self):
         if self.m.s.limit_z:
-            self.cycle_limit_check.source = (
-                "file_select_select.png"
-            )
+            self.cycle_limit_check.source = "file_select_select.png"
             self.z_limit_set = True
         else:
             self.cycle_limit_check.source = "checkbox_inactive.png"
@@ -606,17 +600,13 @@ class ZHeadQCWarrantyAfterApr21(Screen):
             try:
                 self.spindle_test_counter = 0
                 if self.spindle_pass_fail == 0:
-                    self.spindle_speed_check.source = (
-                        "template_cancel.png"
-                    )
+                    self.spindle_speed_check.source = "template_cancel.png"
                     test = self.string_overload_summary.split("**")
                     popup_z_head_qc.PopupSpindleDiagnosticsInfo(
                         self.sm, test[1], test[2], test[3], test[4], test[5]
                     )
                 else:
-                    self.spindle_speed_check.source = (
-                        "file_select_select.png"
-                    )
+                    self.spindle_speed_check.source = "file_select_select.png"
                 self.spindle_pass_fail = True
             except:
                 Logger.exception("Could not show outcome")
@@ -768,9 +758,7 @@ class ZHeadQCWarrantyAfterApr21(Screen):
         popup_info.PopupStop(self.m, self.sm, self.l)
 
     def reset_checkboxes(self):
-        self.temp_voltage_power_check.source = (
-            "checkbox_inactive.png"
-        )
+        self.temp_voltage_power_check.source = "checkbox_inactive.png"
         self.x_home_check.source = "checkbox_inactive.png"
         self.x_max_check.source = "checkbox_inactive.png"
         self.spindle_speed_check.source = "checkbox_inactive.png"

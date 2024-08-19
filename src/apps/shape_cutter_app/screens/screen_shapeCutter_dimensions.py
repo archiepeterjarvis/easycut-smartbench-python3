@@ -460,13 +460,9 @@ class ShapeCutterDimensionsScreenClass(Screen):
             self.dim_4 = ""
             self.j.shape_dict["dimensions"] = self.j.circle_dimensions
             if self.j.shape_dict["cut_type"] == "island":
-                self.image_dims.source = (
-                    "dims_is_circ.png"
-                )
+                self.image_dims.source = "dims_is_circ.png"
             elif self.j.shape_dict["cut_type"] == "aperture":
-                self.image_dims.source = (
-                    "dims_apt_circ.png"
-                )
+                self.image_dims.source = "dims_apt_circ.png"
         elif self.j.shape_dict["shape"] == "rectangle":
             self.dimension_1.height = utils.get_scaled_width(40)
             self.dimesion_1_input_box.height = utils.get_scaled_width(40)
@@ -485,13 +481,9 @@ class ShapeCutterDimensionsScreenClass(Screen):
             self.dim_4 = "R"
             self.j.shape_dict["dimensions"] = self.j.rectangle_dimensions
             if self.j.shape_dict["cut_type"] == "island":
-                self.image_dims.source = (
-                    "dims_is_rect.png"
-                )
+                self.image_dims.source = "dims_is_rect.png"
             elif self.j.shape_dict["cut_type"] == "aperture":
-                self.image_dims.source = (
-                    "dims_apt_rect.png"
-                )
+                self.image_dims.source = "dims_apt_rect.png"
 
     def on_enter(self):
         self.kb.setup_text_inputs(self.text_inputs)

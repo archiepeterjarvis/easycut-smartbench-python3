@@ -117,50 +117,30 @@ class RecoveryDecisionScreen(Screen):
         if self.jd.job_recovery_cancel_line == None:
             self.job_name_label.text = ""
             self.completion_label.text = self.l.get_str("No file available!")
-            self.repeat_job_button.background_normal = (
-                "blank_grey_button.png"
-            )
-            self.repeat_job_button.background_down = (
-                "blank_grey_button.png"
-            )
-            self.recover_job_button.background_normal = (
-                "blank_grey_button.png"
-            )
-            self.recover_job_button.background_down = (
-                "blank_grey_button.png"
-            )
+            self.repeat_job_button.background_normal = "blank_grey_button.png"
+            self.repeat_job_button.background_down = "blank_grey_button.png"
+            self.recover_job_button.background_normal = "blank_grey_button.png"
+            self.recover_job_button.background_down = "blank_grey_button.png"
         else:
             if sys.platform == "win32":
                 job_name = self.jd.job_recovery_filepath.split("\\")[-1]
             else:
                 job_name = self.jd.job_recovery_filepath.split("/")[-1]
             self.job_name_label.text = job_name
-            self.repeat_job_button.background_normal = (
-                "blank_green_button.png"
-            )
-            self.repeat_job_button.background_down = (
-                "blank_green_button.png"
-            )
+            self.repeat_job_button.background_normal = "blank_green_button.png"
+            self.repeat_job_button.background_down = "blank_green_button.png"
             if self.jd.job_recovery_cancel_line == -1:
                 self.completion_label.text = self.l.get_str(
                     "SmartBench completed the last job 100%"
                 )
-                self.recover_job_button.background_normal = (
-                    "blank_grey_button.png"
-                )
-                self.recover_job_button.background_down = (
-                    "blank_grey_button.png"
-                )
+                self.recover_job_button.background_normal = "blank_grey_button.png"
+                self.recover_job_button.background_down = "blank_grey_button.png"
             else:
                 self.completion_label.text = self.l.get_str(
                     "SmartBench did not finish the last job"
                 )
-                self.recover_job_button.background_normal = (
-                    "blank_orange_button.png"
-                )
-                self.recover_job_button.background_down = (
-                    "blank_orange_button.png"
-                )
+                self.recover_job_button.background_normal = "blank_orange_button.png"
+                self.recover_job_button.background_down = "blank_orange_button.png"
         self.update_font_size(self.completion_label)
 
     def go_to_recovery(self):

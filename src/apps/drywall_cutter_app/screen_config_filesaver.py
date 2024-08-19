@@ -365,17 +365,13 @@ class ConfigFileSaver(Screen):
             self.image_sort.source = "file_select_sort_up_name.png"
         elif self.filechooser.sort_func == self.sort_by_date:
             self.filechooser.sort_func = self.sort_by_name
-            self.image_sort.source = (
-                "file_select_sort_down_name.png"
-            )
+            self.image_sort.source = "file_select_sort_down_name.png"
         elif self.filechooser.sort_func == self.sort_by_name:
             self.filechooser.sort_func = self.sort_by_name_reverse
             self.image_sort.source = "file_select_sort_up_date.png"
         elif self.filechooser.sort_func == self.sort_by_name_reverse:
             self.filechooser.sort_func = self.sort_by_date_reverse
-            self.image_sort.source = (
-                "file_select_sort_down_date.png"
-            )
+            self.image_sort.source = "file_select_sort_down_date.png"
         self.filechooser._update_files()
 
     def refresh_filechooser(self):

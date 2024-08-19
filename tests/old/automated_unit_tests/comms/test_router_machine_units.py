@@ -1,7 +1,7 @@
-'''
+"""
 Created on 1 Aug 2022
 @author: Letty
-'''
+"""
 
 import os
 import sys
@@ -9,7 +9,7 @@ import sys
 from core.logging.logging_system import Logger
 from tests import test_utils
 
-sys.path.append('./src')
+sys.path.append("./src")
 
 
 try:
@@ -25,12 +25,12 @@ from core import localization
 
 from kivy.clock import Clock
 
-'''
+"""
 ######################################
 RUN FROM easycut-smartbench FOLDER WITH: 
 python -m pytest tests/automated_unit_tests/comms/test_router_machine_units.py
 ######################################
-'''
+"""
 
 test_utils.create_app()
 
@@ -74,14 +74,19 @@ def test_construct_calibration_check_file_path(m):
 
 # SET MOTOR CURRENT TESTS
 
+
 def assert_current_sent_to_motor(machine, axis, motors, current):
-    # motors arg needs to contain the motors we expect to read :) 
+    # motors arg needs to contain the motors we expect to read :)
 
     # SET UP LIST OF EXPECTED KEYWORD ARGUMENTS
     expected_kwargs = []
     for motor in motors:
-        expected_kwargs.append({'command': SET_ACTIVE_CURRENT, 'motor': motor, 'value': current})
-        expected_kwargs.append({'command': SET_IDLE_CURRENT, 'motor': motor, 'value': current})
+        expected_kwargs.append(
+            {"command": SET_ACTIVE_CURRENT, "motor": motor, "value": current}
+        )
+        expected_kwargs.append(
+            {"command": SET_IDLE_CURRENT, "motor": motor, "value": current}
+        )
 
     # SET UP SEND_COMMAND_TO_MOTOR FUNCTION THAT WE CAN SPY ON
     machine.send_command_to_motor = Mock()
@@ -178,6 +183,7 @@ def test_set_current_without_correct_FW(m):
 
 # IS SMARTBENCH BUSY
 
+
 def make_smartbench_not_busy(m):
     m.state = Mock(return_value="Idle")
     m.s.is_sequential_streaming = False
@@ -247,6 +253,7 @@ def test_smartbench_is_not_busy(m):
 
 # WHAT IS GRBL MOTION MODE
 
+
 def test_get_grbl_motion_mode_when_G0(m):
     m.jd.grbl_mode_tracker = [(0, 4, 5)]
     assert m.get_grbl_motion_mode() == 0
@@ -258,8 +265,8 @@ def test_get_grbl_motion_mode_when_empty_list(m):
 
 
 def test_get_grbl_motion_mode_when_empty_string(m):
-    m.jd.grbl_mode_tracker = [('', 4, 5), (0, 0, 0), (1, 6, 7)]
-    assert m.get_grbl_motion_mode() == ''
+    m.jd.grbl_mode_tracker = [("", 4, 5), (0, 0, 0), (1, 6, 7)]
+    assert m.get_grbl_motion_mode() == ""
 
 
 def test_get_grbl_motion_mode_when_G2(m):
@@ -268,6 +275,7 @@ def test_get_grbl_motion_mode_when_G2(m):
 
 
 # SETTINGS UNIT TESTS
+
 
 def test_get_setting_53_when_does_not_exist(m):
     assert m.get_dollar_setting(53) == 0
@@ -287,6 +295,7 @@ def test_get_setting_53_when_0(m):
 
 # These need fleshing out - first pass was just to ensure they didn't throw errors
 
+
 def test_start_homing(m):
     m.reschedule_homing_task_if_busy = Mock(return_value=False)
     m.start_homing()
@@ -305,10 +314,12 @@ def test_move_to_accommodate_laser_offset(m):
 
 ## Homing Scheduling/sequencing tests
 
+
 def test_schedule_homing_event_works_and_does_not_duplicate_callbacks(m):
     m.homing_seq_events = []
 
-    def nested_func(): pass
+    def nested_func():
+        pass
 
     m.schedule_homing_event(nested_func)
     m.schedule_homing_event(nested_func)
@@ -319,9 +330,11 @@ def test_schedule_homing_event_works_and_does_not_duplicate_callbacks(m):
 def test_schedule_homing_event_works_and_holds_multiple_funcs(m):
     m.homing_seq_events = []
 
-    def nested_func(): pass
+    def nested_func():
+        pass
 
-    def another_nested_func(): pass
+    def another_nested_func():
+        pass
 
     m.schedule_homing_event(nested_func)
     m.schedule_homing_event(another_nested_func)
@@ -336,7 +349,8 @@ def test_resched_homing_task_if_busy(m):
     m.homing_seq_events == []
     m.smartbench_is_busy = Mock(return_value=True)
 
-    def nested_func(): pass
+    def nested_func():
+        pass
 
     assert m.reschedule_homing_task_if_busy(nested_func, delay=1)
     assert m.homing_seq_events[0].get_callback() == nested_func
@@ -346,7 +360,8 @@ def test_resched_homing_task_if_busy_returns_false_if_not_busy(m):
     m.homing_seq_events == []
     m.smartbench_is_busy = Mock(return_value=False)
 
-    def nested_func(): pass
+    def nested_func():
+        pass
 
     assert not m.reschedule_homing_task_if_busy(nested_func, delay=1)
     assert m.homing_seq_events == []
@@ -355,9 +370,11 @@ def test_resched_homing_task_if_busy_returns_false_if_not_busy(m):
 def test_unschedule_homing_events(m):
     m.homing_seq_events = []
 
-    def nested_func(): pass
+    def nested_func():
+        pass
 
-    def another_nested_func(): pass
+    def another_nested_func():
+        pass
 
     m.schedule_homing_event(nested_func)
     m.unschedule_homing_events()
@@ -368,7 +385,8 @@ def test_reset_homing_sequence_flags(m):
     m.completed_homing_tasks = [True] * 3
     m.homing_task_idx = "Dogs"
 
-    def nested_func(dt): pass
+    def nested_func(dt):
+        pass
 
     m.homing_seq_events = [Clock.schedule_once(nested_func, 1)]
     m.reset_homing_sequence_flags()
@@ -469,12 +487,15 @@ def test_do_next_task_in_sequence_when_not_ready(m):
 
 # FEED RATE TESTS
 
+
 def test_get_is_constant_feed_rate_accel(m):
     feed_override_percentage = 100
     feed_rate = 6000
     last_feed_rate = 8000
     tolerance = 50
-    val, last = m.get_is_constant_feed_rate(last_feed_rate, feed_override_percentage, feed_rate, tolerance)
+    val, last = m.get_is_constant_feed_rate(
+        last_feed_rate, feed_override_percentage, feed_rate, tolerance
+    )
     assert last == last_feed_rate
     assert not val
 
@@ -484,7 +505,9 @@ def test_get_is_constant_feed_rate_decel(m):
     feed_rate = 6000
     last_feed_rate = 4000
     tolerance = 50
-    val, last = m.get_is_constant_feed_rate(last_feed_rate, feed_override_percentage, feed_rate, tolerance)
+    val, last = m.get_is_constant_feed_rate(
+        last_feed_rate, feed_override_percentage, feed_rate, tolerance
+    )
     assert last == last_feed_rate
     assert not val
 
@@ -494,7 +517,9 @@ def test_get_is_constant_feed_rate_true_within_range(m):
     feed_rate = 6000
     last_feed_rate = 6010
     tolerance = 50
-    val, last = m.get_is_constant_feed_rate(last_feed_rate, feed_override_percentage, feed_rate, tolerance)
+    val, last = m.get_is_constant_feed_rate(
+        last_feed_rate, feed_override_percentage, feed_rate, tolerance
+    )
     assert last == last_feed_rate
     assert val
 
@@ -504,7 +529,9 @@ def test_get_is_constant_feed_rate_false_when_tolerance_small(m):
     feed_rate = 6000
     last_feed_rate = 6010
     tolerance = 9
-    val, last = m.get_is_constant_feed_rate(last_feed_rate, feed_override_percentage, feed_rate, tolerance)
+    val, last = m.get_is_constant_feed_rate(
+        last_feed_rate, feed_override_percentage, feed_rate, tolerance
+    )
     assert last == last_feed_rate
     assert not val
 
@@ -514,12 +541,15 @@ def test_get_is_constant_feed_rate_true_when_diff_equal_to_tolerance(m):
     feed_rate = 6000
     tolerance = 10
     last_feed_rate = feed_rate + tolerance
-    val, last = m.get_is_constant_feed_rate(last_feed_rate, feed_override_percentage, feed_rate, tolerance)
+    val, last = m.get_is_constant_feed_rate(
+        last_feed_rate, feed_override_percentage, feed_rate, tolerance
+    )
     assert last == last_feed_rate
     assert val
 
 
 # get_z_max_travel_to_bake TESTS
+
 
 def test_get_z_max_travel_to_bake_when_fw_is_2_5(m):
     assert m.get_z_max_travel_to_bake(False, 27) == 150.0

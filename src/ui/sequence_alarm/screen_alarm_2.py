@@ -172,9 +172,7 @@ class AlarmScreen2(Screen):
         self.a = alarm_manager
         self.alarm_title.text = self.a.l.get_bold("Alarm: Record details")
         self.icon_left.source = "camera_dark.png"
-        self.icon_right.source = (
-            "usb_empty_dark.png"
-        )
+        self.icon_right.source = "usb_empty_dark.png"
         self.description_label.text = self.a.l.get_str(
             "Record the alarm report for diagnosis and support. Take a photo of the report on the next screen, or insert a USB stick now to download it."
         )

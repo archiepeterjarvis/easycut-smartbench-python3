@@ -490,13 +490,9 @@ class GoScreen(Screen):
             )
             self.spindle_speed_showing = False
         if self.m.stylus_router_choice == "stylus":
-            self.z_height_container.children[
-                0
-            ].z_bit.source = "zBit_stylus.png"
+            self.z_height_container.children[0].z_bit.source = "zBit_stylus.png"
         else:
-            self.z_height_container.children[
-                0
-            ].z_bit.source = "zBit.png"
+            self.z_height_container.children[0].z_bit.source = "zBit.png"
         use_sc2 = self.m.is_using_sc2()
         self.show_hide_yp_container(use_sc2)
         self.loop_for_job_progress = Clock.schedule_interval(
@@ -736,14 +732,10 @@ class GoScreen(Screen):
         if self.is_job_started_already:
             if not self.m.is_machine_paused:
                 self._pause_job()
-                self.start_or_pause_button_image.source = (
-                    "resume.png"
-                )
+                self.start_or_pause_button_image.source = "resume.png"
             else:
                 self.m.resume_after_a_stream_pause()
-                self.start_or_pause_button_image.source = (
-                    "pause.png"
-                )
+                self.start_or_pause_button_image.source = "pause.png"
                 self.database.send_event(
                     0, "Job resumed", "Resumed job: " + self.jd.job_name, 4
                 )
@@ -801,8 +793,7 @@ class GoScreen(Screen):
             and self.m.reason_for_machine_pause
             and self.m.reason_for_machine_pause != "Resuming"
             and not str(self.m.state()).startswith("Door:3")
-            and self.start_or_pause_button_image.source
-            == "pause.png"
+            and self.start_or_pause_button_image.source == "pause.png"
             or override
         ):
             if self.listen_for_pauses != None:

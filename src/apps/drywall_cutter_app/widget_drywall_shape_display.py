@@ -821,53 +821,37 @@ class DrywallShapeDisplay(Widget):
         self.x_datum_validation_label.opacity = 0
         self.y_datum_validation_label.opacity = 0
         if x_min_clearance < 0:
-            self.bumper_bottom_image.source = (
-                "bumper_bottom_red.png"
-            )
+            self.bumper_bottom_image.source = "bumper_bottom_red.png"
             x_datum_min = round(abs(x_min_clearance) + current_x, 2)
             if self.X_MIN < x_datum_min < self.X_MAX:
                 self.x_datum_validation_label.text = "MIN: " + str(x_datum_min)
                 self.x_datum_validation_label.opacity = 1
         else:
-            self.bumper_bottom_image.source = (
-                "bumper_bottom_green.png"
-            )
+            self.bumper_bottom_image.source = "bumper_bottom_green.png"
         if y_min_clearance < 0:
-            self.bumper_right_image.source = (
-                "bumper_right_red.png"
-            )
+            self.bumper_right_image.source = "bumper_right_red.png"
             y_datum_min = round(abs(y_min_clearance) + current_y, 2)
             if self.Y_MIN < y_datum_min < self.Y_MAX:
                 self.y_datum_validation_label.text = "MIN: " + str(y_datum_min)
                 self.y_datum_validation_label.opacity = 1
         else:
-            self.bumper_right_image.source = (
-                "bumper_right_green.png"
-            )
+            self.bumper_right_image.source = "bumper_right_green.png"
         if x_max_clearance < 0:
-            self.bumper_top_image.source = (
-                "bumper_top_red.png"
-            )
+            self.bumper_top_image.source = "bumper_top_red.png"
             x_datum_max = round(current_x - abs(x_max_clearance), 2)
             if self.X_MIN < x_datum_max < self.X_MAX:
                 self.x_datum_validation_label.text = "MAX: " + str(x_datum_max)
                 self.x_datum_validation_label.opacity = 1
         else:
-            self.bumper_top_image.source = (
-                "bumper_top_green.png"
-            )
+            self.bumper_top_image.source = "bumper_top_green.png"
         if y_max_clearance < 0:
-            self.bumper_left_image.source = (
-                "bumper_left_red.png"
-            )
+            self.bumper_left_image.source = "bumper_left_red.png"
             y_datum_max = round(current_y - abs(y_max_clearance), 2)
             if self.Y_MIN < y_datum_max < self.Y_MAX:
                 self.y_datum_validation_label.text = "MAX: " + str(y_datum_max)
                 self.y_datum_validation_label.opacity = 1
         else:
-            self.bumper_left_image.source = (
-                "bumper_left_green.png"
-            )
+            self.bumper_left_image.source = "bumper_left_green.png"
         d_limit = self.X_MAX
         if self.dwt_config.active_cutter.dimensions.tool_diameter:
             tool_diameter = self.dwt_config.active_cutter.dimensions.tool_diameter

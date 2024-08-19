@@ -166,9 +166,7 @@ class LowerBeamQCXYMove(Widget):
         self.jog_mode_button_press_counter += 1
         if self.jog_mode_button_press_counter % 5 == 0:
             self.jogMode = "free"
-            self.jogModeButtonImage.source = (
-                "jog_mode_infinity.png"
-            )
+            self.jogModeButtonImage.source = "jog_mode_infinity.png"
         if self.jog_mode_button_press_counter % 5 == 1:
             self.jogMode = "plus_10"
             self.jogModeButtonImage.source = "jog_mode_10.png"

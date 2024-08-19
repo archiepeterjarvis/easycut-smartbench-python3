@@ -452,9 +452,7 @@ class LocalFileChooser(Screen):
                     )
             else:
                 self.button_usb.disabled = True
-                self.image_usb.source = (
-                    "file_select_usb_disabled.png"
-                )
+                self.image_usb.source = "file_select_usb_disabled.png"
                 self.usb_status_label.size_hint_y = 0
                 self.sm.get_screen("loading").usb_status = None
                 self.sm.get_screen("loading").usb_status_label.opacity = 0
@@ -473,17 +471,13 @@ class LocalFileChooser(Screen):
             self.image_sort.source = "file_select_sort_up_name.png"
         elif self.filechooser.sort_func == self.sort_by_date:
             self.filechooser.sort_func = self.sort_by_name
-            self.image_sort.source = (
-                "file_select_sort_down_name.png"
-            )
+            self.image_sort.source = "file_select_sort_down_name.png"
         elif self.filechooser.sort_func == self.sort_by_name:
             self.filechooser.sort_func = self.sort_by_name_reverse
             self.image_sort.source = "file_select_sort_up_date.png"
         elif self.filechooser.sort_func == self.sort_by_name_reverse:
             self.filechooser.sort_func = self.sort_by_date_reverse
-            self.image_sort.source = (
-                "file_select_sort_down_date.png"
-            )
+            self.image_sort.source = "file_select_sort_down_date.png"
         self.filechooser._update_files()
 
     def open_USB(self):
@@ -501,13 +495,9 @@ class LocalFileChooser(Screen):
                 self.display_selected_file()
             else:
                 self.load_button.disabled = True
-                self.image_select.source = (
-                    "file_select_select_disabled.png"
-                )
+                self.image_select.source = "file_select_select_disabled.png"
                 self.delete_selected_button.disabled = True
-                self.image_delete.source = (
-                    "file_select_delete_disabled.png"
-                )
+                self.image_delete.source = "file_select_delete_disabled.png"
                 self.file_selected_label.text = self.l.get_str(
                     "Press the icon to display the full filename here."
                 )
@@ -516,9 +506,7 @@ class LocalFileChooser(Screen):
                 )
         except:
             self.load_button.disabled = True
-            self.image_select.source = (
-                "file_select_select_disabled.png"
-            )
+            self.image_select.source = "file_select_select_disabled.png"
             self.file_selected_label.text = self.l.get_str(
                 "Press the icon to display the full filename here."
             )
@@ -526,9 +514,7 @@ class LocalFileChooser(Screen):
                 "Select a file to see metadata or gcode preview."
             )
             self.delete_selected_button.disabled = True
-            self.image_delete.source = (
-                "file_select_delete_disabled.png"
-            )
+            self.image_delete.source = "file_select_delete_disabled.png"
             self.file_selected_label.text = self.l.get_str(
                 "Press the icon to display the full filename here."
             )

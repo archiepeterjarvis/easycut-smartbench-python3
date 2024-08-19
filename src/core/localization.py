@@ -49,7 +49,9 @@ class Localization:
     supported_languages = approved_languages + [nl] + [ja]
     dwt_languages = [gb, de]
     persistent_language_path = "./sb_values/user_language.txt"
-    complete_foreign_dictionary_path = os.path.join(paths.COMMS_PATH, "foreign_dictionary.txt")
+    complete_foreign_dictionary_path = os.path.join(
+        paths.COMMS_PATH, "foreign_dictionary.txt"
+    )
     default_lang = "English (GB)"
     lang = default_lang
     standard_font = "Roboto"
