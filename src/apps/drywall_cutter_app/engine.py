@@ -19,7 +19,9 @@ tidy gcode
 write to output file
 """
 
-import decimal, os, re
+import decimal
+import os
+import re
 from core import paths
 from apps.drywall_cutter_app.config.config_options import (
     CuttingDirectionOptions,
@@ -695,7 +697,7 @@ class GCodeEngine:
         )
 
         def calculate_stepovers(start, stop, step):
-            if step is not 0:
+            if step != 0:
                 return [
                     round(start - i * step, 3)
                     for i in range(int((start - stop) / step) + 1)

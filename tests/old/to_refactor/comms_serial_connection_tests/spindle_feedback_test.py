@@ -8,7 +8,7 @@ from tests.old.automated_unit_tests import UnitTestBase
 
 try:
     import unittest
-    from mock import Mock, MagicMock
+    from mock import Mock
     from serial_mock.mock import MockSerial, DummySerial
     from serial_mock.decorators import serial_query
 except:

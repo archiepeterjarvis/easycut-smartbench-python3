@@ -6,13 +6,11 @@ Wifi screen
 """
 
 from kivy.lang import Builder
-from kivy.factory import Factory
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.textinput import TextInput
-from kivy.uix.spinner import Spinner, SpinnerOption
+from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
-import socket, sys, os
-from kivy.properties import StringProperty, ObjectProperty
+import sys
+import os
+from kivy.properties import ObjectProperty
 from ui.popups import popup_info
 from kivy.core.window import Window
 

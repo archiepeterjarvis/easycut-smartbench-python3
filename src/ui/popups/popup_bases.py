@@ -1,4 +1,3 @@
-from enum import Enum
 from kivy.graphics import Color, Line
 from kivy.lang import Builder
 from kivy.metrics import dp

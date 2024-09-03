@@ -5,14 +5,10 @@ Landing Screen for the Calibration App
 @author: Letty
 """
 
-import sys, os
+import sys
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.properties import ObjectProperty, StringProperty
-from kivy.uix.widget import Widget
+from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
-from datetime import datetime
-from ui.popups import popup_info
 
 Builder.load_string(
     """

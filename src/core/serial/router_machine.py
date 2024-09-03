@@ -24,7 +24,8 @@ from core.coordinate_system import CoordinateSystem
 from kivy.clock import Clock
 from kivy.properties import NumericProperty, ListProperty
 from kivy.event import EventDispatcher
-import os, time
+import os
+import time
 
 
 class Axis(Enum):

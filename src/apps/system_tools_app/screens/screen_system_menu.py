@@ -7,11 +7,7 @@ Menu screen for system tools app
 @author: Letty
 """
 from kivy.lang import Builder
-from kivy.factory import Factory
-from kivy.uix.screenmanager import ScreenManager, Screen
-import sys
-from kivy.clock import Clock
-from ui.popups import popup_info
+from kivy.uix.screenmanager import Screen
 from apps.system_tools_app.screens import popup_system
 from ui.utils import scaling_utils
 

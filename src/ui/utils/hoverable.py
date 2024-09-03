@@ -269,7 +269,7 @@ class InspectorSingleton(EventDispatcher):
             elif key == 276:
                 self.widget.pos[0] -= self.step_width
             Logger.debug(f"pos: {self.widget.pos}")
-        except Exception as ex:
+        except Exception:
             Logger.error("Failed to move widget!")
 
     def get_parent_screen(self):

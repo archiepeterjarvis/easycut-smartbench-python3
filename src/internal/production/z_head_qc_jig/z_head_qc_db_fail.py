@@ -1,7 +1,6 @@
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 from asmcnc.comms.logging import log_exporter
-import os, sys
 
 Builder.load_string(
     """

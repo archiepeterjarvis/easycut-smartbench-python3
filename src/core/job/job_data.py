@@ -4,7 +4,8 @@ Created on 2 Aug 2021
 Module used to keep track of information about the current job
 """
 
-import sys, re
+import sys
+import re
 from datetime import datetime
 from chardet import detect
 from itertools import takewhile
@@ -230,7 +231,7 @@ class JobData:
                 summary_list.sort(
                     key=lambda i: self.metadata_order[i.split("[b]:[/b]")[0]]
                 )
-            except Exception as e:
+            except Exception:
                 Logger.exception("Failed to sort summary_list!")
             summary_list.insert(0, self.l.get_bold("SmartTransfer data"))
             summary_list.insert(1, "")

@@ -6,7 +6,6 @@ Module to manage screens within the shape cutter app
 
 import gc
 from kivy.clock import Clock
-from kivy.uix.screenmanager import ScreenManager, Screen
 from apps.shape_cutter_app.cut_parameters import sC_job_parameters
 from apps.shape_cutter_app.screens import screen_shapeCutter_1
 from apps.shape_cutter_app.screens import screen_shapeCutter_10
@@ -52,7 +51,6 @@ from apps.shape_cutter_app.screens import screen_shapeCutter_post_job_save
 from apps.shape_cutter_app.screens import screen_shapeCutter_repeat
 from apps.shape_cutter_app.screens import screen_shapeCutter_tutorial
 from apps.shape_cutter_app.screens import screen_shapeCutter_filechooser
-from apps.shape_cutter_app.screens import popup_machine
 from interface.core_UI.popups import WarningPopup
 
 

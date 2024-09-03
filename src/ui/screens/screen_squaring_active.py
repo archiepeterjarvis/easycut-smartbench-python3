@@ -6,10 +6,9 @@ Created March 2019
 Squaring decision: manual or auto?
 """
 
-import kivy
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-import sys, os
+from kivy.uix.screenmanager import Screen
+import sys
 from kivy.clock import Clock
 
 Builder.load_string(

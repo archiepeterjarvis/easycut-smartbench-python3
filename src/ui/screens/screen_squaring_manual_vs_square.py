@@ -7,12 +7,9 @@ Created March 2019
 
 Squaring decision: manual or auto?
 """
-import kivy
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-import sys, os
+from kivy.uix.screenmanager import Screen
 from ui.popups import popup_info
-from kivy.clock import Clock
 from ui.utils import scaling_utils as utils
 
 Builder.load_string(

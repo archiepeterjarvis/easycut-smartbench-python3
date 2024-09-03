@@ -13,7 +13,8 @@ from apps.system_tools_app.screens import popup_system
 from core.logging.logging_system import Logger
 from ui.popups import popup_info
 from kivy.clock import Clock
-import os, sys
+import os
+import sys
 
 Builder.load_string(
     """

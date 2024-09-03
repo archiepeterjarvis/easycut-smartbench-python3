@@ -9,10 +9,8 @@ from automated_unit_tests.unit_test_base import UnitTestBase
 sys.path.append("./src")
 
 try:
-    import unittest
-    import pytest
-    from mock import Mock, MagicMock
-    from mock.mock import call, ANY, patch
+    from mock import Mock
+    from mock.mock import ANY, patch
 
 except:
     print("Can't import mocking packages, are you on a dev machine?")

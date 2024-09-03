@@ -6,11 +6,9 @@ Tutorial Screen for the Shape Cutter App
 """
 
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.metrics import MetricsBase
+from kivy.uix.screenmanager import Screen
 from kivy.properties import StringProperty, ObjectProperty
 from kivy.clock import Clock
-from apps.shape_cutter_app.screens import popup_info
 from ui.popups.popups import InfoPopup
 
 Builder.load_string(

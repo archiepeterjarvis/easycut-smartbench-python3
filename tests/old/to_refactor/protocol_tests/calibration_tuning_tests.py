@@ -7,9 +7,8 @@ from core.logging.logging_system import Logger
 
 try:
     import unittest
-    from mock import Mock, MagicMock
+    from mock import Mock
     from serial_mock.mock import MockSerial, DummySerial
-    from serial_mock.decorators import serial_query
     from random import randint
 
 except:

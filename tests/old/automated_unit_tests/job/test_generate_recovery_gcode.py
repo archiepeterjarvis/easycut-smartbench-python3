@@ -5,9 +5,8 @@ sys.path.append("./src")
 from core.logging.logging_system import Logger
 
 try:
-    import unittest
     import pytest
-    from mock import Mock, MagicMock
+    from mock import Mock
 
 except:
     Logger.info("Can't import mocking packages, are you on a dev machine?")

@@ -18,12 +18,9 @@ python -m tests.manual_tests.experiments.rapid_screen_switch_test
 
 """
 
-import kivy
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
-from kivy.core.window import Window
-from kivy.clock import Clock
+from kivy.uix.screenmanager import ScreenManager, Screen
 
 
 Builder.load_string("""

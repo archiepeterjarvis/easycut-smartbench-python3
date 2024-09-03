@@ -6,7 +6,6 @@ try:
 
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    import matplotlib.ticker as plticker
 except:
     pass
 Builder.load_string(

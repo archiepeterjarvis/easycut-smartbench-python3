@@ -11,9 +11,7 @@ from core.localization import Localization
 
 
 try:
-    import unittest
-    import pytest
-    from mock import patch, Mock, create_autospec, call
+    from mock import patch, Mock, call
 
 except Exception as e:
     Logger.info(e)

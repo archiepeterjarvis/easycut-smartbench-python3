@@ -6,10 +6,8 @@ Landing Screen for the Shape Cutter App
 """
 
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
-from kivy.uix.popup import Popup
-from apps.shape_cutter_app.screens import popup_info
 from ui.popups.popups import InfoPopup
 
 Builder.load_string(

@@ -6,11 +6,8 @@ Dimensions Entry Screen for the Shape Cutter App
 """
 
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.properties import ObjectProperty, NumericProperty, StringProperty
-from kivy.uix.textinput import TextInput
-from kivy.uix.switch import Switch
-from apps.shape_cutter_app.screens import popup_input_error
+from kivy.uix.screenmanager import Screen
+from kivy.properties import ObjectProperty, StringProperty
 from ui.utils import scaling_utils as utils
 from interface.core_UI.popups import WarningPopup
 

@@ -1,7 +1,5 @@
-import os
 from kivy.uix.button import Button
 from kivy.uix.image import Image
-from core import paths
 from ui.screens.screen_probing import ProbingScreen
 
 

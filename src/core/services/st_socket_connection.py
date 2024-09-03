@@ -23,6 +23,7 @@ class ServerConnection:
         server_thread = threading.Thread(target=self.initialise_server_connection)
         server_thread.daemon = True
         server_thread.start()
+        self.connection_loop_thread = None
 
     def __del__(self):
         Logger.debug("Server connection class has been deleted")
@@ -49,13 +50,12 @@ class ServerConnection:
                     self.sock.listen(5)
                     self.sock.settimeout(20)
                     self.is_socket_available = True
-                    # ?? t is not defined -- ends up in lots of threads being created
-                    # try:
-                    #     Logger.debug("Thread is alive? " + str(t.is_alive()))
-                    # except:
-                    #     t = threading.Thread(target=self.do_connection_loop)
-                    #     t.daemon = True
-                    #     t.start()
+
+                    if self.connection_loop_thread is not None:
+                        self.connection_loop_thread.join()
+
+                    self.connection_loop_thread = threading.Thread(target=self.do_connection_loop, daemon=True)
+                    self.connection_loop_thread.start()
                 except:
                     Logger.exception("Unable to set up socket")
             else:
@@ -82,9 +82,9 @@ class ServerConnection:
                     conn.close()
                 else:
                     sleep(20)
-            except TimeoutError as e:
+            except TimeoutError:
                 sleep(2)
-            except Exception as E:
+            except Exception:
                 if self.is_socket_available:
                     self.close_and_reconnect_socket()
                     sleep(20)

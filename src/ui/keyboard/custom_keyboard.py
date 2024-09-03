@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-import sys, os, subprocess
+import sys
+import os
+import subprocess
 
 from core.logging.logging_system import Logger
 from kivy.core.window import Window
@@ -111,7 +113,7 @@ class Keyboard(VKeyboard):
                 -1,
             )
 
-        except IndexError as e:
+        except IndexError:
             # When we get to the end of the list of things, call a final function if it exists
             if end_func:
                 end_func()
