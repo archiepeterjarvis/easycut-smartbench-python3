@@ -5,10 +5,10 @@ YetiTool's UI for SmartBench
 www.yetitool.com
 """
 
-from core import paths
 import os
 import os.path
 import sys
+
 from kivy.config import Config
 
 from core.services import st_socket_connection, flurry_connection
@@ -24,7 +24,7 @@ else:
     Config.set("graphics", "width", "1280")
     Config.set("graphics", "height", "800")
 Config.set("graphics", "maxfps", "60")
-Config.set("kivy", "KIVY_CLOCK", "interrupt")
+# Config.set("kivy", "KIVY_CLOCK", "interrupt")
 Config.write()
 import logging
 from core.managers.user_settings_manager import UserSettingsManager
@@ -95,9 +95,9 @@ def check_and_update_config():
 
 def check_config_flag():
     if (
-        os.popen('grep "check_config=True" /home/pi/easycut-smartbench/src/config.txt')
-        .read()
-        .startswith("check_config=True")
+            os.popen('grep "check_config=True" /home/pi/easycut-smartbench/src/config.txt')
+                    .read()
+                    .startswith("check_config=True")
     ):
         return True
     else:
@@ -106,9 +106,9 @@ def check_config_flag():
 
 def ver0_configuration():
     if (
-        os.popen('grep "version=0" /home/pi/easycut-smartbench/src/config.txt')
-        .read()
-        .startswith("version=0")
+            os.popen('grep "version=0" /home/pi/easycut-smartbench/src/config.txt')
+                    .read()
+                    .startswith("version=0")
     ):
         os.system(
             "cd /home/pi/easycut-smartbench/ && git update-index --skip-worktree /home/pi/easycut-smartbench/src/config.txt"
@@ -135,7 +135,7 @@ def check_ansible_status():
 
 
 check_and_update_config()
-Builder.load_file("scaled_kv.kv")
+Builder.load_file("../resources/kv/scaled_kv.kv")
 Logger.setLevel(logging.INFO)
 os.system(
     "git remote set-url origin https://github.com/archiepeterjarvis/easycut-smartbench-python3"
@@ -399,4 +399,14 @@ class SkavaUI(App):
 
 
 if __name__ == "__main__":
-    SkavaUI().run()
+    import cProfile
+    profiler = cProfile.Profile()
+    try:
+        profiler.enable()
+        SkavaUI().run()
+    except KeyboardInterrupt:
+        profiler.disable()
+        profiler.print_stats(sort="cumtime")
+        profiler.dump_stats("yeti.prof")
+        raise
+
