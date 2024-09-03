@@ -10,7 +10,6 @@ from os import listdir
 
 import serial
 import serial.tools.list_ports
-import string
 import sys
 import threading
 import time
@@ -422,7 +421,7 @@ class SerialConnection(EventDispatcher):
                 if (
                     self.is_job_streaming
                     and not self.m.is_machine_paused
-                    and not "Alarm" in self.m.state()
+                    and "Alarm" not in self.m.state()
                 ):
                     if (
                         self.is_use_yp()
@@ -841,7 +840,7 @@ class SerialConnection(EventDispatcher):
             ):
                 Logger.error("ERROR status parse: Status invalid: " + message)
                 return
-            if not "|Pn:" in message:
+            if "|Pn:" not in message:
                 self.limit_x = False
                 self.limit_X = False
                 self.limit_y = False
@@ -1703,17 +1702,6 @@ class SerialConnection(EventDispatcher):
                 + str(altDisplayText)
                 + ")"
             )
-        if "M3" in serialCommand.upper():
-            if self.m_state != "Check":
-                self.spindle_on = True
-            if "S" in serialCommand.upper():
-                serialCommand = self.compensate_spindle_speed_command(serialCommand)
-        if "M5" in serialCommand.upper():
-            self.spindle_on = False
-        if "AE" in serialCommand.upper():
-            self.vacuum_on = True
-        if "AF" in serialCommand.upper():
-            self.vacuum_on = False
         if self.s:
             try:
                 if realtime == True:
@@ -1792,6 +1780,21 @@ class SerialConnection(EventDispatcher):
                     + ")"
                 )
                 self.get_serial_screen("Could not write last command to serial buffer.")
+
+        if not isinstance(serialCommand, str):
+            return
+
+        if "M3" in serialCommand.upper():
+            if self.m_state != "Check":
+                self.spindle_on = True
+            if "S" in serialCommand.upper():
+                serialCommand = self.compensate_spindle_speed_command(serialCommand)
+        if "M5" in serialCommand.upper():
+            self.spindle_on = False
+        if "AE" in serialCommand.upper():
+            self.vacuum_on = True
+        if "AF" in serialCommand.upper():
+            self.vacuum_on = False
 
     def write_command(self, serialCommand, **kwargs):
         self.write_command_buffer.append([serialCommand, kwargs])
