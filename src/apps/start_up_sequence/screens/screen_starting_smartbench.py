@@ -77,7 +77,7 @@ class StartingSmartBenchScreen(Screen):
             self.set.refresh_all()
             if sys.platform != "win32":
                 Clock.schedule_once(self.m.s.start_services, 4)
-                # self.db.start_connection_to_database_thread()
+                self.db.start_connection_to_database_thread()
                 Clock.schedule_once(self.next_screen, 6)
                 Clock.schedule_once(self.set_machine_value_driven_user_settings, 6.2)
             else:
@@ -89,6 +89,7 @@ class StartingSmartBenchScreen(Screen):
             Clock.schedule_once(self.next_screen, 1)
 
     def next_screen(self, dt):
+        print("Moving to next screen")
         self.start_seq.next_in_sequence()
 
     def set_machine_value_driven_user_settings(self, dt):
