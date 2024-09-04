@@ -18,6 +18,7 @@ from kivy.clock import Clock
 from kivy.event import EventDispatcher
 from kivy.properties import StringProperty, NumericProperty, BooleanProperty
 from core.logging.logging_system import Logger
+from core.serial import serial_conn
 from ui.sequence_alarm import alarm_manager
 
 BAUD_RATE = 115200
@@ -93,6 +94,7 @@ class SerialConnection(EventDispatcher):
 
     def __init__(
         self,
+        serial: serial_conn.SerialConnection,
         machine,
         screen_manager,
         settings_manager,
@@ -102,6 +104,7 @@ class SerialConnection(EventDispatcher):
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
+        self.serial_conn = serial
         self.sm = screen_manager
         self.sett = settings_manager
         self.m = machine
@@ -177,7 +180,7 @@ class SerialConnection(EventDispatcher):
             time.sleep(1)
             try:
                 self.s.flushInput()
-                self.s.write("\x18")
+                self.s.write("\x18".encode("utf-8"))
                 time.sleep(1)
                 first_bytes = self.s.inWaiting()
                 Logger.info(
