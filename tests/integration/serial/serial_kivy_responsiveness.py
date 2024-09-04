@@ -1,11 +1,13 @@
+import sys
+
 from kivy.app import App
-from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 
 from core.serial.serial_conn import SerialConnection
 from core.serial.smartbench_controller import SmartBenchController
 
+sys.path.append('./src')
 
 class StatusLabel(Label):
 
