@@ -4,10 +4,12 @@ Created on 16 Nov 2017
 YetiTool's UI for SmartBench
 www.yetitool.com
 """
-
+import linecache
 import os
 import os.path
 import sys
+import threading
+import traceback
 
 from kivy.config import Config
 
@@ -399,11 +401,32 @@ class SkavaUI(App):
         return sm
 
 
+def trace_func(frame, event, arg):
+    if event == 'acquire':
+        print(f"Thread {threading.current_thread().name} is attempting to acquire a lock")
+    elif event == 'release':
+        print(f"Thread {threading.current_thread().name} is releasing a lock")
+
+    # Print the current line of code being executed
+    if event == 'line':
+        filename = frame.f_code.co_filename
+        lineno = frame.f_lineno
+        line = linecache.getline(filename, lineno).strip()
+        print(f"Thread {threading.current_thread().name}: {filename}:{lineno} - {line}")
+
+    # Print stack trace for exceptions
+    elif event == 'exception':
+        print(f"Exception in thread {threading.current_thread().name}:")
+        print(''.join(traceback.format_exception(*arg)))
+
+    return trace_func
+
 if __name__ == "__main__":
     import cProfile
     profiler = cProfile.Profile()
     try:
         profiler.enable()
+        threading.settrace(trace_func)
         SkavaUI().run()
     except KeyboardInterrupt:
         profiler.disable()
