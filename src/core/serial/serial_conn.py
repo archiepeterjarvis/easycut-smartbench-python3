@@ -1,12 +1,20 @@
 import queue
+import sys
 import time
 import threading
 import serial
 import serial.tools.list_ports
+from kivy.event import EventDispatcher
+from kivy.properties import StringProperty
+
+from core.logging.logging_system import Logger
 
 
-class SerialConnection:
-    def __init__(self, preferred_port, baudrate=115200):
+class SerialConnection(EventDispatcher):
+    last_status = StringProperty('', force_dispatch=True)
+
+    def __init__(self, preferred_port, baudrate=115200, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.preferred_port = preferred_port
         self.baudrate = baudrate
         self.serial = None
@@ -20,12 +28,19 @@ class SerialConnection:
         self.write_thread = None
         self.command_response_map = {}
         self.command_id = 0
-        self.last_status = None
         self.grbl_settings = {}
 
     @staticmethod
     def get_available_ports():
-        return serial.tools.list_ports.comports()
+        ports = serial.tools.list_ports.comports()
+
+        if not ports:
+            raise RuntimeError("No serial ports available")
+
+        if sys.platform == 'darwin':
+            ports.pop(0)  # Pop bluetooth port out
+
+        return ports
 
     def open(self):
         try:
@@ -74,6 +89,7 @@ class SerialConnection:
             time.sleep(0.01)
 
     def _process_response(self, response):
+        Logger.debug(f"Processing response {response}")
         if response.startswith("<") and response.endswith(">"):
             # This is a status response
             self.last_status = response
@@ -107,6 +123,7 @@ class SerialConnection:
     def _write(self, data):
         with self.serial_lock:
             if self.serial and self.serial.is_open:
+                Logger.debug(f"Writing data: {data}")
                 self.serial.write(data.encode("utf-8") + b"\n")
                 return True
         return False
@@ -152,24 +169,24 @@ class SerialConnection:
                 self.serial.flush()
                 return True
 
-    def send_gcode(self, gcode, timeout=5):
+    def send_command(self, command, timeout=5):
         with self.command_id_lock:
             command_id = self.command_id
             self.command_id += 1
 
         response_queue = queue.Queue()
         self.command_response_map[command_id] = response_queue
-        self.write_queue.put((command_id, gcode))
+        self.write_queue.put((command_id, command))
 
         try:
             response = response_queue.get(timeout=timeout)
-            if gcode == "?" and response == "ok":
+            if command == "?" and response == "ok":
                 # For status requests, return the last known status
                 return self.last_status
             return response
         except queue.Empty:
-            print(f"Timeout waiting for response to command: {gcode}")
-            if gcode == "?":
+            print(f"Timeout waiting for response to command: {command}")
+            if command == "?":
                 # If it's a status request that timed out, return the last known status
                 return self.last_status
             return None

@@ -3,7 +3,9 @@ import unittest
 
 from core.serial.serial_conn import SerialConnection
 
-PREFERRED_PORT = SerialConnection.get_available_ports()[0].name
+AVAILABLE_PORTS = SerialConnection.get_available_ports()
+PREFERRED_PORT = AVAILABLE_PORTS[0].device
+
 
 """
 Integration tests for the SerialConnection class.
@@ -15,11 +17,11 @@ Ensure to close the connection after each test to avoid conflicts with other tes
 """
 
 
-class SerialTestCase(unittest.TestCase):
+class SerialConnectionIntegrationTests(unittest.TestCase):
     def test_open(self):
         serial_conn = SerialConnection(PREFERRED_PORT)
 
-        self.assertTrue(serial_con.open())
+        self.assertTrue(serial_conn.open())
 
         serial_conn.close()
 
@@ -45,9 +47,7 @@ class SerialTestCase(unittest.TestCase):
 
         self.assertTrue(serial_conn.open())
 
-        status = serial_conn.send_gcode("?")
-
-        print("\n", status)
+        status = serial_conn.send_command("?")
 
         self.assertIsNotNone(status)
         self.assertFalse(status.startswith("ok") or status.startswith("error"))
@@ -59,9 +59,7 @@ class SerialTestCase(unittest.TestCase):
 
         self.assertTrue(serial_conn.open())
 
-        response = serial_conn.send_gcode("$$")
-
-        print("\n", response)
+        response = serial_conn.send_command("$$")
 
         self.assertEqual(response, "ok")
         self.assertIsNotNone(serial_conn.grbl_settings)
@@ -74,24 +72,24 @@ class SerialTestCase(unittest.TestCase):
         self.assertTrue(serial_conn.open())
 
         # Test example GCODE
-        response = serial_conn.send_gcode("G21")
+        response = serial_conn.send_command("G21")
         self.assertIsNotNone(response)
         self.assertTrue(response.startswith("ok"))
 
         # Test poll (?)
-        status = serial_conn.send_gcode("?")
+        status = serial_conn.send_command("?")
         self.assertIsNotNone(status)
         self.assertTrue(status.startswith("<") and status.endswith(">"))
 
         # Test example GCODE movement
-        response = serial_conn.send_gcode("G0 X10 Y10 F3000")
+        response = serial_conn.send_command("G0 X10 Y10 F3000")
         self.assertIsNotNone(response)
         self.assertTrue(response.startswith("ok"))
 
-        time.sleep(2)
+        time.sleep(0.5)
 
         # Ensure machine has moved
-        new_status = serial_conn.send_gcode("?")
+        new_status = serial_conn.send_command("?")
         self.assertIsNotNone(new_status)
         self.assertNotEqual(status, new_status)
 
