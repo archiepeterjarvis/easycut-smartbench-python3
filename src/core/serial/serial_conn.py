@@ -4,6 +4,7 @@ import time
 import threading
 import serial
 import serial.tools.list_ports
+from kivy.clock import Clock
 from kivy.event import EventDispatcher
 from kivy.properties import StringProperty
 
@@ -92,7 +93,7 @@ class SerialConnection(EventDispatcher):
         Logger.debug(f"Processing response {response}")
         if response.startswith("<") and response.endswith(">"):
             # This is a status response
-            self.last_status = response
+            Clock.schedule_once(lambda dt: self.last_status.setter(response), 0)
             if not self.response_queue.empty():
                 command_id = self.response_queue.get()
                 if command_id in self.command_response_map:
