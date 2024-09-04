@@ -327,7 +327,7 @@ class SerialConnection(EventDispatcher):
             if self.is_connected():
                 Logger.info("Initialising grbl...")
                 self.write_direct(
-                    "\r\n\r\n", realtime=False, show_in_sys=False, show_in_serial_montior=False
+                    "\r\n\r\n", realtime=False, show_in_serial_montior=False
                 )
         except:
             Clock.schedule_once(
@@ -363,7 +363,7 @@ class SerialConnection(EventDispatcher):
                 self.FLUSH_FLAG = False
             if self.next_poll_time < time.time():
                 self.write_direct(
-                    "?", realtime=True, show_in_sys=False, show_in_serial_montior=False
+                    "?", realtime=True, show_in_serial_montior=False
                 )
                 self.next_poll_time = time.time() + self.STATUS_INTERVAL
             command_counter = 0
@@ -375,7 +375,7 @@ class SerialConnection(EventDispatcher):
             for realtime_command in self.write_realtime_buffer:
                 self.write_direct(
                     realtime_command[0],
-                    altDisplayText=realtime_command[1],
+                    alt_display_text=realtime_command[1],
                     realtime=True,
                 )
                 realtime_counter += 1
@@ -387,7 +387,7 @@ class SerialConnection(EventDispatcher):
                 protocol_command = self.write_protocol_buffer[0]
                 self.write_direct(
                     protocol_command[0],
-                    altDisplayText=protocol_command[1],
+                    alt_display_text=protocol_command[1],
                     protocol=True,
                 )
                 del self.write_protocol_buffer[0]
@@ -547,7 +547,7 @@ class SerialConnection(EventDispatcher):
                     self.last_sent_speed,
                 )
                 self.c_line.append(len(line_to_go) + 1)
-                self.write_direct(line_to_go, show_in_sys=True, show_in_serial_montior=False)
+                self.write_direct(line_to_go, show_in_serial_montior=False)
                 self.l_count += 1
             else:
                 return
@@ -1716,7 +1716,7 @@ class SerialConnection(EventDispatcher):
     #     serialCommand,
     #     show_in_sys=True,
     #     show_in_console=True,
-    #     altDisplayText=None,
+    #     alt_display_text=None,
     #     realtime=False,
     #     protocol=False,
     # ):
@@ -1725,18 +1725,18 @@ class SerialConnection(EventDispatcher):
     #     try:
     #         if not serialCommand.startswith("?") and not protocol:
     #             Logger.info("> " + serialCommand)
-    #         if altDisplayText != None:
-    #             Logger.info("> " + str(altDisplayText))
-    #         if show_in_console == True and altDisplayText == None:
+    #         if alt_display_text != None:
+    #             Logger.info("> " + str(alt_display_text))
+    #         if show_in_console == True and alt_display_text == None:
     #             self.dispatch("on_serial_monitor_update", "snd", serialCommand)
-    #         if altDisplayText != None:
-    #             self.dispatch("on_serial_monitor_update", "snd", altDisplayText)
+    #         if alt_display_text != None:
+    #             self.dispatch("on_serial_monitor_update", "snd", alt_display_text)
     #     except:
     #         Logger.exception(
     #             "FAILED to display on CONSOLE: "
     #             + str(serialCommand)
     #             + " (Alt text: "
-    #             + str(altDisplayText)
+    #             + str(alt_display_text)
     #             + ")"
     #         )
     #     if self.s:
@@ -1756,7 +1756,7 @@ class SerialConnection(EventDispatcher):
     #                         "FAILED to write to SERIAL: "
     #                         + str(serialCommand)
     #                         + " (Alt text: "
-    #                         + str(altDisplayText)
+    #                         + str(alt_display_text)
     #                         + ")"
     #                     )
     #                     self.get_serial_screen(
@@ -1767,7 +1767,7 @@ class SerialConnection(EventDispatcher):
     #                         "FAILED to write to SERIAL: "
     #                         + hex(serialCommand)
     #                         + " (Alt text: "
-    #                         + str(altDisplayText)
+    #                         + str(alt_display_text)
     #                         + ")"
     #                     )
     #                     self.get_serial_screen(
@@ -1778,7 +1778,7 @@ class SerialConnection(EventDispatcher):
     #                     "FAILED to write to SERIAL: "
     #                     + "unprintable command!"
     #                     + " (Alt text: "
-    #                     + str(altDisplayText)
+    #                     + str(alt_display_text)
     #                     + ")"
     #                 )
     #                 self.get_serial_screen(
@@ -1791,7 +1791,7 @@ class SerialConnection(EventDispatcher):
     #                     "No serial! Command lost!: "
     #                     + str(serialCommand)
     #                     + " (Alt text: "
-    #                     + str(altDisplayText)
+    #                     + str(alt_display_text)
     #                     + ")"
     #                 )
     #                 self.get_serial_screen(
@@ -1802,7 +1802,7 @@ class SerialConnection(EventDispatcher):
     #                     "No serial! Command lost!: "
     #                     + hex(serialCommand)
     #                     + " (Alt text: "
-    #                     + str(altDisplayText)
+    #                     + str(alt_display_text)
     #                     + ")"
     #                 )
     #                 self.get_serial_screen(
@@ -1813,7 +1813,7 @@ class SerialConnection(EventDispatcher):
     #                 "No serial! Command lost!: "
     #                 + "unprintable command!"
     #                 + " (Alt text: "
-    #                 + str(altDisplayText)
+    #                 + str(alt_display_text)
     #                 + ")"
     #             )
     #             self.get_serial_screen("Could not write last command to serial buffer.")
@@ -1836,11 +1836,11 @@ class SerialConnection(EventDispatcher):
     def write_command(self, serialCommand, **kwargs):
         self.write_command_buffer.append([serialCommand, kwargs])
 
-    def write_realtime(self, serialCommand, altDisplayText=None):
-        self.write_realtime_buffer.append([serialCommand, altDisplayText])
+    def write_realtime(self, serialCommand, alt_display_text=None):
+        self.write_realtime_buffer.append([serialCommand, alt_display_text])
 
-    def write_protocol(self, serialCommand, altDisplayText):
-        self.write_protocol_buffer.append([serialCommand, altDisplayText])
+    def write_protocol(self, serialCommand, alt_display_text):
+        self.write_protocol_buffer.append([serialCommand, alt_display_text])
         return serialCommand
 
     def compensate_spindle_speed_command(self, spindle_speed_line):

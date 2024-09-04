@@ -1281,24 +1281,24 @@ class RouterMachine(EventDispatcher):
 
     def _grbl_resume(self):
         Logger.info("grbl realtime cmd sent: ~ resume")
-        self.s.write_realtime("~", altDisplayText="Resume")
+        self.s.write_realtime("~", alt_display_text="Resume")
 
     def _grbl_feed_hold(self):
         Logger.info("grbl realtime cmd sent: ! feed-hold")
-        self.s.write_realtime("!", altDisplayText="Feed hold")
+        self.s.write_realtime("!", alt_display_text="Feed hold")
 
     def _grbl_soft_reset(self):
         Logger.info("grbl realtime cmd sent: \\x18 soft reset")
         self.s.grbl_waiting_for_reset = True
-        self.s.write_realtime("\x18", altDisplayText="Soft reset")
+        self.s.write_realtime("\x18", alt_display_text="Soft reset")
 
     def _grbl_door(self):
         Logger.info("grbl realtime cmd sent: \\x84")
-        self.s.write_realtime("\x84", altDisplayText="Door")
+        self.s.write_realtime("\x84", alt_display_text="Door")
 
     def _grbl_unlock(self):
         Logger.info("grbl realtime cmd sent: $X unlock")
-        self.s.write_command("$X", altDisplayText="Unlock: $X")
+        self.s.write_command("$X", alt_display_text="Unlock: $X")
 
     def is_connected(self):
         return self.s.is_connected()
@@ -1369,7 +1369,7 @@ class RouterMachine(EventDispatcher):
         self._grbl_soft_reset()
         if self.s.m_state != "Check":
             Clock.schedule_once(
-                lambda dt: self.s.write_command("$C", altDisplayText="Check mode ON"),
+                lambda dt: self.s.write_command("$C", alt_display_text="Check mode ON"),
                 0.6,
             )
         else:
@@ -1377,7 +1377,7 @@ class RouterMachine(EventDispatcher):
 
     def disable_check_mode(self):
         if self.s.m_state == "Check":
-            self.s.write_command("$C", altDisplayText="Check mode OFF")
+            self.s.write_command("$C", alt_display_text="Check mode OFF")
         else:
             Logger.info("Check mode already disabled")
         Clock.schedule_once(lambda dt: self._grbl_soft_reset(), 0.1)
@@ -1786,7 +1786,7 @@ class RouterMachine(EventDispatcher):
         self.s.write_command("$J=G91 " + axis + str(dist) + " F" + str(speed))
 
     def quit_jog(self):
-        self.s.write_realtime("\x85", altDisplayText="Quit jog")
+        self.s.write_realtime("\x85", alt_display_text="Quit jog")
 
     def cooldown_zUp_and_spindle_on(self):
         self.turn_off_vacuum()
@@ -1810,7 +1810,7 @@ class RouterMachine(EventDispatcher):
             self.set_led_colour("GREEN")
 
     def toggle_spindle_off_overide(self, dt):
-        self.s.write_realtime("\x9e", altDisplayText="Spindle stop override")
+        self.s.write_realtime("\x9e", alt_display_text="Spindle stop override")
 
     def go_to_jobstart_xy(self):
         self.s.write_command("G0 G53 Z-" + str(self.limit_switch_safety_distance))
@@ -1889,49 +1889,49 @@ class RouterMachine(EventDispatcher):
         return True
 
     def feed_override_reset(self):
-        self.s.write_realtime("\x90", altDisplayText="Feed override RESET")
+        self.s.write_realtime("\x90", alt_display_text="Feed override RESET")
 
     def feed_override_up_10(self, final_percentage=""):
         self.s.write_realtime(
-            "\x91", altDisplayText="Feed override UP " + str(final_percentage)
+            "\x91", alt_display_text="Feed override UP " + str(final_percentage)
         )
 
     def feed_override_down_10(self, final_percentage=""):
         self.s.write_realtime(
-            "\x92", altDisplayText="Feed override DOWN " + str(final_percentage)
+            "\x92", alt_display_text="Feed override DOWN " + str(final_percentage)
         )
 
     def feed_override_up_1(self, final_percentage=""):
         self.s.write_realtime(
-            "\x93", altDisplayText="Feed override UP " + str(final_percentage)
+            "\x93", alt_display_text="Feed override UP " + str(final_percentage)
         )
 
     def feed_override_down_1(self, final_percentage=""):
         self.s.write_realtime(
-            "\x94", altDisplayText="Feed override DOWN " + str(final_percentage)
+            "\x94", alt_display_text="Feed override DOWN " + str(final_percentage)
         )
 
     def speed_override_reset(self):
-        self.s.write_realtime("\x99", altDisplayText="Speed override RESET")
+        self.s.write_realtime("\x99", alt_display_text="Speed override RESET")
 
     def speed_override_up_1(self, final_percentage=""):
         self.s.write_realtime(
-            "\x9c", altDisplayText="Speed override UP " + str(final_percentage)
+            "\x9c", alt_display_text="Speed override UP " + str(final_percentage)
         )
 
     def speed_override_down_1(self, final_percentage=""):
         self.s.write_realtime(
-            "\x9d", altDisplayText="Speed override DOWN " + str(final_percentage)
+            "\x9d", alt_display_text="Speed override DOWN " + str(final_percentage)
         )
 
     def speed_override_up_10(self, final_percentage=""):
         self.s.write_realtime(
-            "\x9a", altDisplayText="Speed override UP " + str(final_percentage)
+            "\x9a", alt_display_text="Speed override UP " + str(final_percentage)
         )
 
     def speed_override_down_10(self, final_percentage=""):
         self.s.write_realtime(
-            "\x9b", altDisplayText="Speed override DOWN " + str(final_percentage)
+            "\x9b", alt_display_text="Speed override DOWN " + str(final_percentage)
         )
 
     """
@@ -2219,7 +2219,7 @@ class RouterMachine(EventDispatcher):
             Logger.warning("LED Colour denied because streaming: " + colour_name + "\n")
 
     def led_restore(self):
-        self.s.write_realtime("&", altDisplayText="LED restore")
+        self.s.write_realtime("&", alt_display_text="LED restore")
 
     def strobe_led_playlist(self, situation):
         if situation == "datum_has_been_set":
@@ -2400,7 +2400,7 @@ class RouterMachine(EventDispatcher):
 
     def send_command_to_motor(
         self,
-        altDisplayText,
+        alt_display_text,
         motor=TMC_X1,
         command=SET_ACTIVE_CURRENT,
         value=0,
@@ -2587,7 +2587,7 @@ class RouterMachine(EventDispatcher):
             if cmd < (MOTOR_OFFSET + 1) * TOTAL_TMCS:
                 cmd = cmd + motor * MOTOR_OFFSET
             out = self.s.write_protocol(
-                self.p.constructTMCcommand(cmd, val, len), altDisplayText
+                self.p.constructTMCcommand(cmd, val, len), alt_display_text
             )
             if printlog:
                 Logger.info(
@@ -3337,15 +3337,15 @@ class RouterMachine(EventDispatcher):
             calibration_file = self.calibration_files_folder_path + axis + path_end
             if axis == "X":
                 calibrate_mode = 32
-                altDisplayText = "CALIBRATE X AXIS"
+                alt_display_text = "CALIBRATE X AXIS"
             if axis == "Y":
                 calibrate_mode = 64
-                altDisplayText = "CALIBRATE Y AXIS"
+                alt_display_text = "CALIBRATE Y AXIS"
             if axis == "Z":
                 calibrate_mode = 128
-                altDisplayText = "CALIBRATE Z AXIS"
+                alt_display_text = "CALIBRATE Z AXIS"
             self.send_command_to_motor(
-                altDisplayText, command=SET_CALIBR_MODE, value=calibrate_mode
+                alt_display_text, command=SET_CALIBR_MODE, value=calibrate_mode
             )
             Clock.schedule_once(
                 lambda dt: self.stream_calibration_file(calibration_file), 0.5
@@ -3499,18 +3499,18 @@ class RouterMachine(EventDispatcher):
         if self.state().startswith("Idle") and not self.s.write_protocol_buffer:
             if axis == "X":
                 calibrate_mode = 32
-                altDisplayText = "UPLOAD CALIBRATION TO X AXIS"
+                alt_display_text = "UPLOAD CALIBRATION TO X AXIS"
                 motor_index = TMC_X1
             if axis == "Y":
                 calibrate_mode = 64
-                altDisplayText = "UPLOAD CALIBRATION TO Y AXIS"
+                alt_display_text = "UPLOAD CALIBRATION TO Y AXIS"
                 motor_index = TMC_Y1
             if axis == "Z":
                 calibrate_mode = 128
-                altDisplayText = "UPLOAD CALIBRATION TO Z AXIS"
+                alt_display_text = "UPLOAD CALIBRATION TO Z AXIS"
                 motor_index = TMC_Z
             self.send_command_to_motor(
-                altDisplayText, command=SET_CALIBR_MODE, value=calibrate_mode
+                alt_display_text, command=SET_CALIBR_MODE, value=calibrate_mode
             )
             upload_cal_thread = threading.Thread(
                 target=self.do_calibration_upload, args=(motor_index,)
@@ -3576,14 +3576,14 @@ class RouterMachine(EventDispatcher):
         )
 
     def send_one_calibration_upload_value(self, motor_index, idx, val):
-        altDisplayText = (
+        alt_display_text = (
             "UPLOAD CAL: M" + str(motor_index) + ":I" + str(idx) + ":COEFF " + str(val)
         )
         constructed_value = motor_index << 24 & 4278190080
         constructed_value |= idx << 16 & 16711680
         constructed_value |= val & 65535
         self.send_command_to_motor(
-            altDisplayText,
+            alt_display_text,
             motor=motor_index,
             command=UPLOAD_CALIBR_VALUE,
             value=constructed_value,
@@ -3876,7 +3876,7 @@ class RouterMachine(EventDispatcher):
             elif "Y" in axis:
                 motors.extend([TMC_Y1, TMC_Y2])
             for motor in motors:
-                altDisplayText = (
+                alt_display_text = (
                     "SET ACTIVE CURRENT: "
                     + axis
                     + ": "
@@ -3886,12 +3886,12 @@ class RouterMachine(EventDispatcher):
                     + str(current)
                 )
                 self.send_command_to_motor(
-                    altDisplayText,
+                    alt_display_text,
                     motor=motor,
                     command=SET_ACTIVE_CURRENT,
                     value=current,
                 )
-                altDisplayText = (
+                alt_display_text = (
                     "SET IDLE CURRENT: "
                     + axis
                     + ": "
@@ -3901,7 +3901,7 @@ class RouterMachine(EventDispatcher):
                     + str(current)
                 )
                 self.send_command_to_motor(
-                    altDisplayText, motor=motor, command=SET_IDLE_CURRENT, value=current
+                    alt_display_text, motor=motor, command=SET_IDLE_CURRENT, value=current
                 )
             return True
         else:
@@ -3918,7 +3918,7 @@ class RouterMachine(EventDispatcher):
             if "Z" in axis:
                 motors = [TMC_Z]
             for motor in motors:
-                altDisplayText = (
+                alt_display_text = (
                     "SET THERMAL COEFF: "
                     + axis
                     + ": "
@@ -3928,7 +3928,7 @@ class RouterMachine(EventDispatcher):
                     + str(value)
                 )
                 self.send_command_to_motor(
-                    altDisplayText, motor=motor, command=SET_THERMAL_COEFF, value=value
+                    alt_display_text, motor=motor, command=SET_THERMAL_COEFF, value=value
                 )
             return True
         else:
