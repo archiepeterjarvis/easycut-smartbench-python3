@@ -13,7 +13,7 @@ class StatusLabel(Label):
 
     def __init__(self, **kwargs):
         super(StatusLabel, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update_text, 0.1)
+        Clock.schedule_interval(self.update_text, 0.05)
 
     i = 0
 
