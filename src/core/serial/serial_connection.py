@@ -352,7 +352,7 @@ class SerialConnection(EventDispatcher):
         self.m.starting_serial_connection = False
 
     VERBOSE_ALL_PUSH_MESSAGES = False
-    VERBOSE_ALL_RESPONSE = False
+    VERBOSE_ALL_RESPONSE = True
     VERBOSE_STATUS = False
 
     def grbl_scanner(self, run_grbl_scanner_once=False):
