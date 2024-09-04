@@ -1,4 +1,7 @@
 import os
+
+from kivy.clock import Clock
+
 from core.logging.logging_system import Logger
 from apps.start_up_sequence.screens import (
     screen_reboot_to_apply_settings,
@@ -84,7 +87,9 @@ class StartUpSequence:
 
     def next_in_sequence(self, *args):
         self.seq_step += 1
-        self.sm.current = self.screen_sequence[self.seq_step]
+        def inner(dt):
+            self.sm.current = self.screen_sequence[self.seq_step]
+        Clock.schedule_once(inner, 0)
 
     def prev_in_sequence(self):
         if self.seq_step > 0:
