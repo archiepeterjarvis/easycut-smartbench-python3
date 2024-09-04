@@ -8,8 +8,6 @@ sys.path.append("./src")
 
 try:
     import unittest
-    import pytest
-    from mock import Mock, MagicMock
 
 except:
     Logger.info("Can't import mocking packages, are you on a dev machine?")

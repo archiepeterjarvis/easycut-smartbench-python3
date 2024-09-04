@@ -22,7 +22,7 @@ def get_scaled_width(width):
     """
     if width is None:
         return None
-    if width is 0:
+    if width == 0:
         return 0
     return float(width) / 800.0 * Width
 

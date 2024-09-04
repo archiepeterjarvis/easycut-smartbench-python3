@@ -5,10 +5,8 @@ Warning to remind user to remove their tape measure before homing the machine
 """
 
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty, StringProperty
-from kivy.uix.widget import Widget
-from kivy.clock import Clock
 
 Builder.load_string(
     """

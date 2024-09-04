@@ -12,7 +12,9 @@ WARNINGS:
 
 from core.logging.logging_system import Logger
 from kivy.clock import Clock
-import sys, os, subprocess
+import sys
+import os
+import subprocess
 
 
 class USB_storage:

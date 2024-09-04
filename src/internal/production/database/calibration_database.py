@@ -88,7 +88,7 @@ class CalibrationDatabase(object):
             )
             Logger.info("Connected to InfluxDB")
 
-        except Exception as e:
+        except Exception:
             Logger.exception("Failed to import credentials!")
             if sys.platform != "win32" and sys.platform != "darwin":
                 Logger.error(

@@ -1,5 +1,6 @@
 from kivy.core.window import Window
-import os, sys
+import os
+import sys
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 from ui.popups import popup_info

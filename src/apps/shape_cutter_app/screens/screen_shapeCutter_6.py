@@ -6,8 +6,7 @@ Screen 6 for the Shape Cutter App
 """
 
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.metrics import MetricsBase
+from kivy.uix.screenmanager import Screen
 from kivy.properties import StringProperty, ObjectProperty
 
 Builder.load_string(

@@ -1,7 +1,8 @@
 import re
 from functools import partial
 import glob
-import os, subprocess
+import os
+import subprocess
 from core.logging.logging_system import Logger
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder

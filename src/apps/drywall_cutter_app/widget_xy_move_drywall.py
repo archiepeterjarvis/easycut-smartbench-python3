@@ -1,4 +1,5 @@
-import sys, textwrap
+import sys
+import textwrap
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
 from ui.components.buttons import probe_button

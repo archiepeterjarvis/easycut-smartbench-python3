@@ -10,7 +10,6 @@ from apps.drywall_cutter_app.screen_drywall_cutter import DrywallCutterScreen
 from core.serial import router_machine
 
 try:
-    import unittest
     import pytest
     from mock import Mock, MagicMock
 

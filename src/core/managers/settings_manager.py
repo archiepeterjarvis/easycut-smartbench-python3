@@ -4,7 +4,11 @@ Created 5 March 2020
 Module to get and store settings info
 """
 
-import sys, os, subprocess, time, threading
+import sys
+import os
+import subprocess
+import time
+import threading
 from time import sleep
 from ui.utils import console_utils
 from core.logging.logging_system import Logger

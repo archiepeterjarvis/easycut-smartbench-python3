@@ -4,7 +4,6 @@ Created on 26 Jul 2021
 Widget to display gcode as an alternative to a drawing
 """
 
-import kivy
 from kivy.lang import Builder
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget

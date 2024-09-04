@@ -312,7 +312,7 @@ class JobIncompleteScreen(Screen):
         self.event_type = event
         if event_number:
             self.specific_event = str(event_number.split(":")[1])
-        if not "unsuccessful" in self.event_type:
+        if "unsuccessful" not in self.event_type:
             self.db.send_job_end(False)
         self.send_job_status()
         self.sm.get_screen("go").is_job_started_already = False

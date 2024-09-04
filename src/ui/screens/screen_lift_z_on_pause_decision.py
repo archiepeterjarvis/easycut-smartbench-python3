@@ -6,7 +6,6 @@ Created March 2019
 Squaring decision: manual or auto?
 """
 
-from datetime import datetime
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 from ui.popups import popup_info

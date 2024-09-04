@@ -7,11 +7,8 @@ Prepare to home
 """
 
 from kivy.core.window import Window
-import kivy
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-import sys, os
-from kivy.clock import Clock
+from kivy.uix.screenmanager import Screen
 from ui.utils import scaling_utils as utils
 
 Builder.load_string(

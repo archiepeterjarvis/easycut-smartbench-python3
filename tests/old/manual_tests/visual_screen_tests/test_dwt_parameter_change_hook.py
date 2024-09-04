@@ -10,9 +10,7 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 
 try:
-    import unittest
-    import pytest
-    from mock import Mock, MagicMock
+    pass
 except:
     Logger.info("Can't import mocking packages, are you on a dev machine?")
 

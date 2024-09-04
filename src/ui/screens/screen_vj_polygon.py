@@ -1,8 +1,6 @@
-import kivy
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, SlideTransition
+from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
-from interface.skavaUI import widget_vj_polygon
 
 Builder.load_string(
     """

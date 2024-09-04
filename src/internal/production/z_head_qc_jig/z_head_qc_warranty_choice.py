@@ -2,7 +2,8 @@ from core.logging.logging_system import Logger
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 from kivy.clock import Clock
-import glob, re
+import glob
+import re
 from ui.components.widgets import widget_status_bar
 
 Builder.load_string(

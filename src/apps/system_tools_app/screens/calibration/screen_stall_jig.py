@@ -645,7 +645,7 @@ class StallJigScreen(Screen):
         return True
 
     def register_hard_limit_found(self):
-        if not self.current_axis() in self.get_limits():
+        if self.current_axis() not in self.get_limits():
             return False
         self.expected_limit_found = True
         if self.VERBOSE:

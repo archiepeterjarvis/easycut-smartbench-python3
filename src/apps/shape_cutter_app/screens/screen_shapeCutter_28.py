@@ -6,15 +6,12 @@ Screen 28 for the Shape Cutter App
 """
 
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.metrics import MetricsBase
+from kivy.uix.screenmanager import Screen
 from kivy.properties import StringProperty, ObjectProperty
-from kivy.clock import Clock
 from apps.shape_cutter_app.screens import (
     widget_sC28_xy_move,
     widget_sC_work_coordinates,
     widget_sC_virtual_bed,
-    popup_info,
 )
 from ui.popups.popups import InfoPopup
 

@@ -6,7 +6,8 @@ Created on 19 Aug 2017
 
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
-import sys, textwrap
+import sys
+import textwrap
 from ui.popups import popup_info
 from ui.popups.popups import BasicPopup, PopupType
 from ui.utils import console_utils

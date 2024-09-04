@@ -13,7 +13,6 @@ sys.path.append("./src")
 
 
 try:
-    import unittest
     import pytest
     from mock import Mock, MagicMock
 

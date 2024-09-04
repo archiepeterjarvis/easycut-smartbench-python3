@@ -5,14 +5,9 @@ Screen 36 for the Shape Cutter App
 @author: Letty
 """
 
-from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.metrics import MetricsBase
 from kivy.properties import StringProperty, ObjectProperty
-from kivy.uix.screenmanager import ScreenManager, Screen
-from apps.shape_cutter_app.screens import screen_shapeCutter_feedback
-from apps.shape_cutter_app.screens import screen_shapeCutter_post_job_save
-from apps.shape_cutter_app.screens import screen_shapeCutter_repeat
+from kivy.uix.screenmanager import Screen
 
 Builder.load_string(
     """

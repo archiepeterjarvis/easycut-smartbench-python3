@@ -1,6 +1,7 @@
 from core.serial.yeti_grbl_protocol import crc8
 from core.serial.yeti_grbl_protocol.c_defines import *
-import logging, struct
+import logging
+import struct
 
 
 class protocol_v2:

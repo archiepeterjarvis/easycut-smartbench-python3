@@ -1,7 +1,5 @@
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.clock import Clock
-from ui.popups import popup_info
+from kivy.uix.screenmanager import Screen
 
 Builder.load_string(
     """

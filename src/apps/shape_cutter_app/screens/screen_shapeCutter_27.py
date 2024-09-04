@@ -6,10 +6,8 @@ Screen 27 for the Shape Cutter App
 """
 
 from kivy.lang import Builder
-from kivy.metrics import MetricsBase
 from kivy.properties import StringProperty, ObjectProperty
-from kivy.uix.screenmanager import ScreenManager, Screen
-from apps.shape_cutter_app.screens import popup_info
+from kivy.uix.screenmanager import Screen
 from ui.popups.popups import InfoPopup
 
 Builder.load_string(

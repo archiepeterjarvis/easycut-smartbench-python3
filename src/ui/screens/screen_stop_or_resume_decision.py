@@ -6,13 +6,10 @@ Created March 2019
 Squaring decision: manual or auto?
 """
 
-import kivy
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-import sys, os
+from kivy.uix.screenmanager import Screen
 from ui.popups import popup_info
-from datetime import datetime
 from ui.popups.popups import BasicPopup, PopupType, InfoPopup
 
 Builder.load_string(

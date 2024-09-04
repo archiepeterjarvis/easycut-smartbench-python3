@@ -2,7 +2,9 @@
 From the easycut folder: python -m tests.manual_tests.visual_screen_tests.info_popups_test
 """
 
-import sys, os, textwrap
+import sys
+import os
+import textwrap
 
 from core.logging.logging_system import Logger
 

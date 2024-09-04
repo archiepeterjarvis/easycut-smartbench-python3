@@ -3,14 +3,9 @@ Created on 1 Feb 2018
 @author: Ed
 """
 
-import kivy, textwrap
+import textwrap
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
-from kivy.uix.floatlayout import FloatLayout
-from kivy.properties import ObjectProperty, ListProperty, NumericProperty
 from kivy.uix.widget import Widget
-from kivy.base import runTouchApp
-from kivy.clock import Clock
 from ui.popups import popup_info
 from kivy.core.window import Window
 

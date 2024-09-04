@@ -9,7 +9,6 @@ from ui.utils.scaling_utils import (
     is_screen_big,
     get_scaled_tuple,
     get_scaled_height,
-    get_scaled_width,
     get_scaled_sp,
 )
 

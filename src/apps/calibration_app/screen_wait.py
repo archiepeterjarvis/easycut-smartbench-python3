@@ -6,9 +6,8 @@ Landing Screen for the Calibration App
 """
 
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.properties import ObjectProperty, StringProperty
-from kivy.uix.widget import Widget
+from kivy.uix.screenmanager import Screen
+from kivy.properties import StringProperty
 from kivy.clock import Clock
 
 Builder.load_string(
