@@ -7,7 +7,6 @@ from kivy.uix.label import Label
 from core.serial.serial_conn import SerialConnection
 from core.serial.smartbench_controller import SmartBenchController
 
-sys.path.append('./src')
 
 class StatusLabel(Label):
 
@@ -17,6 +16,7 @@ class StatusLabel(Label):
         self.controller.serial_conn.bind(last_status=self.update_text)
 
     i = 0
+
     def update_text(self, instance, value):
         self.i += 1
         self.text = f"{value}: {self.i}"
