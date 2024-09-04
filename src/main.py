@@ -421,15 +421,16 @@ def trace_func(frame, event, arg):
 
     return trace_func
 
+
 if __name__ == "__main__":
     import cProfile
+
     profiler = cProfile.Profile()
     try:
         profiler.enable()
-        threading.settrace(trace_func)
+        #threading.settrace(trace_func)
         SkavaUI().run()
     except KeyboardInterrupt:
         profiler.disable()
         profiler.dump_stats("yeti.prof")
         raise
-
