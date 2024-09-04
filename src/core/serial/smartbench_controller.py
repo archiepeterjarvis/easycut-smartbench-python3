@@ -96,8 +96,8 @@ class SmartBenchController:
         if not x and not y and not z:
             raise ValueError("Either x or y or z must be specified.")
 
-        cmd = f"$J=G53 {f"X{x} " if x else ""}{f"Y{y} " if y else ""}{f"Z{z} " if z else ""}F{feedrate}"
-        return self.serial_conn.send_command(cmd, timeout=5)
+        #cmd = f"$J=G53 {f"X{x} " if x else ""}{f"Y{y} " if y else ""}{f"Z{z} " if z else ""}F{feedrate}"
+        return self.serial_conn.send_command("", timeout=5)
 
     def jog_relative(self, feedrate, x=None, y=None, z=None):
         """
@@ -112,6 +112,6 @@ class SmartBenchController:
         if not x and not y and not z:
             raise ValueError("Either x or y or z must be specified.")
 
-        cmd = f"$J=G91 {f"X{x} " if x else ""}{f"Y{y} " if y else ""}{f"Z{z} " if z else ""}F{feedrate}"
-        return self.serial_conn.send_command(cmd, timeout=5)
+        #cmd = f"$J=G91 {f"X{x} " if x else ""}{f"Y{y} " if y else ""}{f"Z{z} " if z else ""}F{feedrate}"
+        return self.serial_conn.send_command("", timeout=5)
 
