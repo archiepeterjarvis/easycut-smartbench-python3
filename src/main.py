@@ -181,7 +181,8 @@ class SkavaUI(App):
         m.s.alarm.db = db
         m.s.yp = yp
         if ModelManagerSingleton().get_product_code() != ProductCodes.DRYWALLTEC:
-            sc = st_socket_connection.ServerConnection(sett)
+            pass
+            # sc = st_socket_connection.ServerConnection(sett)
         lobby_screen = screen_lobby.LobbyScreen(
             name="lobby",
             screen_manager=sm,
