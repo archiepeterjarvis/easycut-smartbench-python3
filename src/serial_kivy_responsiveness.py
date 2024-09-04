@@ -34,7 +34,7 @@ class TestStatusBar(BoxLayout):
 class SerialTestApp(App):
 
     def build(self):
-        self.serial = SerialConnection(SerialConnection.get_available_ports()[0].device)
+        self.serial = SerialConnection("ttyS0")
         self.serial.open()
         self.controller = SmartBenchController(self.serial)
 
