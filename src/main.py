@@ -406,7 +406,6 @@ if __name__ == "__main__":
         SkavaUI().run()
     except KeyboardInterrupt:
         profiler.disable()
-        profiler.print_stats(sort="cumtime")
         profiler.dump_stats("yeti.prof")
         raise
 

@@ -327,7 +327,7 @@ class SerialConnection(EventDispatcher):
             if self.is_connected():
                 Logger.info("Initialising grbl...")
                 self.write_direct(
-                    "\r\n\r\n", realtime=False, show_in_sys=False, show_in_console=False
+                    "\r\n\r\n", realtime=False, show_in_sys=False, show_in_serial_montior=False
                 )
         except:
             Clock.schedule_once(
@@ -363,7 +363,7 @@ class SerialConnection(EventDispatcher):
                 self.FLUSH_FLAG = False
             if self.next_poll_time < time.time():
                 self.write_direct(
-                    "?", realtime=True, show_in_sys=False, show_in_console=False
+                    "?", realtime=True, show_in_sys=False, show_in_serial_montior=False
                 )
                 self.next_poll_time = time.time() + self.STATUS_INTERVAL
             command_counter = 0
@@ -547,7 +547,7 @@ class SerialConnection(EventDispatcher):
                     self.last_sent_speed,
                 )
                 self.c_line.append(len(line_to_go) + 1)
-                self.write_direct(line_to_go, show_in_sys=True, show_in_console=False)
+                self.write_direct(line_to_go, show_in_sys=True, show_in_serial_montior=False)
                 self.l_count += 1
             else:
                 return
@@ -1673,128 +1673,165 @@ class SerialConnection(EventDispatcher):
             return True
         return False
 
+    def write_temp(self, serial_command):
+        if isinstance(serial_command, str):
+            if not serial_command.endswith("\n"):
+                serial_command += "\n"
+            serial_command = serial_command.encode()
+        self.s.write(serial_command)
 
-    def write_direct(
-        self,
-        serialCommand,
-        show_in_sys=True,
-        show_in_console=True,
-        altDisplayText=None,
-        realtime=False,
-        protocol=False,
-    ):
-        if not protocol and not isinstance(serialCommand, str):
-            serialCommand = str(serialCommand)
-        try:
-            if not serialCommand.startswith("?") and not protocol:
-                Logger.info("> " + serialCommand)
-            if altDisplayText != None:
-                Logger.info("> " + str(altDisplayText))
-            if show_in_console == True and altDisplayText == None:
-                self.dispatch("on_serial_monitor_update", "snd", serialCommand)
-            if altDisplayText != None:
-                self.dispatch("on_serial_monitor_update", "snd", altDisplayText)
-        except:
-            Logger.exception(
-                "FAILED to display on CONSOLE: "
-                + str(serialCommand)
-                + " (Alt text: "
-                + str(altDisplayText)
-                + ")"
-            )
+    def write_direct(self, serial_command, show_in_serial_montior=True, alt_display_text=None, realtime=False, protocol=False):
+        # Log the command
+        if serial_command != '?':
+            Logger.info(f"> {alt_display_text or serial_command}")
+
+        # Show in serial monitor
+        if show_in_serial_montior:
+            self.dispatch("on_serial_monitor_update", "snd", alt_display_text or serial_command)
+
+        # Track status of spindle, vacuum, etc
+        if isinstance(serial_command, str):
+            serial_command = serial_command.upper()
+            if "M3" in serial_command:
+                if self.m_state != "Check":
+                    self.spindle_on = True
+                if "S" in serial_command:
+                    serial_command = self.compensate_spindle_speed_command(serial_command)
+            elif "M5" in serial_command:
+                self.spindle_on = False
+            elif "AE" in serial_command:
+                self.vacuum_on = True
+            elif "AF" in serial_command:
+                self.vacuum_on = False
+
+        # Write the message to serial
         if self.s:
-            try:
-                if realtime == True:
-                    self.s.write(serialCommand.encode("utf-8"))
-                elif realtime == False and protocol == False:
-                    cmd = serialCommand + "\n"
-                    self.s.write(cmd.encode("utf-8"))
-                elif protocol == True:
-                    self.s.write(serialCommand.encode("utf-8"))
-                    self.last_protocol_send_time = time.time()
-            except:
-                try:
-                    if not protocol:
-                        Logger.exception(
-                            "FAILED to write to SERIAL: "
-                            + str(serialCommand)
-                            + " (Alt text: "
-                            + str(altDisplayText)
-                            + ")"
-                        )
-                        self.get_serial_screen(
-                            "Could not write last command to serial buffer."
-                        )
-                    else:
-                        Logger.exception(
-                            "FAILED to write to SERIAL: "
-                            + hex(serialCommand)
-                            + " (Alt text: "
-                            + str(altDisplayText)
-                            + ")"
-                        )
-                        self.get_serial_screen(
-                            "Could not write last command to serial buffer."
-                        )
-                except:
-                    Logger.exception(
-                        "FAILED to write to SERIAL: "
-                        + "unprintable command!"
-                        + " (Alt text: "
-                        + str(altDisplayText)
-                        + ")"
-                    )
-                    self.get_serial_screen(
-                        "Could not write last command to serial buffer."
-                    )
-        else:
-            try:
-                if not protocol:
-                    Logger.error(
-                        "No serial! Command lost!: "
-                        + str(serialCommand)
-                        + " (Alt text: "
-                        + str(altDisplayText)
-                        + ")"
-                    )
-                    self.get_serial_screen(
-                        "Could not write last command to serial buffer."
-                    )
-                else:
-                    Logger.error(
-                        "No serial! Command lost!: "
-                        + hex(serialCommand)
-                        + " (Alt text: "
-                        + str(altDisplayText)
-                        + ")"
-                    )
-                    self.get_serial_screen(
-                        "Could not write last command to serial buffer."
-                    )
-            except:
-                Logger.exception(
-                    "No serial! Command lost!: "
-                    + "unprintable command!"
-                    + " (Alt text: "
-                    + str(altDisplayText)
-                    + ")"
-                )
-                self.get_serial_screen("Could not write last command to serial buffer.")
+            self.write_temp(serial_command)
 
-        if not isinstance(serialCommand, str):
-            return
+            if protocol:
+                self.last_protocol_send_time = time.time()
 
-        if "M3" in serialCommand.upper():
-            if self.m_state != "Check":
-                self.spindle_on = True
-            if "S" in serialCommand.upper():
-                serialCommand = self.compensate_spindle_speed_command(serialCommand)
-        if "M5" in serialCommand.upper():
-            self.spindle_on = False
-        if "AE" in serialCommand.upper():
-            self.vacuum_on = True
-        if "AF" in serialCommand.upper():
-            self.vacuum_on = False
+    # def write_direct(
+    #     self,
+    #     serialCommand,
+    #     show_in_sys=True,
+    #     show_in_console=True,
+    #     altDisplayText=None,
+    #     realtime=False,
+    #     protocol=False,
+    # ):
+    #     if not protocol and not isinstance(serialCommand, str):
+    #         serialCommand = str(serialCommand)
+    #     try:
+    #         if not serialCommand.startswith("?") and not protocol:
+    #             Logger.info("> " + serialCommand)
+    #         if altDisplayText != None:
+    #             Logger.info("> " + str(altDisplayText))
+    #         if show_in_console == True and altDisplayText == None:
+    #             self.dispatch("on_serial_monitor_update", "snd", serialCommand)
+    #         if altDisplayText != None:
+    #             self.dispatch("on_serial_monitor_update", "snd", altDisplayText)
+    #     except:
+    #         Logger.exception(
+    #             "FAILED to display on CONSOLE: "
+    #             + str(serialCommand)
+    #             + " (Alt text: "
+    #             + str(altDisplayText)
+    #             + ")"
+    #         )
+    #     if self.s:
+    #         try:
+    #             if realtime == True:
+    #                 self.s.write(serialCommand.encode("utf-8"))
+    #             elif realtime == False and protocol == False:
+    #                 cmd = serialCommand + "\n"
+    #                 self.s.write(cmd.encode("utf-8"))
+    #             elif protocol == True:
+    #                 self.s.write(serialCommand.encode("utf-8"))
+    #                 self.last_protocol_send_time = time.time()
+    #         except:
+    #             try:
+    #                 if not protocol:
+    #                     Logger.exception(
+    #                         "FAILED to write to SERIAL: "
+    #                         + str(serialCommand)
+    #                         + " (Alt text: "
+    #                         + str(altDisplayText)
+    #                         + ")"
+    #                     )
+    #                     self.get_serial_screen(
+    #                         "Could not write last command to serial buffer."
+    #                     )
+    #                 else:
+    #                     Logger.exception(
+    #                         "FAILED to write to SERIAL: "
+    #                         + hex(serialCommand)
+    #                         + " (Alt text: "
+    #                         + str(altDisplayText)
+    #                         + ")"
+    #                     )
+    #                     self.get_serial_screen(
+    #                         "Could not write last command to serial buffer."
+    #                     )
+    #             except:
+    #                 Logger.exception(
+    #                     "FAILED to write to SERIAL: "
+    #                     + "unprintable command!"
+    #                     + " (Alt text: "
+    #                     + str(altDisplayText)
+    #                     + ")"
+    #                 )
+    #                 self.get_serial_screen(
+    #                     "Could not write last command to serial buffer."
+    #                 )
+    #     else:
+    #         try:
+    #             if not protocol:
+    #                 Logger.error(
+    #                     "No serial! Command lost!: "
+    #                     + str(serialCommand)
+    #                     + " (Alt text: "
+    #                     + str(altDisplayText)
+    #                     + ")"
+    #                 )
+    #                 self.get_serial_screen(
+    #                     "Could not write last command to serial buffer."
+    #                 )
+    #             else:
+    #                 Logger.error(
+    #                     "No serial! Command lost!: "
+    #                     + hex(serialCommand)
+    #                     + " (Alt text: "
+    #                     + str(altDisplayText)
+    #                     + ")"
+    #                 )
+    #                 self.get_serial_screen(
+    #                     "Could not write last command to serial buffer."
+    #                 )
+    #         except:
+    #             Logger.exception(
+    #                 "No serial! Command lost!: "
+    #                 + "unprintable command!"
+    #                 + " (Alt text: "
+    #                 + str(altDisplayText)
+    #                 + ")"
+    #             )
+    #             self.get_serial_screen("Could not write last command to serial buffer.")
+    #
+    #     if not isinstance(serialCommand, str):
+    #         return
+    #
+    #     if "M3" in serialCommand.upper():
+    #         if self.m_state != "Check":
+    #             self.spindle_on = True
+    #         if "S" in serialCommand.upper():
+    #             serialCommand = self.compensate_spindle_speed_command(serialCommand)
+    #     if "M5" in serialCommand.upper():
+    #         self.spindle_on = False
+    #     if "AE" in serialCommand.upper():
+    #         self.vacuum_on = True
+    #     if "AF" in serialCommand.upper():
+    #         self.vacuum_on = False
 
     def write_command(self, serialCommand, **kwargs):
         self.write_command_buffer.append([serialCommand, kwargs])
