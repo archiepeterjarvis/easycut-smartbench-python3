@@ -144,18 +144,18 @@ class SerialConnection(EventDispatcher):
                     print(f"Failed to read startup messages (expected 6 <= x < 9, got x: {len(startup_messages)})")
                 break
 
-        # Parse startup messages
-        total_resets = startup_messages[0].split(": ")[1]
-        up_time_seconds = startup_messages[1].split(": ")[1][:-7]  # 7 characters removed for 'seconds'
-        total_distance_mm = startup_messages[2].split(": ")[1][:-2]  # 2 characters removed for 'mm'
-
-        sw_version = startup_messages[4].split("SW Ver:")[1].split("]")[0]
-        hw_version = startup_messages[4].split("HW Ver:")[1].split("]")[0]
-        grbl_version = startup_messages[5].split(" ")[1]
-
-        for msg in startup_messages[6:]:
-            print(msg)
-            continue  # Catch things like 'Check Limits'
+        # # Parse startup messages
+        # total_resets = startup_messages[0].split(": ")[1]
+        # up_time_seconds = startup_messages[1].split(": ")[1][:-7]  # 7 characters removed for 'seconds'
+        # total_distance_mm = startup_messages[2].split(": ")[1][:-2]  # 2 characters removed for 'mm'
+        #
+        # sw_version = startup_messages[4].split("SW Ver:")[1].split("]")[0]
+        # hw_version = startup_messages[4].split("HW Ver:")[1].split("]")[0]
+        # grbl_version = startup_messages[5].split(" ")[1]
+        #
+        # for msg in startup_messages[6:]:
+        #     print(msg)
+        #     continue  # Catch things like 'Check Limits'
 
     def read(self, timeout=1):
         try:
