@@ -1,7 +1,7 @@
-import unittest
+from tests.old.automated_unit_tests.unit_test_base import UnitTestBase
 
 
-class SimpleTest(unittest.TestCase):
+class SimpleTest(UnitTestBase):
 
     def test_simple_test(self):
         assert True
