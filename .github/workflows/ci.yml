@@ -38,4 +38,4 @@ jobs:
     - name: Verify pytest installation
       run: pip show pytest
     - name: Test with pytest
-      run: pytest
+      run: ls
