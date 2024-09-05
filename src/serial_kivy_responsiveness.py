@@ -1,25 +1,36 @@
-import sys
-
 from kivy.app import App
 from kivy.clock import Clock
+from kivy.event import EventDispatcher
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 
-from core.serial.serial_conn import SerialConnection
-from core.serial.smartbench_controller import SmartBenchController
+
+class Dispatcher(EventDispatcher):
+    def __init__(self, **kwargs):
+        super(Dispatcher, self).__init__(**kwargs)
+        self.register_event_type("on_update")
+
+        Clock.schedule_interval(self.dis, 0.05)
+
+    def on_update(self, *args):
+        pass
+
+    def dis(self, dt):
+        self.dispatch("on_update")
 
 
 class StatusLabel(Label):
-
     def __init__(self, **kwargs):
         super(StatusLabel, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update_text, 0.05)
+
+        self.dispatcher = Dispatcher()
+        self.dispatcher.bind(on_update=self.update_label)
 
     i = 0
 
-    def update_text(self, dt):
-        self.i += 1
+    def update_label(self, dt):
         self.text = f"{self.i}"
+        self.i += 1
 
 
 class TestStatusBar(BoxLayout):
@@ -32,12 +43,7 @@ class TestStatusBar(BoxLayout):
 
 
 class SerialTestApp(App):
-
     def build(self):
-        # self.serial = SerialConnection("/dev/ttyS0")
-        # self.controller = SmartBenchController(self.serial)
-        # self.serial.open()
-
         return TestStatusBar()
 
 
