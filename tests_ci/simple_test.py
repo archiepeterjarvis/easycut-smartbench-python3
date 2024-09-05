@@ -1,4 +1,4 @@
-from tests.old.automated_unit_tests.unit_test_base import UnitTestBase
+from unit_test_base import UnitTestBase
 
 
 class SimpleTest(UnitTestBase):
