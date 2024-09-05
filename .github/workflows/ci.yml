@@ -38,4 +38,4 @@ jobs:
     - name: Verify pytest installation
       run: pip show pytest
     - name: Test with pytest
-      run: python -m pytest
+      run: /opt/hostedtoolcache/Python/3.12.5/x64/pytest
