@@ -37,5 +37,7 @@ jobs:
 #        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Verify pytest installation
       run: pip show pytest
+    - name: Python version
+      run: python --version
     - name: Test with pytest
-      run: /opt/hostedtoolcache/Python/3.12.5/x64/pytest
+      run: python -m pytest -v
