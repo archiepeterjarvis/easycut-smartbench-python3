@@ -40,4 +40,4 @@ jobs:
     - name: Python version
       run: python --version
     - name: Test with pytest
-      run: pytest -v tests_ci/simple_test.py
+      run: pytest -v
