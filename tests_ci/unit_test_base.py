@@ -4,14 +4,14 @@ from unittest.mock import Mock
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
 
-
+from core.job.database.profile_database import ProfileDatabase
 from core.localization import Localization
 from core.serial.yeti_grbl_protocol.protocol import protocol_v2
 from core.job.job_data import JobData
 from core.managers.settings_manager import Settings
 
 """
-Run unit tests with: python -m unittest discover -s tests/automated_unit_tests
+Run unit tests with: python -m pytest tests_ci/old/automated_unit_tests
 """
 
 
@@ -28,6 +28,7 @@ class UnitTestBase(unittest.TestCase):
         self._app = App()
         self._app.width = 800
         self._app.height = 480
+        self._app.profile_db = ProfileDatabase()
 
     def _create_serial_connection_module(
         self, machine, screen_manager, settings_manager, localization, job
