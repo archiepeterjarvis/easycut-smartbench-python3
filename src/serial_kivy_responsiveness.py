@@ -1,23 +1,22 @@
 from kivy.app import App
+from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-
-from core.serial.serial_conn import SerialConnection
-from core.serial.smartbench_controller import SmartBenchController
 
 
 class StatusLabel(Label):
     def __init__(self, **kwargs):
         super(StatusLabel, self).__init__(**kwargs)
-        self.serial_conn = SerialConnection("/dev/ttyS0")
-        self.serial_conn.open()
-        self.sb_controller = SmartBenchController(self.serial_conn)
+        # self.serial_conn = SerialConnection("/dev/ttyS0")
+        # self.serial_conn.open()
+        # self.sb_controller = SmartBenchController(self.serial_conn)
         self.i = 0
 
-        self.serial_conn.bind(last_status=self.update_label)
+        # self.serial_conn.bind(last_status=self.update_label)
+        Clock.schedule_interval(self.update_label, 0.05)
 
-    def update_label(self, instance, value):
-        self.text = f"{value} {self.i}"
+    def update_label(self, dt):
+        self.text = f"{dt} {self.i}"
         self.i += 1
 
 
