@@ -9,7 +9,7 @@ from core.serial.smartbench_controller import SmartBenchController
 class StatusLabel(Label):
     def __init__(self, **kwargs):
         super(StatusLabel, self).__init__(**kwargs)
-        self.serial_conn = SerialConnection(SerialConnection.get_available_ports()[1].device)
+        self.serial_conn = SerialConnection("/dev/ttyS0")
         self.serial_conn.open()
         self.sb_controller = SmartBenchController(self.serial_conn)
         self.i = 0
