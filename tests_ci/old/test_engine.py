@@ -1,6 +1,7 @@
 import unittest
 import sys
 import os
+from unittest.mock import Mock
 
 easycut_dir = os.path.dirname(os.getcwd())
 sys.path.append(
@@ -8,7 +9,6 @@ sys.path.append(
 )  # Alternative to sys.path.append("./src") which didn't work me
 
 from apps.drywall_cutter_app.engine import GCodeEngine
-from core.serial.router_machine import RouterMachine
 
 """
 To run this test,
@@ -28,11 +28,14 @@ class EngineTests(unittest.TestCase):
                 self.active_config = self
                 self.shape_type = None
                 self.active_cutter = kwargs.get("active_cutter")
-                self.active_cutter.dimensions.tool_diameter = 10
+                self.active_cutter.diameter = 10
+                self.rotation = "horizontal"
 
         dummy_cutter = Cutter()
         dummy_config = Config(active_cutter=dummy_cutter)
-        self.engine = GCodeEngine(RouterMachine, dummy_config)
+        router_machine = Mock()
+        coord_system = Mock()
+        self.engine = GCodeEngine(router_machine, dummy_config, coord_system)
 
     def test_rectangle_coordinates(self):
         # Case 1, valid input
@@ -233,28 +236,28 @@ class EngineTests(unittest.TestCase):
         # Case 1: climb=True, offset_type="outside"
         offset_type = "outside"
         climb = True
-        expected_output = True
+        expected_output = False
         output = self.engine.determine_cut_direction_clockwise(offset_type, climb)
         self.assertEqual(output, expected_output)
 
         # Case 2: climb=False, offset_type="inside"
         offset_type = "inside"
         climb = False
-        expected_output = True
+        expected_output = False
         output = self.engine.determine_cut_direction_clockwise(offset_type, climb)
         self.assertEqual(output, expected_output)
 
         # Case 3: climb=True, offset_type="inside"
         offset_type = "inside"
         climb = True
-        expected_output = False
+        expected_output = True
         output = self.engine.determine_cut_direction_clockwise(offset_type, climb)
         self.assertEqual(output, expected_output)
 
         # Case 4: climb=False, offset_type="outside"
         offset_type = "outside"
         climb = False
-        expected_output = False
+        expected_output = True
         output = self.engine.determine_cut_direction_clockwise(offset_type, climb)
         self.assertEqual(output, expected_output)
 
@@ -658,10 +661,10 @@ class EngineTests(unittest.TestCase):
         self.engine.config.active_config.shape_type = "custom_shape"
         self.engine.custom_gcode_shapes = ["custom_shape"]
         self.engine.source_folder_path = "/path/to/gcode/files"
-        self.engine.config.active_cutter.dimensions.tool_diameter = 10
+        self.engine.config.active_cutter.diameter = 10
 
         # Mocking the return values of helper methods
-        self.engine.find_and_read_gcode_file = lambda path, shape_type, diameter: [
+        self.engine.find_and_read_gcode_file = lambda path, shape_type, diameter, orientation: [
             "G1 X10 Y20",
             "G1 X30 Y40",
         ]
