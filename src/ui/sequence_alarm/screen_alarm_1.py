@@ -1,7 +1,5 @@
-try:
-    from kivy.core.window import Window
-except:
-    pass
+#from kivy.core.window import Window
+
 
 """
 Created on 31 March 2021
