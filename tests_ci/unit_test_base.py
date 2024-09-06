@@ -1,12 +1,11 @@
 import unittest
+from unittest.mock import Mock
 
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
 
 
 from core.localization import Localization
-from core.serial.router_machine import RouterMachine
-#from core.serial.serial_connection import SerialConnection
 from core.serial.yeti_grbl_protocol.protocol import protocol_v2
 from core.job.job_data import JobData
 from core.managers.settings_manager import Settings
@@ -33,24 +32,12 @@ class UnitTestBase(unittest.TestCase):
     def _create_serial_connection_module(
         self, machine, screen_manager, settings_manager, localization, job
     ):
-        return SerialConnection(
-            machine=machine,
-            screen_manager=screen_manager,
-            settings_manager=settings_manager,
-            localization=localization,
-            job=job,
-        )
+        return Mock()
 
     def _create_router_machine_module(
         self, screen_manager, settings_manager, localization, job, win_serial_port="COM"
     ):
-        return RouterMachine(
-            win_serial_port=win_serial_port,
-            screen_manager=screen_manager,
-            settings_manager=settings_manager,
-            localization=localization,
-            job=job,
-        )
+        return Mock()
 
     def _create_localization_module(self):
         return Localization()  # Refactor name to localisation?
