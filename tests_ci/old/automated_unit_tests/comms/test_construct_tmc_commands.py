@@ -12,9 +12,6 @@ try:
 except:
     Logger.info("Can't import mocking packages, are you on a dev machine?")
 
-import sys
-
-sys.path.append("./src")
 
 """
 ########################################################
@@ -33,27 +30,15 @@ class ConstructTMCCommandTest(unittest.TestCase):
 
     # testing this guy: def constructTMCcommand(self, cmd, data, len):
 
-    def testconstructTMCcommand1(self):
+    def test_constructTMCcommand1(self):
         """sending command to motor:4, cmd:101, val:128"""
-        # assert self.constructTMCcommand(101,128, 1), 'not connected'
-        Logger.info(list(self.p.constructTMCcommand(101, 128, 1)))
-
-    def testconstructTMCcommand2(self):
-        """sending command to motor:4, cmd:101, val:128"""
-        # assert self.constructTMCcommand(101,128, 1), 'not connected'
-        Logger.info(list(self.p.constructTMCcommand(109, 67109336, 1)))
-
-    def testconstructTMCcommand1(self):
-        """sending command to motor:4, cmd:101, val:128"""
-        # assert self.constructTMCcommand(101,128, 1), 'not connected'
         self.assertEqual(
             self.p.constructTMCcommand(101, 128, 1),
             b"^\x04\x00\x0c\x8f^\x06\x012e\x80W",
         )
 
-    def testconstructTMCcommand2(self):
-        """sending command to motor:4, cmd:101, val:128"""
-        # assert self.constructTMCcommand(101,128, 1), 'not connected'
+    def test_constructTMCcommand2(self):
+        """sending command to motor:4, cmd:109, val:67109336"""
         self.assertEqual(
             self.p.constructTMCcommand(109, 67109336, 1),
             b"^\x04\x00\x0c\x8f^\x06\x012m\xd8p",
@@ -61,5 +46,4 @@ class ConstructTMCCommandTest(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    # import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
