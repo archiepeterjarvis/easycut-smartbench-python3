@@ -414,29 +414,6 @@ class DWTConfig(EventDispatcher):
         self.active_cutter = config_classes.Cutter.from_json(cutter)
         self.active_config.cutter_type = self.active_cutter.uid
 
-    @staticmethod
-    def get_available_cutter_names():
-        """
-        TODO: Refactor, it doesn't need the names anymore
-        :return: A list of the available cutter names and their file names.
-        """
-        cutters = {}
-        for cutter_file in sorted(os.listdir(CUTTERS_DIR)):
-            file_path = os.path.join(CUTTERS_DIR, cutter_file)
-            if not os.path.isfile(file_path):
-                continue
-            with open(file_path) as f:
-                cutter = config_classes.Cutter.from_json(json.load(f))
-                cutters[cutter.description] = {
-                    "cutter_path": cutter_file,
-                    "image_path": cutter.image,
-                    "type": cutter.type,
-                    "size": cutter.dimensions.diameter
-                    if cutter.dimensions.diameter
-                    else cutter.dimensions.angle,
-                }
-        return cutters
-
     def get_available_cutters(self):
         """
         Returns a list of the available cutters for the current configuration.
