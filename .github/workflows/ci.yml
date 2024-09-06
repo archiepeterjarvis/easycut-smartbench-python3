@@ -38,7 +38,7 @@ jobs:
     - name: Lint with Ruff
       run: |
         pip install ruff
-        ruff --format=github --target-version=py312 .
+        ruff check --format=github --target-version=py312 .
 #    - name: Verify pytest installation
 #      run: pip show pytest
 #    - name: Python version
