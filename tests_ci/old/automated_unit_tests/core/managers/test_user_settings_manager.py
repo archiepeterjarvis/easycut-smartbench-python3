@@ -1,16 +1,8 @@
 import os
-import sys
 
-from core.logging.logging_system import Logger
 from core.managers.user_settings_manager import UserSettingsManager
+from unit_test_base import UnitTestBase
 
-sys.path.append("./src")
-
-try:
-    import unittest
-
-except:
-    Logger.info("Can't import mocking packages, are you on a dev machine?")
 
 """
 ######################################
@@ -20,7 +12,7 @@ python -m pytest tests/automated_unit_tests/comms/test_user_settings_manager.py
 """
 
 
-class UserSettingsManagerTests(unittest.TestCase):
+class UserSettingsManagerTests(UnitTestBase):
     def test_code_coverage(self):
         #  make sure the file does not exist:
         try:
