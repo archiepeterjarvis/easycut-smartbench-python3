@@ -17,7 +17,7 @@ class UserSettingsManagerTests(UnitTestBase):
         #  make sure the file does not exist:
         try:
             os.remove(UserSettingsManager.SETTINGS_FILE_PATH)
-        except WindowsError:
+        except OSError:
             # file seems to be gone already...
             pass
         # file should not exist anymore:
