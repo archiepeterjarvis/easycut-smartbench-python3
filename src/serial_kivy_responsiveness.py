@@ -16,7 +16,7 @@ class StatusLabel(Label):
         Clock.schedule_interval(self.update_label, 0.05)
 
     def update_label(self, dt):
-        self.text = f"{dt} {self.i}"
+        self.text = "%s %s" % (dt, self.i)
         self.i += 1
 
 
