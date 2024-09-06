@@ -1,11 +1,11 @@
 import unittest
 
 from kivy.app import App
-#from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.screenmanager import ScreenManager
 
 
 from core.localization import Localization
-#from core.serial.router_machine import RouterMachine
+from core.serial.router_machine import RouterMachine
 #from core.serial.serial_connection import SerialConnection
 from core.serial.yeti_grbl_protocol.protocol import protocol_v2
 from core.job.job_data import JobData
