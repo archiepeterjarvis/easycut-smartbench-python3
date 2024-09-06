@@ -1,35 +1,23 @@
 from kivy.app import App
-from kivy.clock import Clock
-from kivy.event import EventDispatcher
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 
-
-class Dispatcher(EventDispatcher):
-    def __init__(self, **kwargs):
-        super(Dispatcher, self).__init__(**kwargs)
-        self.register_event_type("on_update")
-
-        Clock.schedule_interval(self.dis, 0.05)
-
-    def on_update(self, *args):
-        pass
-
-    def dis(self, dt):
-        self.dispatch("on_update")
+from core.serial.serial_conn import SerialConnection
+from core.serial.smartbench_controller import SmartBenchController
 
 
 class StatusLabel(Label):
     def __init__(self, **kwargs):
         super(StatusLabel, self).__init__(**kwargs)
+        self.serial_conn = SerialConnection(SerialConnection.get_available_ports()[0].device)
+        self.serial_conn.open()
+        self.sb_controller = SmartBenchController(self.serial_conn)
+        self.i = 0
 
-        self.dispatcher = Dispatcher()
-        self.dispatcher.bind(on_update=self.update_label)
+        self.serial_conn.bind(last_status=self.update_label)
 
-    i = 0
-
-    def update_label(self, dt):
-        self.text = f"{self.i}"
+    def update_label(self, instance, value):
+        self.text = f"{value} {self.i}"
         self.i += 1
 
 
