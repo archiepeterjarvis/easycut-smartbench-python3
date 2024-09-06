@@ -7,7 +7,7 @@ from unit_test_base import UnitTestBase
 """
 ######################################
 RUN FROM easycut-smartbench FOLDER WITH: 
-python -m pytest tests/automated_unit_tests/comms/test_user_settings_manager.py
+python -m pytest tests/automated_unit_tests/serial/test_user_settings_manager.py
 ######################################
 """
 

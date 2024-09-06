@@ -443,6 +443,7 @@ class JobData:
         self.job_recovery_offset = 0
 
     def generate_recovery_gcode(self):
+        # TODO: Python 3.12 refactoring. Crashes in reversed(...)-calls!
         try:
             recovery_gcode = []
 

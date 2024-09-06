@@ -17,7 +17,7 @@ except:
 ########################################################
 IMPORTANT!!
 Run from easycut-smartbench folder, with 
-python -m tests.automated_unit_tests.comms.test_construct_tmc_commands
+python -m tests.automated_unit_tests.serial.test_construct_tmc_commands
 """
 
 from core.serial.yeti_grbl_protocol import protocol
