@@ -77,7 +77,7 @@ class GCodeEngine:
 
     def is_clockwise(self, coordinates):
         total = 0
-        for i in xrange(len(coordinates)):
+        for i in range(len(coordinates)):
             x1, y1 = coordinates[i]
             x2, y2 = coordinates[(i + 1) % len(coordinates)]
             total += (x2 - x1) * (y2 + y1)
@@ -203,7 +203,7 @@ class GCodeEngine:
         return input_list
 
     def replace_mode_after_keyword(self, input_list, keyword, replacement_mode):
-        for i in xrange(len(input_list) - 1):
+        for i in range(len(input_list) - 1):
             if keyword.lower() in input_list[i].lower():
                 if i + 1 < len(input_list):
                     input_list[i + 1] = replacement_mode + input_list[i + 1][2:]
