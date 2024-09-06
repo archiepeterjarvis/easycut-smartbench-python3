@@ -1,4 +1,4 @@
-#from kivy.core.window import Window
+from kivy.core.window import Window
 
 
 """

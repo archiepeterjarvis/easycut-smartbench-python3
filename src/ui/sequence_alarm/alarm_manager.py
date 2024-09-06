@@ -4,10 +4,10 @@ import os
 import datetime
 from ui.sequence_alarm import (
      screen_alarm_1,
-#     screen_alarm_2,
-#     screen_alarm_3,
-#     screen_alarm_4,
-#     screen_alarm_5,
+     screen_alarm_2,
+     screen_alarm_3,
+     screen_alarm_4,
+     screen_alarm_5,
  )
 from core import usb_storage
 from ui.popups import popup_info
