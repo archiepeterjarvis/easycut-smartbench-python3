@@ -8,6 +8,7 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 import sys
 import textwrap
+
 from ui.popups import popup_info
 from ui.popups.popups import BasicPopup, PopupType
 from ui.utils import console_utils
@@ -16,6 +17,8 @@ from core.managers.model_manager import ModelManagerSingleton
 Builder.load_string(
     """
 #:import paths core.paths
+#:import LabelBase ui.components.labels.base_label
+#:import ButtonBase ui.components.buttons.button_base
 
 <LobbyScreen>:
 
@@ -73,7 +76,7 @@ Builder.load_string(
                     size_hint_x: 1
                     spacing:0.0416666666667*app.height
     
-                    Button:
+                    ButtonBase:
                         font_size: str(0.01875 * app.width) + 'sp'
                         size_hint_y: 8
                         disabled: False
@@ -94,7 +97,7 @@ Builder.load_string(
                                 center_y: self.parent.center_y
                                 size: self.parent.width, self.parent.height
                                 allow_stretch: True 
-                    Label:
+                    LabelBase:
                         id: pro_app_label
                         size_hint_y: 1
                         font_size: str(0.03125*app.width) + 'sp'
@@ -108,7 +111,7 @@ Builder.load_string(
                     size_hint_x: 1
                     spacing:0.0416666666667*app.height
                                              
-                    Button:
+                    ButtonBase:
                         font_size: str(0.01875 * app.width) + 'sp'
                         disabled: False
                         size_hint_y: 8
@@ -124,7 +127,7 @@ Builder.load_string(
                                 y: self.parent.y
                                 size: self.parent.width, self.parent.height
                                 allow_stretch: True 
-                    Label:
+                    LabelBase:
                         size_hint_y: 1
                         font_size: str(0.03125*app.width) + 'sp'
                         text: 'YetiCut'
@@ -136,7 +139,7 @@ Builder.load_string(
                     spacing:0.0416666666667*app.height
                     padding:[dp(0.08125)*app.width, 0]
 
-                    Button:
+                    ButtonBase:
                         font_size: str(0.01875 * app.width) + 'sp'
                         size_hint_y: 8
                         disabled: False
@@ -156,7 +159,7 @@ Builder.load_string(
                                 y: self.parent.y
                                 size: self.parent.width, self.parent.height
                                 allow_stretch: True
-                    Label:
+                    LabelBase:
                         id: yeticut_apps_label
                         size_hint_y: 1
                         font_size: str(0.03125*app.width) + 'sp'
@@ -175,7 +178,7 @@ Builder.load_string(
                     size_hint_x: 1
                     spacing:0.0416666666667*app.height
     
-                    Button:
+                    ButtonBase:
                         font_size: str(0.01875 * app.width) + 'sp'
                         size_hint_y: 8
                         disabled: False
@@ -196,7 +199,7 @@ Builder.load_string(
                                 center_y: self.parent.center_y
                                 size: self.parent.width, self.parent.height
                                 allow_stretch: True 
-                    Label:
+                    LabelBase:
                         id: wifi_app_label
                         size_hint_y: 1
                         font_size: str(0.03125*app.width) + 'sp'
@@ -229,7 +232,7 @@ Builder.load_string(
                                 center_y: self.parent.center_y
                                 size: self.parent.width, self.parent.height
                                 allow_stretch: True 
-                    Label:
+                    LabelBase:
                         id: calibrate_app_label
                         size_hint_y: 1
                         font_size: str(0.03125*app.width) + 'sp'
@@ -268,7 +271,7 @@ Builder.load_string(
                                 center_y: self.parent.center_y
                                 size: self.parent.width, self.parent.height
                                 allow_stretch: True 
-                    Label:
+                    LabelBase:
                         id: update_app_label
                         size_hint_y: 1
                         font_size: str(0.03125*app.width) + 'sp'
@@ -301,7 +304,7 @@ Builder.load_string(
                                 center_y: self.parent.center_y
                                 size: self.parent.width, self.parent.height
                                 allow_stretch: True 
-                    Label:
+                    LabelBase:
                         id: maintenance_app_label
                         size_hint_y: 1
                         font_size: str(0.03125*app.width) + 'sp'
@@ -340,7 +343,7 @@ Builder.load_string(
                                 center_y: self.parent.center_y
                                 size: self.parent.width, self.parent.height
                                 allow_stretch: True 
-                    Label:
+                    LabelBase:
                         id: upgrade_app_label
                         size_hint_y: 1
                         font_size: str(0.03125*app.width) + 'sp'
@@ -373,7 +376,7 @@ Builder.load_string(
                                 center_y: self.parent.center_y
                                 size: self.parent.width, self.parent.height
                                 allow_stretch: True 
-                    Label:
+                    LabelBase:
                         id: system_tools_app_label
                         size_hint_y: 1
                         font_size: str(0.03125*app.width) + 'sp'

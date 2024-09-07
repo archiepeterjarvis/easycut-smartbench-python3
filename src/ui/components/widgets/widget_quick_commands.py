@@ -14,7 +14,7 @@ from core.managers.model_manager import ModelManagerSingleton
 
 Builder.load_string(
     """
-
+#:import ButtonBase ui.components.buttons.button_base
 
 <QuickCommands>
 
@@ -30,7 +30,7 @@ Builder.load_string(
         spacing: 0.0208333333333333*app.height
         orientation: "vertical"
 
-        Button:
+        ButtonBase:
             size_hint_y: 1
             background_color: hex('#F4433600')
             on_press: root.quit_to_lobby()

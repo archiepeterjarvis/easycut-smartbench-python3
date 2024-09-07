@@ -149,6 +149,7 @@ class SkavaUI(App):
     l = Localization()
     user_settings_manager = UserSettingsManager()
     profile_db = ProfileDatabase()
+    sm = ScreenManager(transition=NoTransition())
 
     def get_scaled_width(self, val):
         return scaling_utils.get_scaled_width(val)
@@ -164,19 +165,19 @@ class SkavaUI(App):
 
     def build(self):
         Logger.info("Starting App:")
-        sm = ScreenManager(transition=NoTransition())
+
         kb = custom_keyboard.Keyboard(localization=self.l)
-        sett = settings_manager.Settings(sm)
+        sett = settings_manager.Settings(self.sm)
         jd = job_data.JobData(localization=self.l, settings_manager=sett)
-        m = router_machine.RouterMachine(Cmport, sm, sett, self.l, jd)
+        m = router_machine.RouterMachine(Cmport, self.sm, sett, self.l, jd)
         ModelManagerSingleton(m)
         GRBLSettingsManagerSingleton(m)
-        yp = YetiPilot(screen_manager=sm, machine=m, job_data=jd, localization=self.l)
-        db = flurry_connection.DatabaseEventManager(sm, m, sett)
-        pm = PopupManager(sm, m, self.l)
-        sm.pm = pm
+        yp = YetiPilot(screen_manager=self.sm, machine=m, job_data=jd, localization=self.l)
+        db = flurry_connection.DatabaseEventManager(self.sm, m, sett)
+        pm = PopupManager(self.sm, m, self.l)
+        self.sm.pm = pm
         am = app_manager.AppManagerClass(
-            sm, m, sett, self.l, kb, jd, db, config_flag, initial_version, pm
+            self.sm, m, sett, self.l, kb, jd, db, config_flag, initial_version, pm
         )
         m.s.alarm.db = db
         m.s.yp = yp
@@ -184,14 +185,14 @@ class SkavaUI(App):
             sc = st_socket_connection.ServerConnection(sett)
         lobby_screen = screen_lobby.LobbyScreen(
             name="lobby",
-            screen_manager=sm,
+            screen_manager=self.sm,
             machine=m,
             app_manager=am,
             localization=self.l,
         )
         home_screen = screen_home.HomeScreen(
             name="home",
-            screen_manager=sm,
+            screen_manager=self.sm,
             machine=m,
             job=jd,
             settings=sett,
@@ -199,14 +200,14 @@ class SkavaUI(App):
             keyboard=kb,
         )
         local_filechooser = screen_local_filechooser.LocalFileChooser(
-            name="local_filechooser", screen_manager=sm, job=jd, localization=self.l
+            name="local_filechooser", screen_manager=self.sm, job=jd, localization=self.l
         )
         usb_filechooser = screen_usb_filechooser.USBFileChooser(
-            name="usb_filechooser", screen_manager=sm, job=jd, localization=self.l
+            name="usb_filechooser", screen_manager=self.sm, job=jd, localization=self.l
         )
         go_screen = screen_go.GoScreen(
             name="go",
-            screen_manager=sm,
+            screen_manager=self.sm,
             machine=m,
             job=jd,
             app_manager=am,
@@ -215,17 +216,17 @@ class SkavaUI(App):
             yetipilot=yp,
         )
         jobstart_warning_screen = screen_jobstart_warning.JobstartWarningScreen(
-            name="jobstart_warning", screen_manager=sm, machine=m, localization=self.l
+            name="jobstart_warning", screen_manager=self.sm, machine=m, localization=self.l
         )
         loading_screen = screen_file_loading.LoadingScreen(
-            name="loading", screen_manager=sm, machine=m, job=jd, localization=self.l
+            name="loading", screen_manager=self.sm, machine=m, job=jd, localization=self.l
         )
         checking_screen = screen_check_job.CheckingScreen(
-            name="check_job", screen_manager=sm, machine=m, job=jd, localization=self.l
+            name="check_job", screen_manager=self.sm, machine=m, job=jd, localization=self.l
         )
         error_screen = screen_error.ErrorScreenClass(
             name="errorScreen",
-            screen_manager=sm,
+            screen_manager=self.sm,
             machine=m,
             job=jd,
             database=db,
@@ -233,23 +234,23 @@ class SkavaUI(App):
         )
         serial_screen = screen_serial_failure.SerialFailureClass(
             name="serialScreen",
-            screen_manager=sm,
+            screen_manager=self.sm,
             machine=m,
             win_port=Cmport,
             localization=self.l,
         )
         mstate_screen = screen_mstate_warning.WarningMState(
-            name="mstate", screen_manager=sm, machine=m, localization=self.l
+            name="mstate", screen_manager=self.sm, machine=m, localization=self.l
         )
         boundary_warning_screen = screen_boundary_warning.BoundaryWarningScreen(
-            name="boundary", screen_manager=sm, machine=m, localization=self.l
+            name="boundary", screen_manager=self.sm, machine=m, localization=self.l
         )
         rebooting_screen = screen_rebooting.RebootingScreen(
-            name="rebooting", screen_manager=sm, localization=self.l
+            name="rebooting", screen_manager=self.sm, localization=self.l
         )
         job_feedback_screen = screen_job_feedback.JobFeedbackScreen(
             name="job_feedback",
-            screen_manager=sm,
+            screen_manager=self.sm,
             machine=m,
             database=db,
             job=jd,
@@ -258,7 +259,7 @@ class SkavaUI(App):
         )
         job_incomplete_screen = screen_job_incomplete.JobIncompleteScreen(
             name="job_incomplete",
-            screen_manager=sm,
+            screen_manager=self.sm,
             machine=m,
             database=db,
             job=jd,
@@ -267,7 +268,7 @@ class SkavaUI(App):
         )
         door_screen = screen_door.DoorScreen(
             name="door",
-            screen_manager=sm,
+            screen_manager=self.sm,
             machine=m,
             job=jd,
             database=db,
@@ -276,35 +277,35 @@ class SkavaUI(App):
         squaring_decision_screen = (
             screen_squaring_manual_vs_square.SquaringScreenDecisionManualVsSquare(
                 name="squaring_decision",
-                screen_manager=sm,
+                screen_manager=self.sm,
                 machine=m,
                 localization=self.l,
             )
         )
         prepare_to_home_screen = screen_homing_prepare.HomingScreenPrepare(
-            name="prepare_to_home", screen_manager=sm, machine=m, localization=self.l
+            name="prepare_to_home", screen_manager=self.sm, machine=m, localization=self.l
         )
         homing_active_screen = screen_homing_active.HomingScreenActive(
-            name="homing_active", screen_manager=sm, machine=m, localization=self.l
+            name="homing_active", screen_manager=self.sm, machine=m, localization=self.l
         )
         squaring_active_screen = screen_squaring_active.SquaringScreenActive(
-            name="squaring_active", screen_manager=sm, machine=m, localization=self.l
+            name="squaring_active", screen_manager=self.sm, machine=m, localization=self.l
         )
         spindle_shutdown_screen = screen_spindle_shutdown.SpindleShutdownScreen(
             name="spindle_shutdown",
-            screen_manager=sm,
+            screen_manager=self.sm,
             machine=m,
             job=jd,
             database=db,
             localization=self.l,
         )
         spindle_cooldown_screen = screen_spindle_cooldown.SpindleCooldownScreen(
-            name="spindle_cooldown", screen_manager=sm, machine=m, localization=self.l
+            name="spindle_cooldown", screen_manager=self.sm, machine=m, localization=self.l
         )
         stop_or_resume_decision_screen = (
             screen_stop_or_resume_decision.StopOrResumeDecisionScreen(
                 name="stop_or_resume_job_decision",
-                screen_manager=sm,
+                screen_manager=self.sm,
                 machine=m,
                 job=jd,
                 database=db,
@@ -314,88 +315,88 @@ class SkavaUI(App):
         lift_z_on_pause_decision_screen = (
             screen_lift_z_on_pause_decision.LiftZOnPauseDecisionScreen(
                 name="lift_z_on_pause_or_not",
-                screen_manager=sm,
+                screen_manager=self.sm,
                 machine=m,
                 localization=self.l,
             )
         )
         tool_selection_screen = screen_tool_selection.ToolSelectionScreen(
-            name="tool_selection", screen_manager=sm, machine=m, localization=self.l
+            name="tool_selection", screen_manager=self.sm, machine=m, localization=self.l
         )
         job_recovery_screen = screen_job_recovery.JobRecoveryScreen(
             name="job_recovery",
-            screen_manager=sm,
+            screen_manager=self.sm,
             machine=m,
             job=jd,
             localization=self.l,
             keyboard=kb,
         )
         nudge_screen = screen_nudge.NudgeScreen(
-            name="nudge", screen_manager=sm, machine=m, job=jd, localization=self.l
+            name="nudge", screen_manager=self.sm, machine=m, job=jd, localization=self.l
         )
         recovery_decision_screen = screen_recovery_decision.RecoveryDecisionScreen(
             name="recovery_decision",
-            screen_manager=sm,
+            screen_manager=self.sm,
             machine=m,
             job=jd,
             localization=self.l,
         )
         homing_decision_screen = screen_homing_decision.HomingDecisionScreen(
-            name="homing_decision", screen_manager=sm, machine=m, localization=self.l
+            name="homing_decision", screen_manager=self.sm, machine=m, localization=self.l
         )
         yeticut_lobby_screen = screen_yeticut_lobby.YeticutLobbyScreen(
             name="yeticut_lobby",
-            screen_manager=sm,
+            screen_manager=self.sm,
             machine=m,
             localization=self.l,
             app_manager=am,
         )
         dust_shoe_alarm_screen = screen_dust_shoe_alarm.DustShoeAlarmScreen(
-            sm, m, jd, db, self.l, name="dust_shoe_alarm"
+            self.sm, m, jd, db, self.l, name="dust_shoe_alarm"
         )
-        sm.add_widget(lobby_screen)
-        sm.add_widget(home_screen)
-        sm.add_widget(local_filechooser)
-        sm.add_widget(usb_filechooser)
-        sm.add_widget(go_screen)
-        sm.add_widget(jobstart_warning_screen)
-        sm.add_widget(loading_screen)
-        sm.add_widget(checking_screen)
-        sm.add_widget(error_screen)
-        sm.add_widget(serial_screen)
-        sm.add_widget(mstate_screen)
-        sm.add_widget(boundary_warning_screen)
-        sm.add_widget(rebooting_screen)
-        sm.add_widget(job_feedback_screen)
-        sm.add_widget(job_incomplete_screen)
-        sm.add_widget(door_screen)
-        sm.add_widget(squaring_decision_screen)
-        sm.add_widget(prepare_to_home_screen)
-        sm.add_widget(homing_active_screen)
-        sm.add_widget(squaring_active_screen)
-        sm.add_widget(spindle_shutdown_screen)
-        sm.add_widget(spindle_cooldown_screen)
-        sm.add_widget(stop_or_resume_decision_screen)
-        sm.add_widget(lift_z_on_pause_decision_screen)
-        sm.add_widget(tool_selection_screen)
-        sm.add_widget(job_recovery_screen)
-        sm.add_widget(nudge_screen)
-        sm.add_widget(recovery_decision_screen)
-        sm.add_widget(homing_decision_screen)
-        sm.add_widget(yeticut_lobby_screen)
-        sm.add_widget(dust_shoe_alarm_screen)
-        Logger.info("Screen manager activated: " + str(sm.current))
+        self.sm.add_widget(lobby_screen)
+        self.sm.add_widget(home_screen)
+        self.sm.add_widget(local_filechooser)
+        self.sm.add_widget(usb_filechooser)
+        self.sm.add_widget(go_screen)
+        self.sm.add_widget(jobstart_warning_screen)
+        self.sm.add_widget(loading_screen)
+        self.sm.add_widget(checking_screen)
+        self.sm.add_widget(error_screen)
+        self.sm.add_widget(serial_screen)
+        self.sm.add_widget(mstate_screen)
+        self.sm.add_widget(boundary_warning_screen)
+        self.sm.add_widget(rebooting_screen)
+        self.sm.add_widget(job_feedback_screen)
+        self.sm.add_widget(job_incomplete_screen)
+        self.sm.add_widget(door_screen)
+        self.sm.add_widget(squaring_decision_screen)
+        self.sm.add_widget(prepare_to_home_screen)
+        self.sm.add_widget(homing_active_screen)
+        self.sm.add_widget(squaring_active_screen)
+        self.sm.add_widget(spindle_shutdown_screen)
+        self.sm.add_widget(spindle_cooldown_screen)
+        self.sm.add_widget(stop_or_resume_decision_screen)
+        self.sm.add_widget(lift_z_on_pause_decision_screen)
+        self.sm.add_widget(tool_selection_screen)
+        self.sm.add_widget(job_recovery_screen)
+        self.sm.add_widget(nudge_screen)
+        self.sm.add_widget(recovery_decision_screen)
+        self.sm.add_widget(homing_decision_screen)
+        self.sm.add_widget(yeticut_lobby_screen)
+        self.sm.add_widget(dust_shoe_alarm_screen)
+        Logger.info("Screen manager activated: " + str(self.sm.current))
         if self.height == 768:
             root = BoxLayout(
                 orientation="vertical",
                 size_hint=(None, None),
                 size=(self.width, self.height + 32),
             )
-            sm.size_hint = None, None
-            sm.size = self.width, self.height
-            root.add_widget(sm)
+            self.sm.size_hint = None, None
+            self.sm.size = self.width, self.height
+            root.add_widget(self.sm)
             return root
-        return sm
+        return self.sm
 
 
 if __name__ == "__main__":

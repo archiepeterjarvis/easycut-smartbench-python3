@@ -1,3 +1,10 @@
+import json
+import os
+from threading import Thread, Lock
+from time import sleep
+
+from kivy.app import App
+from kivy.clock import Clock
 from kivy.core.window.window_sdl2 import WindowSDL
 from kivy.event import EventDispatcher
 from kivy.properties import BooleanProperty
@@ -6,6 +13,8 @@ from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy.uix.textinput import TextInput
+
+from core import paths
 from core.logging.logging_system import Logger
 
 
@@ -44,6 +53,7 @@ class InspectorSingleton(EventDispatcher):
         if cls._instance is None:
             Logger.debug("Creating new instance of DataMinerSingleton")
             cls._instance = super().__new__(cls)
+            cls._instance.enable()
         return cls._instance
 
     def __init__(self, **kwargs):
@@ -51,6 +61,7 @@ class InspectorSingleton(EventDispatcher):
         self.child_index = -1
         self.child_max = -1
         self.register_event_type("on_show_component_popup")
+        self.macro_recorder = MacroRecorderSingleton()
 
     def disable(self):
         """Disables all inspector functionality."""
@@ -106,8 +117,13 @@ class InspectorSingleton(EventDispatcher):
             self.open_close_component_popup()
         elif keycode == "e":
             self.switch_edit_mode()
+        elif keycode == "r":
+            if not self.macro_recorder.recording:
+                self.macro_recorder.start_recording()
+            else:
+                self.macro_recorder.stop_recording()
         elif keycode == "m":
-            pass
+            self.macro_recorder.replay_macro()
         elif keycode == "t":
             self.switch_snap_mode()
         elif 273 <= key <= 276:
@@ -440,6 +456,97 @@ class InspectorSingleton(EventDispatcher):
         Logger.debug(f"Selected: {self.get_widget_name_class(w)}")
 
 
+class MacroRecorderSingleton:
+    _instance = None
+    _initialized = False
+    recording = False
+
+
+
+    def __new__(cls):
+        if cls._instance is None:
+            Logger.debug("Creating new instance of MacroRecorderSingleton")
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
+    def __init__(self, **kwargs):
+        if not self._initialized:
+            self._initialized = True
+            self.current_macro = []
+            self.time_elapsed = 0
+            self.timer_thread = Thread(target=self.timer)
+            self.mutex = Lock()
+
+    def timer(self):
+        while self.recording:
+            sleep(0.1)
+            self.mutex.acquire(True)
+            self.time_elapsed += 0.1
+            self.mutex.release()
+
+    def start_recording(self):
+        self.recording = True
+        self.time_elapsed = 0
+        self.timer_thread.start()
+        Logger.info("Start recording...")
+
+    def stop_recording(self):
+        self.recording = False
+        self.timer_thread.join()
+        filename = "macro.json"
+        filepath = os.path.join(paths.SB_VALUES_PATH, filename)
+        Logger.info("Recorded macro: \n" + str(self.current_macro))
+        Logger.info("Saving Macro: " + filepath)
+        with open(filepath, "w") as f:
+            json.dump(self.current_macro, f, sort_keys=True, indent=4)
+
+    def replay_macro(self):
+        if self.recording:
+            Logger.warning("Can't replay macros while recording!")
+            return
+        filename = "macro.json"
+        filepath = os.path.join(paths.SB_VALUES_PATH, filename)
+        with open(filepath, "r") as f:
+            macro = json.load(f)
+        Logger.info("Loaded macro: " + filepath)
+        Logger.info(str(macro))
+
+        def execute_macro(m):
+            sm = App.get_running_app().sm
+            for action in m:
+                Logger.debug("Macro: Goto screen: " + action["screen_name"])
+                Clock.schedule_once(lambda dt: setattr(sm, "current", action["screen_name"]))
+                Logger.debug("Macro: Sleeping...: " + str(action["wait_time"]))
+                sleep(action["wait_time"])
+                screen = sm.get_screen(action["screen_name"])
+                target_widget = screen
+                for i in action["index_list"]:
+                    target_widget = target_widget.children[i]
+                callback = getattr(target_widget, action["callback_name"])
+                Logger.debug("Macro: call: " + action["callback_name"] + " from " + str(target_widget))
+                callback()
+            Logger.info("Replay finished!")
+
+        execute_thread = Thread(target=execute_macro, args=[macro])
+        execute_thread.start()
+
+
+
+
+    def record_action(self, screen_name, index_list, callback_name):
+        self.mutex.acquire(True)
+        wait_time = self.time_elapsed
+        self.time_elapsed = 0
+        self.mutex.release()
+        action = {
+            "screen_name": screen_name,
+            "index_list": index_list,
+            "callback_name": callback_name,
+            "wait_time": wait_time
+        }
+        self.current_macro.append(action)
+
+
 class HoverBehavior:
     """
     Handles mouse move events. Enables drag'n drop for widgets with left mouse button.
@@ -447,6 +554,7 @@ class HoverBehavior:
     """
 
     inspector = InspectorSingleton()
+    macro_recorder = MacroRecorderSingleton()
     hovered = BooleanProperty(False)
     drag = False
     offset_x = 0
@@ -518,3 +626,26 @@ class HoverBehavior:
     def on_enter(self):
         """A new widget has been entered. So safe it for later inspection."""
         self.inspector.set_widget(self)
+
+    def record_button_action(self, callback_name):
+        if not self.macro_recorder.recording:
+            return
+        index_list = []
+        wut = self  # widget under test
+        while not issubclass(type(wut), Screen):
+            index_list.append(self.find_my_index(wut))
+            wut = wut.parent
+        index_list.reverse()
+        self.macro_recorder.record_action(wut.name, index_list, callback_name)
+
+    def find_my_index(self, widget):
+        """Return the index of a widget within its siblings."""
+        index = 0
+        for c in widget.parent.children:
+            if c is widget:
+                return index
+            else:
+                index += 1
+        return -1
+
+
