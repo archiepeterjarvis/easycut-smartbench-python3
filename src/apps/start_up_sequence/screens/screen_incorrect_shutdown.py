@@ -93,7 +93,7 @@ Builder.load_string(
                         
                 Image:
                     size_hint: (0.2,1)
-                    source: "./asmcnc/apps/start_up_sequence/screens/img/correct-shutdown-qr.png"
+                    source: "correct-shutdown-qr.png"
                     center_x: self.parent.center_x
                     allow_stretch: True
                     pos_hint: {'center_x': 0.5}

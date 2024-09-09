@@ -432,5 +432,5 @@ if __name__ == "__main__":
         SkavaUI().run()
     except KeyboardInterrupt:
         profiler.disable()
-        profiler.dump_stats("yeti.prof")
+        profiler.dump_stats("yeti.pstat")
         raise

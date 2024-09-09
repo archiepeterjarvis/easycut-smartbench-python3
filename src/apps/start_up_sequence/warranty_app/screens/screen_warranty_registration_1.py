@@ -121,7 +121,7 @@ Builder.load_string(
 							height: dp(0.275*app.height)
 							size_hint: (None,None)
 							Image:
-								source: "./asmcnc/apps/start_up_sequence/warranty_app/img/registration-qr-code.png"
+								source: "registration-qr-code.png"
 								center_x: self.parent.center_x
 								y: self.parent.y
 								size: self.parent.width, self.parent.height

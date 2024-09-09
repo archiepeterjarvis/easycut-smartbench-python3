@@ -83,7 +83,7 @@ Builder.load_string(
         size: self.parent.size
         pos: self.parent.pos
         Image:
-            source: "./asmcnc/core_UI/job_go/img/health_check_button_big.png"
+            source: "health_check_button_big.png"
             center_x: self.parent.center_x
             y: self.parent.y
             size: self.parent.width, self.parent.height

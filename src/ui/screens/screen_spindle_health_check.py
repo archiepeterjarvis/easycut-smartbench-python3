@@ -75,7 +75,7 @@ Builder.load_string(
                     width: 0.225*app.width
                     Image:
                         id: spindle_icon
-                        source: "./asmcnc/core_UI/job_go/img/spindle_check.png"
+                        source: "spindle_check.png"
                         center_x: self.parent.center_x
                         y: self.parent.y
                         size: self.parent.width, self.parent.height

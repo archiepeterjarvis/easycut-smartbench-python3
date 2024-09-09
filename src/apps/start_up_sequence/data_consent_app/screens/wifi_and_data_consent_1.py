@@ -95,7 +95,7 @@ Builder.load_string(
 							size_hint_x: None
 							width: dp(0.0375*app.width)
 			                Image:
-			                    source: "./asmcnc/apps/start_up_sequence/data_consent_app/img/green_tick.png"
+			                    source: "green_tick.png"
 			                    allow_stretch: True
 
 	                    Label: 
@@ -118,7 +118,7 @@ Builder.load_string(
 							size_hint_x: None
 							width: dp(0.0375*app.width)
 			                Image:
-			                    source: "./asmcnc/apps/start_up_sequence/data_consent_app/img/green_tick.png"
+			                    source: "green_tick.png"
 			                    allow_stretch: True
 
 	                    Label: 
@@ -141,7 +141,7 @@ Builder.load_string(
 							size_hint_x: None
 							width: dp(0.0375*app.width)
 			                Image:
-			                    source: "./asmcnc/apps/start_up_sequence/data_consent_app/img/green_tick.png"
+			                    source: "green_tick.png"
 			                    allow_stretch: True
 
 	                    Label: 
@@ -164,7 +164,7 @@ Builder.load_string(
 							size_hint_x: None
 							width: dp(0.0375*app.width)
 			                Image:
-			                    source: "./asmcnc/apps/start_up_sequence/data_consent_app/img/green_tick.png"
+			                    source: "green_tick.png"
 			                    allow_stretch: True
 
 	                    Label: 
@@ -213,7 +213,7 @@ Builder.load_string(
 							size_hint_x: None
 							width: dp(0.0375*app.width)
 			                Image:
-			                    source: "./asmcnc/apps/start_up_sequence/data_consent_app/img/red_cross.png"
+			                    source: "red_cross.png"
 			                    allow_stretch: True
 
 	                    Label: 
@@ -236,7 +236,7 @@ Builder.load_string(
 							size_hint_x: None
 							width: dp(0.0375*app.width)
 			                Image:
-			                    source: "./asmcnc/apps/start_up_sequence/data_consent_app/img/red_cross.png"
+			                    source: "red_cross.png"
 			                    allow_stretch: True
 
 	                    Label: 
@@ -259,7 +259,7 @@ Builder.load_string(
 							size_hint_x: None
 							width: dp(0.0375*app.width)
 			                Image:
-			                    source: "./asmcnc/apps/start_up_sequence/data_consent_app/img/red_cross.png"
+			                    source: "red_cross.png"
 			                    allow_stretch: True
 
 	                    Label: 

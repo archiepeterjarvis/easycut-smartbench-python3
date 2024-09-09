@@ -140,7 +140,7 @@ Builder.load_string(
                         Image:
                             id: qr_image
                             size_hint_y: 2
-                            source: "./asmcnc/apps/upgrade_app/img/qr_upgrade.png"
+                            source: "qr_upgrade.png"
 
                         LabelBase:
                             id: spindle_label

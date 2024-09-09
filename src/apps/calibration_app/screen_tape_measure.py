@@ -40,7 +40,7 @@ Builder.load_string(
             
             Image:
                 id: image_measure
-                source: "./asmcnc/calibration_app/img/tape_measure_alert.png"
+                source: "tape_measure_alert.png"
                 center_x: self.parent.center_x
                 center_y: self.parent.center_y
                 size: self.parent.width, self.parent.height

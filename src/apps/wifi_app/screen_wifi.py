@@ -217,7 +217,7 @@ Builder.load_string(
                                 Rectangle:
                                     pos: self.pos
                                     size: self.size
-                                    source: "./asmcnc/apps/wifi_app/img/network_spinner_bg.png"
+                                    source: "network_spinner_bg.png"
     
                             Spinner:
                                 id: network_name
@@ -338,7 +338,7 @@ Builder.load_string(
                             Rectangle:
                                 pos: self.pos
                                 size: self.size
-                                source: "./asmcnc/apps/wifi_app/img/country_spinner_bg.png"
+                                source: "country_spinner_bg.png"
                         Spinner:
                             id: country
                             size_hint: (None, None)
