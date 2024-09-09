@@ -178,6 +178,7 @@ class SerialConnection(EventDispatcher):
             ports_to_try.insert(0, '/dev/ttyS0')  # this port is hidden as it is a 'non-present internal serial port'
 
         for port in ports_to_try:
+            Logger.info(f"Trying to connect to SmartBench on port: {port}")
             if self.is_port_smartbench(port):
                 break
 
