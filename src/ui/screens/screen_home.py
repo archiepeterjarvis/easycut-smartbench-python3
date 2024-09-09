@@ -76,8 +76,8 @@ Builder.load_string(
                     tab_width: 0.1125*app.width
 
                     TabbedPanelItem:
-                        background_normal: 'asmcnc/skavaUI/img/tab_set_normal.png'
-                        background_down: 'asmcnc/skavaUI/img/tab_set_up.png'
+                        background_normal: 'tab_set_normal.png'
+                        background_down: 'tab_set_up.png'
                         on_press: root.m.laser_off()
                         BoxLayout:
                             padding:[dp(0.025)*app.width, dp(0.0416666666667)*app.height]
@@ -95,8 +95,8 @@ Builder.load_string(
 
                     TabbedPanelItem:
                         id: move_tab
-                        background_normal: 'asmcnc/skavaUI/img/tab_move_normal.png'
-                        background_down: 'asmcnc/skavaUI/img/tab_move_up.png'
+                        background_normal: 'tab_move_normal.png'
+                        background_down: 'tab_move_up.png'
                         on_press: root.m.laser_on()
                         BoxLayout:
                             orientation: 'horizontal'
@@ -136,8 +136,8 @@ Builder.load_string(
 
                     TabbedPanelItem:
                         id: pos_tab
-                        background_normal: 'asmcnc/skavaUI/img/tab_pos_normal.png'
-                        background_down: 'asmcnc/skavaUI/img/tab_pos_up.png'
+                        background_normal: 'tab_pos_normal.png'
+                        background_down: 'tab_pos_up.png'
                         on_press: root.m.laser_on()
                         BoxLayout:
                             orientation: 'vertical'
@@ -167,8 +167,8 @@ Builder.load_string(
 
 
                     TabbedPanelItem:
-                        background_normal: 'asmcnc/skavaUI/img/tab_job_normal.png'
-                        background_down: 'asmcnc/skavaUI/img/tab_job_up.png'
+                        background_normal: 'tab_job_normal.png'
+                        background_down: 'tab_job_up.png'
                         on_press: root.m.laser_off()
                         id: home_tab
                         BoxLayout:
@@ -270,7 +270,7 @@ Builder.load_string(
 
 
 class HomeScreen(Screen):
-    no_image_preview_path = "asmcnc/skavaUI/img/image_preview_inverted.png"
+    no_image_preview_path = "image_preview_inverted.png"
     gcode_has_been_checked_and_its_ok = False
     non_modal_gcode_list = []
     job_box = job_envelope.BoundingBox()
