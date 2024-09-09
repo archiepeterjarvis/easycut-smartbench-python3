@@ -5,18 +5,18 @@ Module to manage all serial comms between pi (EasyCut s/w) and realtime arduino 
 """
 
 import re
-from datetime import datetime, timedelta
-from os import listdir
-
-import serial
-import serial.tools.list_ports
 import sys
 import threading
 import time
+from datetime import datetime, timedelta
 from enum import Enum
+
+import serial
+import serial.tools.list_ports
 from kivy.clock import Clock
 from kivy.event import EventDispatcher
 from kivy.properties import StringProperty, NumericProperty, BooleanProperty
+
 from core.logging.logging_system import Logger
 from core.serial import serial_conn
 from ui.sequence_alarm import alarm_manager
@@ -173,6 +173,9 @@ class SerialConnection(EventDispatcher):
 
     def establish_connection(self):
         ports_to_try = serial_conn.SerialConnection.get_available_ports()
+
+        if sys.platform == 'linux':
+            ports_to_try.insert(0, '/dev/ttyS0')  # this port is hidden as it is a 'non-present internal serial port'
 
         for port in ports_to_try:
             if self.is_port_smartbench(port.device):
