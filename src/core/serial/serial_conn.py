@@ -1,18 +1,16 @@
 import queue
 import sys
-import time
 import threading
+import time
+
 import serial
 import serial.tools.list_ports
-from kivy.clock import Clock
-from kivy.event import EventDispatcher
 from kivy.properties import StringProperty
 
 from core.logging.logging_system import Logger
 
 
-class SerialConnection(EventDispatcher):
-    last_status = StringProperty('', force_dispatch=True)
+class SerialConnection:
 
     def __init__(self, preferred_port, baudrate=115200, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -30,6 +28,7 @@ class SerialConnection(EventDispatcher):
         self.command_response_map = {}
         self.command_id = 0
         self.grbl_settings = {}
+        self.last_status = StringProperty()
 
     @staticmethod
     def get_available_ports():
@@ -92,8 +91,6 @@ class SerialConnection(EventDispatcher):
     def _process_response(self, response):
         Logger.debug(f"Processing response {response}")
         if response.startswith("<") and response.endswith(">"):
-            # This is a status response
-            Clock.schedule_once(lambda dt: setattr(self, "last_status", response), 0)
             if not self.response_queue.empty():
                 command_id = self.response_queue.get()
                 if command_id in self.command_response_map:

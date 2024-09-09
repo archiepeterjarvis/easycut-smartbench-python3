@@ -16,13 +16,16 @@ class SmartBenchControllerIntegrationTests(unittest.TestCase):
         self.serial_conn.close()
 
     def test_home(self):
-        self.smartbench_controller.home()
+        response = self.smartbench_controller.home()
+        self.assertEqual(response, "ok")
 
     def test_laser_on(self):
-        self.smartbench_controller.set_laser_status(True)
+        response = self.smartbench_controller.set_laser_status(True)
+        self.assertEqual(response, "ok")
 
     def test_laser_off(self):
-        self.smartbench_controller.set_laser_status(False)
+        response = self.smartbench_controller.set_laser_status(False)
+        self.assertEqual(response, "ok")
 
     def test_get_grbl_settings(self):
         self.smartbench_controller.get_grbl_settings()

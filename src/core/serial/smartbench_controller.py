@@ -26,16 +26,14 @@ class LedColour(Enum):
     OFF = "110000"
 
 
+class JogMode(Enum):
+    RELATIVE = "G91"
+    ABSOLUTE = "G53"
+
+
 class SmartBenchController:
     def __init__(self, serial_conn: SerialConnection):
         self.serial_conn = serial_conn
-        t = threading.Thread(target=self.poll_loop, daemon=True)
-        t.start()
-
-    def poll_loop(self):
-        while True:
-            self.get_status()
-            time.sleep(1.0/13)
 
     def start_up_procedure(self):
         """
@@ -83,35 +81,18 @@ class SmartBenchController:
         """
         return self.serial_conn.send_command(StaticGRBLCommands.HOME.value, timeout=15)
 
-    def jog_absolute(self, feedrate, x=None, y=None, z=None):
+    def jog(self, mode: JogMode, feedrate: float, x: float = None, y: float = None, z: float = None):
         """
-        Jog absolute to specific coordinates at specified feedrate.
+        Jog to specific coordinates at specified feedrate.
+        :param mode: Jog mode (relative or absolute)
         :param feedrate: Feedrate of the jog.
         :param x: X coordinate of the jog.
         :param y: Y coordinate of the jog.
         :param z: Z coordinate of the jog.
-        :raises: ValueError if no coordinates are specified.
         :return: The GRBL response to the command.
         """
         if not x and not y and not z:
             raise ValueError("Either x or y or z must be specified.")
 
-        #cmd = f"$J=G53 {f"X{x} " if x else ""}{f"Y{y} " if y else ""}{f"Z{z} " if z else ""}F{feedrate}"
-        return self.serial_conn.send_command("", timeout=5)
-
-    def jog_relative(self, feedrate, x=None, y=None, z=None):
-        """
-        Jog relative to specific coordinates at specified feedrate.
-        :param feedrate: Feedrate of the jog.
-        :param x: X coordinate of the jog.
-        :param y: Y coordinate of the jog.
-        :param z: Z coordinate of the jog.
-        :raises: ValueError if no coordinates are specified.
-        :return: The GRBL response to the command.
-        """
-        if not x and not y and not z:
-            raise ValueError("Either x or y or z must be specified.")
-
-        #cmd = f"$J=G91 {f"X{x} " if x else ""}{f"Y{y} " if y else ""}{f"Z{z} " if z else ""}F{feedrate}"
-        return self.serial_conn.send_command("", timeout=5)
-
+        cmd = f"$J={mode.value} {f'X{x} ' if x else ''}{f'Y{y} ' if y else ''}{f'Z{z} ' if z else ''}F{feedrate}"
+        return self.serial_conn.send_command(cmd, timeout=5)

@@ -126,7 +126,7 @@ class RouterMachine(EventDispatcher):
         self.s = serial_connection.SerialConnection(
             self, self.sm, self.sett, self.l, self.jd
         )
-        self.s.establish_connection(win_serial_port)
+        self.s.establish_connection()
         self.p = protocol.protocol_v2()
         self.cs = CoordinateSystem(self)
         self.check_presence_of_sb_values_files()
