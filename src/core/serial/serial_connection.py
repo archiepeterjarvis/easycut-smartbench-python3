@@ -172,17 +172,17 @@ class SerialConnection(EventDispatcher):
             Logger.error("Serial error: " + str(serial_error))
 
     def establish_connection(self):
-        ports_to_try = serial_conn.SerialConnection.get_available_ports()
+        ports_to_try = [port.device for port in serial_conn.SerialConnection.get_available_ports()]
 
         if sys.platform == 'linux':
             ports_to_try.insert(0, '/dev/ttyS0')  # this port is hidden as it is a 'non-present internal serial port'
 
         for port in ports_to_try:
-            if self.is_port_smartbench(port.device):
+            if self.is_port_smartbench(port):
                 break
 
         if not self.s:
-            Logger.warning(f"Couldn't find a SmartBench connected to any of the ports: {[port.device for port in ports_to_try]}")
+            Logger.warning(f"Couldn't find a SmartBench connected to any of the ports: {ports_to_try}")
             return
 
         Logger.info(f"Connected to SmartBench on port: {self.s.port}")
