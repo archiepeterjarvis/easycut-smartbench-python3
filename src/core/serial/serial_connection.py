@@ -179,7 +179,7 @@ class SerialConnection(EventDispatcher):
                 break
 
         if not self.s:
-            Logger.warning(f"Couldn't find a SmartBench connected to any of the ports: {ports_to_try}")
+            Logger.warning(f"Couldn't find a SmartBench connected to any of the ports: {[port.device for port in ports_to_try]}")
             return
 
         Logger.info(f"Connected to SmartBench on port: {self.s.port}")
