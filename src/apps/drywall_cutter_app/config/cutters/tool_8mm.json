@@ -27,6 +27,6 @@
     "outside": true,
     "on": true
   },
-  "image": "./asmcnc/apps/drywall_cutter_app/config/cutters/images/tool_8mm.png",
+  "image": "tool_8mm.png",
   "apps": ["dwt", "shapes"]
 }

@@ -158,7 +158,7 @@ Builder.load_string(
 						id: decline_button
 						background_normal: "next.png"
 						background_down: "next.png"
-						background_disabled_normal: "./asmcnc/apps/start_up_sequence/data_consent_app/img/standard_button_disabled.png"
+						background_disabled_normal: "standard_button_disabled.png"
 						border: [dp(14.5)]*4
 						size_hint: (None,None)
 						width: dp(0.36375*app.width)
@@ -174,7 +174,7 @@ Builder.load_string(
 						id: accept_button
 						background_normal: "next.png"
 						background_down: "next.png"
-						background_disabled_normal: "./asmcnc/apps/start_up_sequence/data_consent_app/img/standard_button_disabled.png"
+						background_disabled_normal: "standard_button_disabled.png"
 						border: [dp(14.5)]*4
 						size_hint: (None,None)
 						width: dp(0.36375*app.width)
@@ -211,9 +211,7 @@ class ScrollPrivacyNotice(ScrollView):
 
 class WiFiAndDataConsentScreen3(Screen):
     checkbox_checked = False
-    privacy_notice_path = (
-        "./asmcnc/apps/start_up_sequence/data_consent_app/privacy_notice/"
-    )
+    privacy_notice_path = paths.PRIVACY_NOTICE_PATHS
 
     def __init__(self, localization, consent_manager, start_sequence, **kwargs):
         super().__init__(**kwargs)

@@ -260,8 +260,8 @@ Builder.load_string(
                         width: dp(0.1875*app.width)
                         Button:
                             id: wifi_update_button
-                            background_normal: "./asmcnc/apps/SWupdater_app/img/update_button.png"
-                            background_down: "./asmcnc/apps/SWupdater_app/img/update_button.png"
+                            background_normal: "update_button.png"
+                            background_down: "update_button.png"
                             border: [dp(14.5)]*4
                             size_hint: (None,None)
                             width: dp(0.1875*app.width)
@@ -342,8 +342,8 @@ Builder.load_string(
                         width: dp(0.1875*app.width)
                         Button:
                             id: usb_update_button
-                            background_normal: "./asmcnc/apps/SWupdater_app/img/update_button.png"
-                            background_down: "./asmcnc/apps/SWupdater_app/img/update_button.png"
+                            background_normal: "update_button.png"
+                            background_down: "update_button.png"
                             border: [dp(14.5)]*4
                             size_hint: (None,None)
                             width: dp(0.1875*app.width)

@@ -255,7 +255,7 @@ Builder.load_string(
                                 markup: True
                                 multiline: False
                                 text: ''
-                                background_normal: "./asmcnc/apps/wifi_app/img/password_bg.png"
+                                background_normal: "password_bg.png"
                     
                     # The button to toggle between the normal network name and the custom network name
                     BoxLayout: 
@@ -270,8 +270,8 @@ Builder.load_string(
                             font_size: 0.025*app.width
                             color: hex('#f9f9f9ff')
                             markup: True
-                            background_normal: "./asmcnc/apps/wifi_app/img/CustomSSID_blank.png"
-                            background_down: "./asmcnc/apps/wifi_app/img/CustomSSID_blank.png"
+                            background_normal: "CustomSSID_blank.png"
+                            background_down: "CustomSSID_blank.png"
 
                 #Password
                 BoxLayout: 
@@ -307,7 +307,7 @@ Builder.load_string(
                             markup: True
                             multiline: False
                             text: ''
-                            background_normal: "./asmcnc/apps/wifi_app/img/password_bg.png"
+                            background_normal: "password_bg.png"
 
                 #Country Code
                 BoxLayout: 
@@ -412,8 +412,8 @@ Builder.load_string(
 
                     Button:
                         id: connect_button
-                        background_normal: "./asmcnc/apps/wifi_app/img/connect_blank.png"
-                        background_down: "./asmcnc/apps/wifi_app/img/connect_blank.png"
+                        background_normal: "connect_blank.png"
+                        background_down: "connect_blank.png"
                         border: [dp(14.5)]*4
                         size_hint: (None,None)
                         height: dp(0.239583333333*app.height)

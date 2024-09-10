@@ -71,7 +71,7 @@ Builder.load_string(
 
                 FileChooser:
                     id: filechooser
-                    rootpath: './asmcnc/apps/drywall_cutter_app/config/configurations/'
+                    rootpath: './apps/drywall_cutter_app/config/configurations/'
                     show_hidden: False
                     on_selection: root.refresh_filechooser()
                     sort_func: root.sort_by_date_reverse
@@ -244,9 +244,7 @@ def name_order_sort_reverse(files, filesystem):
     )
 
 
-decode_and_encode = lambda x: unicode(x, detect(x)["encoding"] or "utf-8").encode(
-    "utf-8"
-)
+decode_and_encode = lambda x: x.decode(detect(x)["encoding"]).encode("utf-8")
 
 
 class ConfigFileSaver(Screen):

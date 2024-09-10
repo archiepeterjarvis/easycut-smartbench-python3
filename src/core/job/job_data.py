@@ -11,7 +11,7 @@ from chardet import detect
 from itertools import takewhile
 from core.logging.logging_system import Logger
 
-decode_and_encode = lambda x: unicode(x, detect(x)["encoding"]).encode("utf-8")
+decode_and_encode = lambda x: x.decode(detect(x)["encoding"]).encode("utf-8")
 
 
 def remove_newlines(gcode_line):

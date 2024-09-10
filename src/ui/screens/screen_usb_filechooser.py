@@ -252,9 +252,7 @@ def name_order_sort_reverse(files, filesystem):
     )
 
 
-decode_and_encode = lambda x: unicode(x, detect(x)["encoding"] or "utf-8").encode(
-    "utf-8"
-)
+decode_and_encode = lambda x: x.decode(detect(x)["encoding"]).encode("utf-8")
 
 
 class USBFileChooser(Screen):

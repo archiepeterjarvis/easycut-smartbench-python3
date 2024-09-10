@@ -90,8 +90,8 @@ Builder.load_string(
 
         TabbedPanelItem:
             id: laser_tab
-            background_normal: 'asmcnc/apps/maintenance_app/img/laser_datum_tab_blue.png'
-            background_down: 'asmcnc/apps/maintenance_app/img/laser_datum_tab_grey.png'
+            background_normal: 'laser_datum_tab_blue.png'
+            background_down: 'laser_datum_tab_grey.png'
 
             BoxLayout:
                 size_hint: (None,None)
@@ -199,8 +199,8 @@ Builder.load_string(
 
         TabbedPanelItem:
             id: brush_tab
-            background_normal: 'asmcnc/apps/maintenance_app/img/brush_monitor_tab_blue.png'
-            background_down: 'asmcnc/apps/maintenance_app/img/brush_monitor_tab_grey.png'
+            background_normal: 'brush_monitor_tab_blue.png'
+            background_down: 'brush_monitor_tab_grey.png'
             BoxLayout:
                 size_hint: (None,None)
                 width: dp(1.005*app.width)
@@ -297,8 +297,8 @@ Builder.load_string(
         
         TabbedPanelItem:
             id: spindle_tab
-            background_normal: 'asmcnc/apps/maintenance_app/img/spindle_settings_tab_blue.png'
-            background_down: 'asmcnc/apps/maintenance_app/img/spindle_settings_tab_grey.png'
+            background_normal: 'spindle_settings_tab_blue.png'
+            background_down: 'spindle_settings_tab_grey.png'
 
             BoxLayout:
                 size_hint: (None,None)
@@ -331,8 +331,8 @@ Builder.load_string(
         # Z Misc settings (probe plate and time since lead screw lubrication)
 
         TabbedPanelItem:
-            background_normal: 'asmcnc/apps/maintenance_app/img/z_misc_tab_blue.png'
-            background_down: 'asmcnc/apps/maintenance_app/img/z_misc_tab_grey.png'
+            background_normal: 'z_misc_tab_blue.png'
+            background_down: 'z_misc_tab_grey.png'
 
             BoxLayout:
                 size_hint: (None,None)
@@ -396,8 +396,8 @@ Builder.load_string(
 
         TabbedPanelItem:
             id: general_settings_tab
-            background_normal: 'asmcnc/apps/maintenance_app/img/general_settings_tab_blue.png'
-            background_down: 'asmcnc/apps/maintenance_app/img/general_settings_tab_grey.png'
+            background_normal: 'general_settings_tab_blue.png'
+            background_down: 'general_settings_tab_grey.png'
 
             BoxLayout:
                 size_hint: (None,None)
@@ -428,10 +428,10 @@ Builder.load_string(
 
         TabbedPanelItem:
             id: plus_tab
-            background_normal: 'asmcnc/apps/maintenance_app/img/blank_blue_tab.png'
-            background_down: 'asmcnc/apps/maintenance_app/img/blank_blue_tab.png'
-            background_disabled_down: 'asmcnc/apps/maintenance_app/img/blank_blue_tab.png'
-            background_disabled_normal: 'asmcnc/apps/maintenance_app/img/blank_blue_tab.png'
+            background_normal: 'blank_blue_tab.png'
+            background_down: 'blank_blue_tab.png'
+            background_disabled_down: 'blank_blue_tab.png'
+            background_disabled_normal: 'blank_blue_tab.png'
             disabled: 'True'
 
             BoxLayout:
@@ -676,12 +676,8 @@ class MaintenanceScreenClass(Screen):
 
     def add_plus_tab(self):
         self.plus_tab.disabled = False
-        self.plus_tab.background_normal = (
-            "asmcnc/apps/maintenance_app/img/pro_plus_tab.png"
-        )
-        self.plus_tab.background_down = (
-            "asmcnc/apps/maintenance_app/img/pro_plus_tab_active.png"
-        )
+        self.plus_tab.background_normal = "pro_plus_tab.png"
+        self.plus_tab.background_down = "pro_plus_tab_active.png"
         self.spindle_health_check_widget = (
             widget_maintenance_spindle_health_check.WidgetSpindleHealthCheck(
                 machine=self.m, screen_manager=self.sm, localization=self.l
