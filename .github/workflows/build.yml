@@ -11,8 +11,8 @@ jobs:
     - name: Install dependencies
       run: |
         python3 -m pip install --upgrade pip
-        pip install nuitka
-        pip install -r requirements3.12.txt
+        python3 -m pip install nuitka
+        python3 -m pip install -r requirements3.12.txt
     - name: Compile with Nuitka
       run: |
         python3 -m nuitka --follow-imports --standalone --onefile ./src/main.py
