@@ -21,7 +21,7 @@ jobs:
       run: |
         python -m nuitka --follow-imports --standalone --onefile ./src/main.py
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: compiled-executable
         path: main.bin
