@@ -1,10 +1,7 @@
 name: Nuitka Compile
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:  # Add this line to enable manual triggers
 
 jobs:
   build:
