@@ -1,0 +1,37 @@
+name: Docker ARM Nuitka Compile
+on:
+  workflow_dispatch:  # Enable manual triggers
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build and run on ARM
+      run: |
+        docker buildx create --use
+        docker buildx build --platform linux/arm64 -t arm64-builder --load - << EOF
+        FROM arm64v8/ubuntu:latest
+        RUN apt-get update && apt-get install -y python3 python3-pip
+        WORKDIR /app
+        COPY . .
+        RUN python3 -m pip install --upgrade pip && \
+            python3 -m pip install nuitka && \
+            python3 -m pip install -r requirements3.12.txt
+        CMD python3 -m nuitka --follow-imports --standalone --onefile ./src/main.py && mv main.bin /tmp/main.bin
+        EOF
+        
+        docker run --rm -v /tmp:/tmp arm64-builder
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: compiled-executable
+        path: /tmp/main.bin
