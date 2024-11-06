@@ -1,3 +1,2 @@
-# easycut-smartbench
-**Not yet functional**
+# easycut-smartbench-python3
 
